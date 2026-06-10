@@ -2,7 +2,7 @@
 
 A weekly news and discussion presentation for our Bitcoin-only meetup group. Each week we cover live Bitcoin metrics, Bitcoin market moves, regulation and policy, stablecoin news as it relates to Bitcoin, corporate treasury players, mining, and what's happening on Nostr — then open the floor for discussion.
 
-**[View the Presentations](https://MaxSikorski.github.io/bitcoin-nostr-weekly-news)** &nbsp;·&nbsp; **[Join the Meetup](https://meetup.com/satoshi-service-center)**
+**[View the Presentations](https://MaxSikorski.github.io/bitcoin-nostr-weekly-news)** &nbsp;·&nbsp; **[Join your Meetup](https://github.com/MaxSikorski/My-Bitcoin-Meetups/blob/main/list.md)**
 
 ---
 
