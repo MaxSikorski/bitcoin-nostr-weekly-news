@@ -1,6 +1,6 @@
 # Bitcoin & Nostr Weekly News
 
-A weekly news and discussion presentation for our Bitcoin meetup group. Each week we cover Bitcoin market moves, regulation and policy, stablecoin news as it relates to Bitcoin, corporate treasury players, mining, and what's happening on Nostr — then open the floor for discussion.
+A weekly news and discussion presentation for our Bitcoin-only meetup group. Each week we cover live Bitcoin metrics, Bitcoin market moves, regulation and policy, stablecoin news as it relates to Bitcoin, corporate treasury players, mining, and what's happening on Nostr — then open the floor for discussion.
 
 **[View the Presentations](https://MaxSikorski.github.io/bitcoin-nostr-weekly-news)** &nbsp;·&nbsp; **[Join the Meetup](https://meetup.com/satoshi-service-center)**
 
@@ -17,7 +17,7 @@ Each week, a new presentation is published covering:
 - **Quick Tips** — Practical wallet, node, and self-custody tips worth sharing
 - **Community Topics** — Whatever the group is curious about
 
-The presentations run live at our weekly Zoom meetups and are archived here for anyone who missed one.
+The presentations run live at our weekly Zoom meetups and are archived [here](https://MaxSikorski.github.io/bitcoin-nostr-weekly-news) for anyone who missed one.
 
 ---
 
