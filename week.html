@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Bitcoin Meetup — Presentation</title>
+    <meta name="description" content="Weekly Bitcoin and Nostr presentation.">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>₿</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="dark">
+
+    <!-- Navigation -->
+    <nav class="header-nav">
+        <a href="index.html" class="logo">Bitcoin Meetup</a>
+        <div class="nav-right">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+                <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path class="sun-path"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading-state" class="loading-state">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+    </div>
+
+    <!-- Presentation Container -->
+    <div id="presentation" class="presentation-container" style="display: none;"></div>
+
+    <!-- TOC Overlay -->
+    <div class="toc-overlay" id="toc-overlay"></div>
+
+    <!-- TOC Sidebar -->
+    <div class="toc-sidebar" id="toc-sidebar">
+        <button class="toc-close" id="toc-close" aria-label="Close table of contents">&times;</button>
+        <p class="toc-title">Topics</p>
+        <div id="toc-list"></div>
+    </div>
+
+    <!-- QR Code Overlay -->
+    <div class="qr-overlay" id="qr-overlay">
+        <canvas id="qr-canvas"></canvas>
+        <p class="qr-label" id="qr-label">Scan to open</p>
+    </div>
+
+    <!-- Presenter Controls -->
+    <div class="presenter-controls" id="presenter-controls" style="display: none;">
+        <div class="controls-left">
+            <button class="control-btn" id="toc-toggle-btn" aria-label="Table of Contents" title="Table of Contents (T)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <button class="control-btn" id="qr-toggle-btn" aria-label="Toggle QR Code" title="QR Code (Q)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1"/>
+                    <rect x="14" y="14" width="3" height="3"/>
+                    <path d="M21 14h-3v3"/>
+                    <path d="M18 21v-3h3"/>
+                </svg>
+            </button>
+        </div>
+        <div class="controls-center">
+            <button class="control-btn nav-btn" id="prev-btn" aria-label="Previous slide" title="Previous (←)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </button>
+            <span class="slide-counter" id="slide-counter">1 / 1</span>
+            <button class="control-btn nav-btn" id="next-btn" aria-label="Next slide" title="Next (→)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
+        </div>
+        <div class="controls-right">
+            <button class="timer-display" id="timer-display" title="Click to start/pause, double-click to reset">20:00</button>
+        </div>
+    </div>
+
+    <!-- Keyboard Hints (shown briefly on first load) -->
+    <div class="keyboard-hints" id="keyboard-hints">
+        <span class="key-hint"><kbd>←</kbd><kbd>→</kbd> Navigate</span>
+        <span class="key-hint"><kbd>Esc</kbd> Overview</span>
+        <span class="key-hint"><kbd>T</kbd> Topics</span>
+        <span class="key-hint"><kbd>Q</kbd> QR Code</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="script.js"></script>
+    <script src="presenter.js"></script>
+</body>
+</html>

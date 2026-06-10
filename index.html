@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Bitcoin Meetup — Weekly Presentations</title>
+    <meta name="description" content="Weekly Bitcoin and Nostr news and discussion topics for our meetup group.">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>₿</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="dark">
+
+    <!-- Navigation -->
+    <nav class="header-nav">
+        <a href="index.html" class="logo" id="logo-refresh">Bitcoin Meetup</a>
+        <div class="nav-right">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+                <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path class="sun-path"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Bitcoin &amp; Nostr<br>Weekly</h1>
+            <p class="hero-subtitle">News, policy, and discussion topics curated for our weekly meetup.</p>
+            <a href="#presentations" class="scroll-cue" aria-label="Scroll to presentations">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M19 12l-7 7-7-7"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Archive List -->
+    <div class="content-section" id="presentations">
+        <p class="section-label">Past Presentations</p>
+        <div id="archive-list" class="archive-list">
+            <!-- Populated by JavaScript -->
+        </div>
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <p class="empty-state-text">No presentations yet. Check back soon.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        Bitcoin Meetup
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            // Inline fallback data (used when opening via file:// protocol)
+            // Keep this in sync with weeks/index.json
+            const INLINE_DATA = {
+                "weeks": [
+                    {
+                        "id": "2026-W24",
+                        "date": "2026-06-10",
+                        "title": "ETF Exodus, Strategy's Dip Buy & the Reserve Bill"
+                    }
+                ]
+            };
+
+            const archiveList = document.getElementById('archive-list');
+            const emptyState = document.getElementById('empty-state');
+
+            function renderArchive(data) {
+                if (!data.weeks || data.weeks.length === 0) {
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                // Sort weeks newest first
+                const sorted = data.weeks.sort((a, b) => b.date.localeCompare(a.date));
+
+                sorted.forEach((week, index) => {
+                    const card = document.createElement('a');
+                    card.href = `week.html?week=${week.id}`;
+                    card.className = 'archive-card';
+                    card.dataset.delay = index * 0.1;
+
+                    const dateObj = new Date(week.date + 'T12:00:00');
+                    const formattedDate = dateObj.toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+
+                    card.innerHTML = `
+                        <div class="archive-card-info">
+                            <p class="archive-card-date">${formattedDate}</p>
+                            <h3 class="archive-card-title">${week.title}</h3>
+                        </div>
+                        <svg class="archive-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    `;
+
+                    archiveList.appendChild(card);
+                });
+
+                // Trigger scroll reveals for dynamically added cards
+                if (typeof gsap !== 'undefined') {
+                    const cards = archiveList.querySelectorAll('.archive-card');
+                    gsap.set(cards, { opacity: 0, y: 20 });
+
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                gsap.to(entry.target, {
+                                    opacity: 1,
+                                    y: 0,
+                                    duration: 0.8,
+                                    ease: 'power4.out',
+                                    delay: parseFloat(entry.target.dataset.delay) || 0
+                                });
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.1 });
+
+                    cards.forEach(card => observer.observe(card));
+                }
+            }
+
+            // Try fetch first (works on GitHub Pages / HTTP), fall back to inline data (file://)
+            fetch('weeks/index.json')
+                .then(res => {
+                    if (!res.ok) throw new Error('HTTP error');
+                    return res.json();
+                })
+                .then(data => renderArchive(data))
+                .catch(() => {
+                    console.log('Using inline data (file:// mode)');
+                    renderArchive(INLINE_DATA);
+                });
+        })();
+    </script>
+</body>
+</html>
