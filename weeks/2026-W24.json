@@ -1,0 +1,308 @@
+{
+    "week": "2026-W24",
+    "date": "2026-06-10",
+    "title": "ETF Exodus, Strategy's Dip Buy & the Reserve Bill",
+    "subtitle": "This week in Bitcoin & Nostr news",
+    "timerMinutes": 20,
+    "topics": [
+        {
+            "id": "market-pulse",
+            "title": "Bitcoin's Ugliest Week in Months",
+            "description": "Worst week since February — $61.5K, $1.1B in liquidations, and longtime holders selling",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Bitcoin's Ugliest Week in Months",
+                    "body": "Bitcoin is trading near $61,500 after its worst week in months — down roughly 17% over the past seven days. The drop through $64,000 triggered about $1.1 billion in liquidations, and longtime high-conviction holders have started selling into weakness.",
+                    "link": "https://www.cnbc.com/2026/06/04/bitcoin-is-weathering-its-ugliest-week-in-months-as-narrative-fades-and-liquidity-rotates.html",
+                    "linkLabel": "Read CNBC's Breakdown"
+                },
+                {
+                    "heading": "What's Driving It",
+                    "bullets": [
+                        "Liquidity rotation: capital is chasing momentum in AI and semiconductor trades, leaving Bitcoin without a fresh narrative",
+                        "Long-term holders are distributing — CNBC reports 'high-conviction holders are turning into sellers' as price hit new lows",
+                        "Macro jitters: this week's CPI report could decide whether the $60K–$63K range holds",
+                        "Perspective check: Bitcoin sits about $48,800 below where it traded at this time last year"
+                    ],
+                    "link": "https://www.cnbc.com/2026/06/03/bitcoins-high-conviction-holders-are-selling-as-price-hits-new-lows.html",
+                    "linkLabel": "Who's Selling"
+                },
+                {
+                    "heading": "Discussion Points",
+                    "bullets": [
+                        "Is this a cyclical flush or the start of a deeper bear?",
+                        "Does Bitcoin need a 'narrative' at all — or is that a trader's framing for what holders just call an opportunity?",
+                        "Side note: Sam Bankman-Fried is reportedly seeking a pardon from President Trump — what would that say about crypto's standing in Washington?"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "etf-outflows",
+            "title": "The ETF Exodus",
+            "description": "$1.72B left U.S. spot Bitcoin ETFs in a week — the biggest exit since February 2025",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "ETF Exodus: $1.72B Out in One Week",
+                    "body": "U.S. spot Bitcoin ETFs posted $1.72 billion in net outflows for the week ending June 6 — the largest weekly exit since February 2025, and the fourth straight week of withdrawals. The four-week bleed totals roughly $5.4 billion.",
+                    "link": "https://www.coindesk.com/markets/2026/06/05/bitcoin-and-ether-etfs-end-record-multi-billion-outflow-streak",
+                    "linkLabel": "How the Streak Ended"
+                },
+                {
+                    "heading": "Inside the Numbers",
+                    "bullets": [
+                        "BlackRock's IBIT led the outflows, shedding about $1.34B on the week — its worst week since launching in January 2024",
+                        "A record multi-day outflow streak finally snapped on June 5 with the first net inflows in weeks",
+                        "Analysts point to rising Treasury yields, shifting Fed rate expectations, and profit-taking after the long rally",
+                        "One analyst take: the multi-billion-dollar bleed 'looks more cyclical than structural'"
+                    ],
+                    "link": "https://www.investing.com/analysis/bitcoins-34-billion-etf-bleed-looks-more-cyclical-than-structural-200681474",
+                    "linkLabel": "The Cyclical Case"
+                },
+                {
+                    "heading": "Discussion Points",
+                    "bullets": [
+                        "ETFs were the 2024–25 demand engine — what happens to price when that engine runs in reverse?",
+                        "Did Wall Street adoption make Bitcoin stronger, or just turn it into another momentum trade?",
+                        "Would a streak of inflows flip sentiment as fast as the outflows broke it?"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "strategy",
+            "title": "Strategy Sells… Then Buys the Dip",
+            "description": "First sale since 2022, then a $101M buy — and a cost basis now underwater",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Strategy Sells… Then Buys the Dip",
+                    "body": "Michael Saylor's Strategy disclosed its first Bitcoin sale since 2022 — just 32 BTC for about $2.5 million in late May — then turned around and bought 1,550 BTC for roughly $101 million between June 1 and 7. The treasury now stands at 845,256 BTC.",
+                    "link": "https://www.coindesk.com/markets/2026/06/01/strategy-sold-32-btc-for-usd2-5-million-in-late-may-filing-shows",
+                    "linkLabel": "Read the Filing Coverage"
+                },
+                {
+                    "heading": "The Numbers",
+                    "bullets": [
+                        "845,256 BTC held — about 4% of the entire 21 million supply, acquired for $33.1 billion total",
+                        "Average purchase price: $66,385 — with Bitcoin at $61.5K, Strategy is underwater on its cost basis",
+                        "The buy was funded with at-the-market equity sales: about 1.41 million shares for roughly $181M net",
+                        "Cash reserve raised by $100M to $1B; co-CEO Phong Le: 'Rumors otherwise are just rumors'"
+                    ],
+                    "link": "https://bitbo.io/treasuries/microstrategy",
+                    "linkLabel": "Track Strategy's Holdings"
+                },
+                {
+                    "heading": "Discussion Points",
+                    "bullets": [
+                        "Why sell 32 BTC at all? Housekeeping, a signal, or a trial balloon to test the market's reaction?",
+                        "Strategy is now below its average cost — does the 'sell shares, buy Bitcoin' flywheel work in reverse?",
+                        "One company holding 4% of all Bitcoin: systemic risk, or proof of conviction?"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "clarity-act",
+            "title": "CLARITY Act: On the Senate Calendar",
+            "description": "The market-structure bill cleared committee — now it faces a 60-vote wall and a shrinking calendar",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "CLARITY Act: On the Senate Calendar",
+                    "body": "The Digital Asset Market CLARITY Act — the big crypto market-structure bill — cleared the Senate Banking Committee 15–9 on May 14 and was placed on the Senate legislative calendar June 1. It would give the CFTC exclusive jurisdiction over 'digital commodity' spot markets like Bitcoin's, with the SEC keeping investment contracts.",
+                    "link": "https://www.coindesk.com/news-analysis/2026/06/02/clarity-act-survival-depends-on-the-u-s-senate-getting-a-lot-of-non-crypto-work-done",
+                    "linkLabel": "Where Things Stand"
+                },
+                {
+                    "heading": "The Roadblocks",
+                    "bullets": [
+                        "Two Democrats (Gallego, Alsobrooks) joined all Republicans in committee — but the floor takes 60 votes to clear the filibuster",
+                        "The Banking Committee version still has to merge with the Senate Agriculture Committee's framework",
+                        "Roughly eight weeks remain on the Senate calendar before the summer break",
+                        "61 crypto industry leaders sent a letter urging the Senate to keep developer protections intact"
+                    ],
+                    "link": "https://bitcoinmagazine.com/news/crypto-leaders-urge-to-pass-clarity-act",
+                    "linkLabel": "Read About the Industry Letter"
+                },
+                {
+                    "heading": "Why We Care + Discussion",
+                    "bullets": [
+                        "Clear CFTC jurisdiction over spot Bitcoin could end a decade of regulator turf wars",
+                        "Developer protections decide whether writing open-source Bitcoin software carries legal risk",
+                        "If it slips past the summer break, does a market-structure bill survive an election-year Congress at all?"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "stablecoin-rules",
+            "title": "Stablecoin Rules Get Real",
+            "description": "GENIUS Act deadlines hit — the comment window closed June 9, full rules land July 18",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Stablecoin Rules Get Real",
+                    "body": "The GENIUS Act — the federal stablecoin law signed last July — hit a key milestone this week: June 9 was the deadline for public comments on the FinCEN–OFAC anti-money-laundering rules. The full regulatory framework takes effect July 18.",
+                    "link": "https://crypto.news/genius-act-deadline-puts-stablecoin-issuers-on-notice/",
+                    "linkLabel": "Read the Deadline Rundown"
+                },
+                {
+                    "heading": "The State of Stablecoins",
+                    "bullets": [
+                        "Total stablecoin supply now exceeds $240 billion — Tether's USDT holds about 67% market share, Circle's USDC about 27%",
+                        "New York's DFS proposed aligning its state framework with Treasury's GENIUS Act certification rules",
+                        "From July 18, issuers face full federal AML obligations, reserve requirements, and audits"
+                    ],
+                    "link": "https://home.treasury.gov/news/press-releases/sb0435",
+                    "linkLabel": "Treasury's Proposed Rule"
+                },
+                {
+                    "heading": "Why It Matters for Bitcoin + Discussion",
+                    "bullets": [
+                        "Stablecoins are the on-ramp and trading pair for most Bitcoin volume — regulated rails change how money reaches BTC",
+                        "Regulated digital dollars: a gateway to Bitcoin, or a state-approved competitor to it?",
+                        "Does Tether's offshore dominance survive a fully certified U.S. regime?"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "reserve-bill",
+            "title": "Strategic Bitcoin Reserve: The Fine Print",
+            "description": "H.R. 8957's full text: a 20-year lockup and proof-of-reserve for the U.S. stash",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Strategic Bitcoin Reserve: The Fine Print Arrives",
+                    "body": "Congress finally got a detailed look at the Strategic Bitcoin Reserve. The full text of the bipartisan American Reserve Modernization Act (H.R. 8957) — introduced by Rep. Nick Begich (R-AK) and Rep. Jared Golden (D-ME) with more than 20 co-sponsors — was published this week.",
+                    "link": "https://bitcoinmagazine.com/news/full-of-strategic-bitcoin-reserve-bill",
+                    "linkLabel": "Read the Full-Text Breakdown"
+                },
+                {
+                    "heading": "What's in the Bill",
+                    "bullets": [
+                        "A mandatory 20-year hold: reserve BTC can't be sold, swapped, auctioned, or encumbered — for any purpose",
+                        "After 20 years, at most 10% can be offloaded in any two-year window, subject to Congressional review",
+                        "Quarterly public proof-of-reserve attestations, independent third-party audits, and Comptroller General oversight",
+                        "The U.S. government already holds an estimated ~328,000 BTC — the largest known state holder"
+                    ]
+                },
+                {
+                    "heading": "Signals from the Administration + Discussion",
+                    "bullets": [
+                        "Treasury Secretary Bessent told a Senate committee June 3 the reserve is proceeding with 'deliberate speed'",
+                        "A White House adviser has teased a reserve update 'in the next few weeks'",
+                        "Does a 20-year lockup make the reserve credible — or just easy for a future Congress to repeal?",
+                        "Quarterly proof-of-reserve from a government: a precedent we want every nation to copy?"
+                    ],
+                    "link": "https://www.thestreet.com/crypto/markets/treasury-secretary-bessent-reveals-new-information-on-bitcoin-reserve",
+                    "linkLabel": "Bessent's Testimony"
+                }
+            ]
+        },
+        {
+            "id": "mining-difficulty",
+            "title": "Difficulty Drop Incoming as Miners Chase AI",
+            "description": "A ~9% difficulty drop is coming as public miners pivot rigs toward AI",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Difficulty Drop Incoming",
+                    "body": "Mining difficulty is set to fall roughly 9% around June 13–14 — from 138.96T to about 123.9T — as squeezed miners power down or redirect capacity. Network hashrate sits near 962 EH/s after recently touching the 1 zettahash milestone.",
+                    "link": "https://mempool.space/graphs/mining/hashrate-difficulty#3m",
+                    "linkLabel": "Live Difficulty Chart"
+                },
+                {
+                    "heading": "The AI Pivot",
+                    "bullets": [
+                        "Bitcoin recorded its first Q1 hashrate decline in six years — partly from miners diverting power to AI workloads",
+                        "Industry projections: listed miners could earn ~70% of revenue from AI and HPC by the end of 2026, up from ~30% today",
+                        "With BTC near $61K, margins favor large operators with cheap power; transaction fees are only 10–15% of miner income"
+                    ],
+                    "link": "https://cryptonews.net/news/mining/32977167/",
+                    "linkLabel": "Why Miners Are Becoming AI Data Centers"
+                },
+                {
+                    "heading": "Discussion Points",
+                    "bullets": [
+                        "Is the AI pivot bullish (miners stay solvent) or bearish (security budget drifts away from the network)?",
+                        "A 9% difficulty drop is relief for whoever keeps hashing — who's left mining at these prices?",
+                        "Does miner consolidation around cheap power worry anyone here?"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "nostr-vpn",
+            "title": "Satoshi's First Collaborator Ships a Nostr VPN",
+            "description": "Martti Malmi releases a Tailscale-style VPN where your npub is the login",
+            "type": "tool",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "A Nostr VPN from a Bitcoin OG",
+                    "body": "Martti Malmi — 'Sirius,' who worked directly with Satoshi from 2009–2011 and co-ran Bitcoin.org — released a privacy-focused, Tailscale-style VPN built on Nostr. Your Nostr public key replaces email logins entirely: no accounts, no third parties.",
+                    "link": "https://cointelegraph.com/news/bitcoin-developer-privacy-focused-nostr-vpn-public-keys",
+                    "linkLabel": "Read the Coverage"
+                },
+                {
+                    "heading": "How It Works",
+                    "bullets": [
+                        "Nostr public keys handle identity and signaling between your devices — the same cryptography that secures Bitcoin",
+                        "Direct peer-to-peer connections, with Nostr-relay multihop routing as the fallback when P2P fails",
+                        "A multiplatform interface for managing VPN settings across devices, inspired by Tailscale",
+                        "The same trust-minimization logic as Bitcoin — applied to internet privacy instead of money"
+                    ]
+                },
+                {
+                    "heading": "Elsewhere on Nostr + Discussion",
+                    "bullets": [
+                        "Damus shipped 'Damus Labs' features — live-streaming and offline note-loading",
+                        "Primal added Remote Login: sign into other Nostr clients without ever exposing your private key",
+                        "OpenSats' Nostr Fund continues funding work on accessibility, security, and decentralization",
+                        "Is identity — keys instead of accounts — Nostr's real killer app, beyond social media?"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "quick-tip",
+            "title": "Quick Tip of the Week",
+            "description": "The mempool is nearly empty — do your on-chain housekeeping while fees are cheap",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Quick Tip: Housekeeping While Fees Are Low",
+                    "body": "The mempool is nearly empty right now — low-priority transactions are clearing at around 1 sat/vB or less. That makes this the cheap window for on-chain housekeeping: consolidate your small UTXOs, open or rebalance Lightning channels, and move coins to cold storage. Check live fees before you send.",
+                    "link": "https://mempool.space/",
+                    "linkLabel": "Check Live Fees on mempool.space"
+                }
+            ]
+        },
+        {
+            "id": "community-news",
+            "title": "Community News & Topics",
+            "description": "Share what you're interested in talking about!",
+            "type": "text",
+            "slides": [
+                {
+                    "heading": "Next Week's Meetup",
+                    "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                    "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                    "linkLabel": "Submit a Topic"
+                }
+            ]
+        }
+    ]
+}
