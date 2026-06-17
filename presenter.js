@@ -877,6 +877,273 @@
     // === Inline fallback data for file:// protocol ===
     // Keep in sync with weeks/2026-W24.json
     const INLINE_WEEKS = {
+        "2026-W25": {
+            "week": "2026-W25",
+            "date": "2026-06-17",
+            "title": "BIP-110's Fork Fight, the Rebound & a Record Difficulty Drop",
+            "subtitle": "This week in Bitcoin & Nostr news",
+            "timerMinutes": 20,
+            "topics": [
+                {
+                    "id": "market-rebound",
+                    "title": "The Ceasefire Rebound",
+                    "description": "BTC dipped below $60K, then snapped back above $65K on a US-Iran ceasefire",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "The Ceasefire Rebound",
+                            "body": "After last week's slide, Bitcoin briefly fell below $60,000 — its lowest since November 2024 — then snapped back to around $65-66K. The trigger was geopolitical: a US-Iran ceasefire deal flipped markets risk-on, with oil falling and equities rallying.",
+                            "link": "https://finance.yahoo.com/personal-finance/investing/article/bitcoin-and-ethereum-prices-today-monday-june-15-2026-prices-rising-after-us-iran-agree-to-ceasefire-deal-114616600.html",
+                            "linkLabel": "Read the Market Recap"
+                        },
+                        {
+                            "heading": "What Turned It Around",
+                            "bullets": [
+                                "US-Iran ceasefire deal → risk appetite returned across markets",
+                                "Oil fell, equities rallied, and SpaceX debuted +19% on its first Nasdaq trading day",
+                                "Resolves last week's cliffhanger — the sub-$60K low and the CPI report we flagged",
+                                "Perspective: even after the bounce, BTC sits roughly $48,800 below where it traded a year ago"
+                            ],
+                            "link": "https://fortune.com/article/price-of-bitcoin-06-15-2026/",
+                            "linkLabel": "Price Snapshot"
+                        },
+                        {
+                            "heading": "Discussion Points",
+                            "bullets": [
+                                "Was the sub-$60K print the bottom, or just a relief rally on geopolitics?",
+                                "How much is Bitcoin now a macro 'risk asset' that moves on ceasefires and CPI prints?",
+                                "If a war headline can move it 10%, how 'uncorrelated' is it really?"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "etf-flip",
+                    "title": "The ETF Outflows Reverse",
+                    "description": "Last week's record exodus flipped to inflows — the streak finally broke",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "The ETF Outflows Reverse",
+                            "body": "The sequel to last week's 'ETF Exodus': the bleeding stopped. On June 12, US spot Bitcoin ETFs took in $85.85 million — breaking a four-week outflow streak that had drained roughly $5.4 billion. BlackRock's IBIT led the turnaround with about $57.7M (~1,350 BTC).",
+                            "link": "https://news.bitcoin.com/bitcoin-etf-inflows-ethereum-outflows-june-2026/",
+                            "linkLabel": "Read the Flows Breakdown"
+                        },
+                        {
+                            "heading": "Why It Matters + Discussion",
+                            "bullets": [
+                                "None of the 12 funds saw outflows that day — a clean break from the prior week's $1.72B exit",
+                                "IBIT again drove the action, both down (last week) and up (this week)",
+                                "The flip tracks the ceasefire risk-on move — ETF flows increasingly mirror macro sentiment",
+                                "Real question: institutional conviction returning, or a one-day dead-cat bounce?"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "difficulty-drop",
+                    "title": "A Historic 10% Difficulty Drop",
+                    "description": "Second-biggest drop of 2026 as miners power down — exactly as we predicted",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "A Historic 10% Difficulty Drop",
+                            "body": "We called this one last week. On June 14 (block 953,568), mining difficulty fell 10.09% — from 138.96T to 124.93T, the lowest since July 2025. It was the second-biggest drop of 2026 and the 11th-largest in Bitcoin's history.",
+                            "link": "https://cryptobriefing.com/bitcoin-mining-difficulty-drops-10-percent/",
+                            "linkLabel": "Read the Coverage"
+                        },
+                        {
+                            "heading": "The Miner Squeeze",
+                            "bullets": [
+                                "Miners powered off inefficient rigs as BTC fell ~15% in June, dragging hashrate down",
+                                "The adjustment lifted output-per-hashrate ~11%; hashprice recovered to about $32.31/PH/s/day",
+                                "But estimated average cost to mine a coin (~$84,300) sits well above the ~$63K price",
+                                "Translation: many miners are underwater — the classic bear-market shakeout"
+                            ],
+                            "link": "https://crypto.news/bitcoin-mining-difficulty-just-had-its-11th-biggest-drop-ever/",
+                            "linkLabel": "The 11th-Biggest Drop Ever"
+                        },
+                        {
+                            "heading": "Discussion Points",
+                            "bullets": [
+                                "Who survives mining at these prices — and who gets bought for pennies?",
+                                "Difficulty dropping is relief for whoever keeps hashing: the strong get stronger",
+                                "Does cheap-power consolidation worry anyone, or is it just healthy natural selection?"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "bip-110-watch",
+                    "title": "BIP-110 Watch: The Soft-Fork Fight",
+                    "description": "Our new standing weekly tracker — the data-limit UASF dividing Bitcoin, and where we stand",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "BIP-110 Watch: The Data-Limit Soft Fork",
+                            "body": "New standing segment. BIP-110 — the 'Reduced Data Temporary Softfork' (introduced December 2025 by pseudonymous dev Dathon Ohm) — would cap transaction output scriptPubKeys at 34 bytes and OP_RETURN at 83 bytes for about a year, aiming to curb Ordinals/Runes 'spam.' It's the OP_RETURN war escalated into an actual activation attempt.",
+                            "link": "https://bip110.org/",
+                            "linkLabel": "BIP-110 Project Site"
+                        },
+                        {
+                            "heading": "The Three Camps",
+                            "bullets": [
+                                "Bitcoin Core — raised the OP_RETURN limit (83 → 100,000 bytes in v30); 'don't filter, let the fee market decide'",
+                                "Knots + BIP-110 — restrict the data, 'keep Bitcoin for money' (the Luke Dashjr camp)",
+                                "Super Testnet's URSF-110 ('User Rejected Soft Fork') — a tool that REJECTS BIP-110-signaling blocks via invalidateblock; he opposes BIP-110 (it can freeze miniscript funds using OP_IF in Taproot, and a forced 55% activation risks a chain split that backfires on the anti-spam goal)",
+                                "ProductionReady (Jimmy Song & Samson Mow) — funding a conservative third node client to break Core's monopoly on the reference implementation"
+                            ],
+                            "link": "https://github.com/supertestnet/URSF-110",
+                            "linkLabel": "Super Testnet's URSF-110"
+                        },
+                        {
+                            "heading": "By the Numbers + Where We Stand",
+                            "bullets": [
+                                "Support is tiny: ~2.38% of nodes (583 of ~24,481) run BIP-110, and 0.00% of blocks are signaling",
+                                "Context: Knots runs ~22-25% of nodes, but few enabled BIP-110 — and miners aren't signaling at all",
+                                "Activation needs 55% of blocks (vs the 95% norm); flag day is block 961,632 (~Aug 2026). Adam Back warns a contested activation could split the chain by fall; Jameson Lopp doubts data filters even work",
+                                "Where we stand: sound money is the REASON to be wary — BIP-110 can freeze real funds and a rushed UASF risks a fork that backfires. We're with Super's URSF-110."
+                            ],
+                            "link": "https://bip110monitor.com/",
+                            "linkLabel": "Live Signaling Monitor"
+                        }
+                    ]
+                },
+                {
+                    "id": "clarity-act",
+                    "title": "CLARITY Act: The Ethics Snag",
+                    "description": "The market-structure bill is on the calendar but stuck on an ethics provision",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "CLARITY Act: The Ethics Snag",
+                            "body": "The Digital Asset Market CLARITY Act sits on the Senate calendar (Calendar No. 423) after clearing the Banking Committee 15-9. It would hand the CFTC exclusive jurisdiction over digital-commodity spot markets like Bitcoin's, with the SEC keeping investment contracts — but floor support is hung up on an ethics provision about government officials' crypto ties.",
+                            "link": "https://www.coindesk.com/news-analysis/2026/06/02/clarity-act-survival-depends-on-the-u-s-senate-getting-a-lot-of-non-crypto-work-done",
+                            "linkLabel": "Where It Stands"
+                        },
+                        {
+                            "heading": "The Clock + Discussion",
+                            "bullets": [
+                                "Still needs 60 floor votes, reconciliation with the Senate Ag Committee, then the House",
+                                "Roughly eight weeks remain before the summer break — and midterm politics loom after",
+                                "Does a market-structure bill survive an election-year Congress, or slip to 2027?",
+                                "Is clear CFTC jurisdiction over spot Bitcoin a win worth the wait?"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "strategic-reserve",
+                    "title": "Strategic Bitcoin Reserve: Weeks Away?",
+                    "description": "White House signals an announcement soon; the bill drops its 1M-BTC target",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Strategic Bitcoin Reserve: Weeks Away?",
+                            "body": "Patrick Witt of the President's Council of Advisors for Digital Assets told Consensus Miami an announcement on the reserve is coming 'in the next few weeks.' Meanwhile the latest reserve bill quietly dropped its 1-million-BTC purchase target, while keeping the 20-year lockup and quarterly proof-of-reserve mandates.",
+                            "link": "https://www.theblock.co/post/402264/new-strategic-bitcoin-reserve-bill-drops-btc-purchase-target-adds-lockup",
+                            "linkLabel": "Read the Bill Changes"
+                        },
+                        {
+                            "heading": "The Stakes + Discussion",
+                            "bullets": [
+                                "If the BITCOIN Act passes, Treasury's first official purchase is estimated for Q4 2026 — the first sovereign to actively accumulate",
+                                "The US already holds an estimated ~328,000 BTC, mostly from forfeitures",
+                                "Does dropping the 1M-BTC target gut the ambition, or make it actually passable?",
+                                "Quarterly proof-of-reserve from a government — a precedent we'd want every nation to copy?"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "nostr-signing",
+                    "title": "Nostr: Zaps + the Remote-Signing Era",
+                    "description": "NIP-57 updated this week; the ecosystem moves off pasting your nsec",
+                    "type": "tool",
+                    "accent": "nostr",
+                    "slides": [
+                        {
+                            "heading": "Nostr: Zaps Spec Updated + Remote Signing",
+                            "body": "NIP-57 — the spec that defines Lightning zaps — was updated this week (June 13). The bigger 2026 shift: Nostr has moved away from pasting your private key (nsec) into every app, toward remote signing where your key stays locked in one place.",
+                            "link": "https://nips.nostr.com/57",
+                            "linkLabel": "NIP-57 (Zaps)"
+                        },
+                        {
+                            "heading": "How It Works + Discussion",
+                            "bullets": [
+                                "NIP-46 'bunkers' keep your nsec in a dedicated app (like Amber on Android); other clients get a temporary, revocable session key",
+                                "NIP-47 (Nostr Wallet Connect) lets apps request Lightning payments directly — seamless zapping, no invoice copy-paste",
+                                "Clients like Damus, Primal, and Amethyst now build around delegated signing",
+                                "Is key management the real adoption hurdle for Nostr — and is remote signing the fix?"
+                            ],
+                            "link": "https://nips.nostr.com/46",
+                            "linkLabel": "NIP-46 (Remote Signing)"
+                        }
+                    ]
+                },
+                {
+                    "id": "ecash",
+                    "title": "Ecash Grows Up: Cashu & Fedimint",
+                    "description": "Chaumian ecash over Lightning keeps maturing — private, instant, bearer Bitcoin",
+                    "type": "tool",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Ecash Grows Up: Cashu & Fedimint",
+                            "body": "Chaumian ecash — private, instant, bearer tokens backed by Bitcoin over Lightning — keeps maturing. Cashu's Nutshell 0.20.0 (Q1 2026) added improved P2PK/HTLC validation; Keyset V2 derivation is rolling out, Bolt12 support for cashu.me is close, and security audits are a stated priority.",
+                            "link": "https://opensats.org/projects/cashu",
+                            "linkLabel": "Cashu (OpenSats)"
+                        },
+                        {
+                            "heading": "The Tradeoff + Discussion",
+                            "bullets": [
+                                "Cashu uses a single mint; Fedimint spreads custody across a federation of guardians",
+                                "The deal: you trust a mint/federation in exchange for instant, private, no-account payments",
+                                "It's the privacy renaissance pairing with Lightning — exactly the 'invisible' UX newcomers need",
+                                "Is custodial-but-private ecash the right on-ramp for everyday Bitcoin, or a step backward on self-custody?"
+                            ],
+                            "link": "https://blog.bitfinex.com/education/cashu-chaumian-e-cash-mints-over-lightning/",
+                            "linkLabel": "How Cashu Works"
+                        }
+                    ]
+                },
+                {
+                    "id": "quick-tip",
+                    "title": "Quick Tip of the Week",
+                    "description": "Stop pasting your nsec — use a remote signer",
+                    "type": "tool",
+                    "accent": "nostr",
+                    "slides": [
+                        {
+                            "heading": "Quick Tip: Stop Pasting Your nsec",
+                            "body": "If you're on Nostr, stop pasting your private key (nsec) into every web app — each one is a place it can leak. Instead, use a remote signer: keep your nsec in one dedicated app (Amber on Android) or an NIP-46 bunker, and let other clients sign through it with a temporary, revocable key. Same login everywhere, far smaller attack surface.",
+                            "link": "https://soapbox.pub/blog/managing-nostr-keys/",
+                            "linkLabel": "Managing Your Nostr Keys"
+                        }
+                    ]
+                },
+                {
+                    "id": "community-news",
+                    "title": "Community News & Topics",
+                    "description": "Share what you're interested in talking about!",
+                    "type": "text",
+                    "slides": [
+                        {
+                            "heading": "Next Week's Meetup",
+                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                            "linkLabel": "Submit a Topic"
+                        }
+                    ]
+                }
+            ]
+        },
         "2026-W24": {
             "week": "2026-W24",
             "date": "2026-06-10",
