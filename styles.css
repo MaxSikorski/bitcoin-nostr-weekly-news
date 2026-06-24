@@ -1225,3 +1225,91 @@ button.card:hover .card-arrow {
         font-size: 1.6rem;
     }
 }
+
+/* === Live Dashboard Widget (Phase 1 — live price/height/fee) === */
+.live-dashboard {
+    margin: 8px 0 24px;
+    padding: 28px 32px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 520px;
+}
+
+.live-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.live-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.live-metric-primary .live-value {
+    font-size: clamp(2.5rem, 6vw, 3.75rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.live-metric-row {
+    display: flex;
+    gap: 40px;
+}
+
+.live-value-sm {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.live-status {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* subtle monochrome "live" pulse next to the price */
+.live-metric-primary .live-value::after {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-left: 12px;
+    border-radius: 50%;
+    background: #f7931a;
+    vertical-align: middle;
+    animation: live-pulse 2s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+    0%, 100% { opacity: 0.4; box-shadow: 0 0 4px 0 rgba(247, 147, 26, 0.45); }
+    50%      { opacity: 1;   box-shadow: 0 0 11px 2px rgba(247, 147, 26, 0.9); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .live-metric-primary .live-value::after {
+        animation: none;
+        opacity: 0.95;
+        box-shadow: 0 0 7px 1px rgba(247, 147, 26, 0.7);
+    }
+}
+
+/* multiple click-out links in one row (e.g. dashboard slide) */
+.slide-links-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}

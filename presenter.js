@@ -470,6 +470,28 @@
                     slideHTML += `<p class="slide-body">${slideData.body}</p>`;
                 }
 
+                if (slideData.widget === 'live-price') {
+                    slideHTML += `
+                        <div class="live-dashboard">
+                            <div class="live-metric live-metric-primary">
+                                <span class="live-label">BTC / USD</span>
+                                <span class="live-value" id="live-price">—</span>
+                            </div>
+                            <div class="live-metric-row">
+                                <div class="live-metric">
+                                    <span class="live-label">Block Height</span>
+                                    <span class="live-value-sm" id="live-height">—</span>
+                                </div>
+                                <div class="live-metric">
+                                    <span class="live-label">Fastest Fee</span>
+                                    <span class="live-value-sm" id="live-fee">—</span>
+                                </div>
+                            </div>
+                            <span class="live-status" id="live-status">Connecting to mempool.space…</span>
+                        </div>
+                    `;
+                }
+
                 if (slideData.videoUrl) {
                     const embedUrl = getYouTubeEmbedUrl(slideData.videoUrl);
                     if (embedUrl) {
@@ -526,12 +548,27 @@
                     `;
                 }
 
+                if (slideData.links && Array.isArray(slideData.links)) {
+                    slideHTML += `<div class="slide-links-row">`;
+                    slideData.links.forEach(lnk => {
+                        slideHTML += `
+                            <a href="${lnk.url}" target="_blank" rel="noopener noreferrer" class="slide-link">
+                                ${lnk.label || 'Open Link'}
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                                </svg>
+                            </a>
+                        `;
+                    });
+                    slideHTML += `</div>`;
+                }
+
                 slideHTML += '</div>';
                 slide.innerHTML = slideHTML;
                 container.appendChild(slide);
 
                 // Determine URL for QR code
-                const qrUrl = slideData.link || slideData.videoUrl || topic.url || null;
+                const qrUrl = slideData.link || slideData.videoUrl || (slideData.links && slideData.links[0] && slideData.links[0].url) || topic.url || null;
                 slides.push({
                     type: 'topic',
                     el: slide,
@@ -874,9 +911,300 @@
         }, 4000);
     }
 
+    // === Live Dashboard widget (Phase 1 — live price/height/fee from mempool.space) ===
+    // Read-only public API; needs internet, degrades gracefully offline so the rest works on file://.
+    function initLiveDashboard() {
+        const priceEl = document.getElementById('live-price');
+        if (!priceEl) return; // no dashboard slide in this week's deck
+        const heightEl = document.getElementById('live-height');
+        const feeEl = document.getElementById('live-fee');
+        const statusEl = document.getElementById('live-status');
+        const fmtUSD = (n) => '$' + Math.round(n).toLocaleString('en-US');
+
+        async function refresh() {
+            try {
+                const [priceRes, heightRes, feeRes] = await Promise.all([
+                    fetch('https://mempool.space/api/v1/prices'),
+                    fetch('https://mempool.space/api/blocks/tip/height'),
+                    fetch('https://mempool.space/api/v1/fees/recommended')
+                ]);
+                const price = await priceRes.json();
+                const height = await heightRes.text();
+                const fee = await feeRes.json();
+                if (price && price.USD) priceEl.textContent = fmtUSD(price.USD);
+                if (height) heightEl.textContent = parseInt(height, 10).toLocaleString('en-US');
+                if (fee && fee.fastestFee) feeEl.textContent = fee.fastestFee + ' sat/vB';
+                if (statusEl) statusEl.textContent = 'Live · mempool.space · refreshes every 20s';
+            } catch (e) {
+                if (statusEl) statusEl.textContent = 'Offline — open the dashboards below for live data';
+            }
+        }
+        refresh();
+        setInterval(refresh, 20000);
+    }
+
     // === Inline fallback data for file:// protocol ===
     // Keep in sync with weeks/2026-W24.json
     const INLINE_WEEKS = {
+        "2026-W26": {
+            "week": "2026-W26",
+            "date": "2026-06-24",
+            "title": "Two August Forks, Bitcoin Mortgages & Illinois's Crypto Tax",
+            "subtitle": "This week in Bitcoin & Nostr news",
+            "timerMinutes": 20,
+            "topics": [
+                {
+                    "id": "market",
+                    "title": "Live Dashboard & Market",
+                    "description": "Where Bitcoin sits live, and why it's a rough day near two-week lows",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Live Dashboard",
+                            "body": "Before the headlines — here's where Bitcoin sits right now. Open the full dashboards below:",
+                            "widget": "live-price",
+                            "links": [
+                                {
+                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                                    "label": "Clark Moody Dashboard"
+                                },
+                                {
+                                    "url": "https://mempool.space",
+                                    "label": "mempool.space"
+                                }
+                            ]
+                        },
+                        {
+                            "heading": "A Rough Day: Near Two-Week Lows",
+                            "body": "Bitcoin is back near two-week lows. After the US-Iran peace deal was formally signed June 19, the geopolitical 'safe-haven' bid faded — and a more hawkish Fed isn't helping.",
+                            "bullets": [
+                                "The June 19 peace signing in Switzerland reopened the Strait of Hormuz — good for the world, but it removed the risk premium that had lifted BTC",
+                                "ETF demand is still soft: after one inflow day on June 12, outflows resumed — about 19 of the last 22 trading days were negative",
+                                "A more hawkish Fed (rate hikes later this year) is pressuring risk assets broadly",
+                                "Zoom out: Bitcoin is still down roughly $43,000 from a year ago"
+                            ],
+                            "link": "https://finance.yahoo.com/personal-finance/investing/article/bitcoin-and-ethereum-prices-today-wednesday-june-24-2026-opened-at-lowest-levels-in-about-two-weeks-125349040.html",
+                            "linkLabel": "Read the Market Recap"
+                        }
+                    ]
+                },
+                {
+                    "id": "bip-110-watch",
+                    "title": "BIP-110 Watch: Signaling Begins",
+                    "description": "Our standing tracker — miner signaling appears for the first time, still tiny",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "BIP-110 Watch: Signaling Has Begun",
+                            "body": "Our standing tracker on the data-limit soft fork. This week it crossed from talk into action — miner signaling has appeared in the data for the first time, though it's still a rounding error.",
+                            "bullets": [
+                                "Miner signaling: ~0.31% of blocks (up from ~0% last week) — far below the 55% activation bar",
+                                "Node support: 2.38% (583 of ~24,481 nodes); Bitcoin Knots remains the implementation",
+                                "Only ~5 EH/s of the network's ~940 EH/s is signaling",
+                                "Flag day approaches: block 961,632, around August 2026"
+                            ],
+                            "link": "https://bip110monitor.com/",
+                            "linkLabel": "Live Signaling Monitor"
+                        },
+                        {
+                            "heading": "Where We Stand",
+                            "bullets": [
+                                "The camps, recap: Core (raised OP_RETURN limits) vs Knots/BIP-110 (restrict data) vs Super Testnet's URSF-110 (reject the soft fork)",
+                                "Our position: sound money is the reason to be wary — a 55% UASF that can freeze miniscript funds and risk a chain split is the wrong vehicle. We're with Super",
+                                "And August just got crowded — Paul Sztorc's hard fork lands days after the BIP-110 flag day (next topic)"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "sztorc-fork",
+                    "title": "Paul Sztorc's August Hard Fork",
+                    "description": "A 1:1 airdrop fork that would reassign Satoshi's coins — critics call it theft",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Paul Sztorc's August Hard Fork",
+                            "body": "Drivechain creator Paul Sztorc (BIP-300) plans a hard fork around block 964,000 in August: a new SHA-256d chain that begins as a near-copy of Bitcoin, activates Drivechains, and airdrops 1:1 to BTC holders at the fork block. He's dubbed it 'eCash' — no relation to Cashu/Fedimint Chaumian ecash.",
+                            "link": "https://unchainedcrypto.com/bitcoin-developer-paul-sztorc-plans-august-hard-fork-dubbed-ecash-with-a-plan-to-reassign-satoshi-nakamotos-coins/",
+                            "linkLabel": "Read the Plan"
+                        },
+                        {
+                            "heading": "Why It's Controversial",
+                            "bullets": [
+                                "The flashpoint: a plan to reassign Satoshi Nakamoto's dormant coins — critics are calling it theft",
+                                "It lands right beside the BIP-110 flag day — two protocol events on nearly the same August timetable",
+                                "Critics warn it could fracture consensus and set a precedent for tampering with old coins",
+                                "A 1:1 airdrop sounds like 'free money' — but touching it has real risks (see this week's Quick Tip)"
+                            ],
+                            "link": "https://www.coindesk.com/tech/2026/04/27/a-long-time-developer-wants-to-fork-bitcoin-and-reassign-satoshi-coins-the-community-is-calling-it-a-theft",
+                            "linkLabel": "The 'Theft' Debate"
+                        }
+                    ]
+                },
+                {
+                    "id": "bitcoin-mortgages",
+                    "title": "Bitcoin Hits the Mortgage Market",
+                    "description": "First Fannie Mae-backed Bitcoin-collateral mortgages close — including a $4.2M Florida home",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Bitcoin Hits the Mortgage Market",
+                            "body": "Bitcoin just entered the U.S. housing system. Better and Coinbase closed the first Fannie Mae-backed mortgages using Bitcoin as collateral — letting buyers borrow against their BTC for a down payment without selling it.",
+                            "bullets": [
+                                "The first close went to a Michigan couple; a $4.2M Florida home followed — and closed in just 23 days",
+                                "Structure: a standard Fannie conforming mortgage plus a separate Bitcoin-collateral loan for the down payment",
+                                "Collateral ratio ~2.5:1 (pledge ~$250K in BTC for a $100K down payment); routine price swings don't trigger margin calls",
+                                "Enabled by the FHFA directing Fannie/Freddie to recognize crypto held on exchanges; BTC + USDC, nationwide rollout this summer"
+                            ],
+                            "link": "https://www.housingwire.com/articles/fannie-mae-bitcoin-mortgage/",
+                            "linkLabel": "Read the Details"
+                        },
+                        {
+                            "heading": "Why It Matters + Discussion",
+                            "bullets": [
+                                "This is Bitcoin plugging directly into the largest asset class on earth — U.S. housing",
+                                "The pitch: keep your stack and buy the house, avoiding a taxable sale and keeping the upside",
+                                "The catch: fall ~60 days behind on payments and the Bitcoin can be liquidated — leverage cuts both ways",
+                                "For the legacy-finance crowd: is collateralized BTC the on-ramp that finally normalizes it?"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "illinois-tax",
+                    "title": "Illinois Taxes Crypto — A First",
+                    "description": "First state to directly tax crypto transactions: a 0.2% levy on gross value",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Illinois Taxes Crypto — A First",
+                            "body": "Illinois became the first state to put a direct tax on crypto transactions. Gov. Pritzker signed it into the $56B state budget on June 16 — the Digital Asset Tax Act, a 0.2% 'privilege tax' on digital-asset activity, charged on the gross value moved, not on profits.",
+                            "link": "https://www.coindesk.com/policy/2026/06/17/crypto-industry-aghast-at-illinois-new-tax-on-holding-or-transferring-digital-assets-in-state-budget",
+                            "linkLabel": "Read the Coverage"
+                        },
+                        {
+                            "heading": "The Fine Print + Discussion",
+                            "bullets": [
+                                "It targets brokers/custodians based in Illinois or serving IL residents (with $100K+ gross receipts) — not literally your P2P self-custody sends, but costs get passed to users",
+                                "Illinois doesn't tax stocks, bonds, or derivatives this way — the Crypto Council calls it 'the most punitive digital asset tax in the country'",
+                                "Set to take effect in 2027; projected to raise about $60M a year",
+                                "A tax on moving your own money — a precedent other states copy, or an outlier that gets challenged?"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "sparrow-apple",
+                    "title": "Sparrow Wallet vs. Apple",
+                    "description": "Apple threatens to terminate Sparrow's developer account — macOS installs at risk June 30",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Sparrow Wallet vs. Apple",
+                            "body": "A wallet many of us run is in trouble on macOS. Sparrow's developer, Craig Raw, said on June 22 that Apple flagged his developer account for termination by June 30 — which would break notarized installs and updates on Mac.",
+                            "link": "https://cryptobriefing.com/sparrow-wallet-macos-apple-termination/",
+                            "linkLabel": "Read What Happened"
+                        },
+                        {
+                            "heading": "The Irony + What To Do",
+                            "bullets": [
+                                "The trigger: Raw submitted an app to warn users about a dozen-plus fake 'Sparrow' apps stealing funds — Apple labeled his warning 'dishonest activity'",
+                                "If the account is terminated: new Mac users must clear Gatekeeper hurdles to install, and existing users stop getting updates",
+                                "Windows and Linux are unaffected",
+                                "Takeaway: only download Sparrow from sparrowwallet.com and verify the release — open-source self-custody vs platform gatekeeping in a nutshell"
+                            ],
+                            "link": "https://sparrowwallet.com/download/",
+                            "linkLabel": "Official Download + Verify"
+                        }
+                    ]
+                },
+                {
+                    "id": "nostr-zapstore",
+                    "title": "Nostr: Zapstore & the OpenSats Wave",
+                    "description": "A Nostr-native app store you can't de-platform, plus Amethyst's big release",
+                    "type": "tool",
+                    "accent": "nostr",
+                    "slides": [
+                        {
+                            "heading": "Nostr: Zapstore & the OpenSats Wave",
+                            "body": "A standout in the Nostr ecosystem: Zapstore — an app store built ON Nostr, where developers publish releases as signed Nostr events and users verify the binaries before installing. Permissionless software distribution — a pointed contrast to this week's Sparrow-vs-Apple story.",
+                            "link": "https://opensats.org/projects/zapstore",
+                            "linkLabel": "Zapstore (OpenSats)"
+                        },
+                        {
+                            "heading": "Also Shipping + Discussion",
+                            "bullets": [
+                                "Amethyst shipped a big release: Kotlin Multiplatform migration, desktop builds for Linux and Windows, and an iOS port in development",
+                                "OpenSats has now directed over $27M (~31 billion sats) to 319 free-and-open-source grantees across 32+ countries",
+                                "The throughline: Nostr as an app-distribution layer no Apple or Google can de-platform",
+                                "Discussion: could a Zapstore-style model have spared Sparrow's Mac users?"
+                            ],
+                            "link": "https://opensats.org/projects/amethyst",
+                            "linkLabel": "Amethyst"
+                        }
+                    ]
+                },
+                {
+                    "id": "builder-spotlight",
+                    "title": "Builder Spotlight: Super Testnet's spam_tester",
+                    "description": "Our first weekly Builder Spotlight — an interactive Core-vs-Knots spam experiment",
+                    "type": "tool",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Builder Spotlight: Super Testnet's spam_tester",
+                            "body": "Kicking off our new weekly Builder Spotlight with Super Testnet. His latest tool, spam_tester, is an interactive web app that gives empirical data on how Bitcoin Core vs Bitcoin Knots handle inscription 'spam' — the exact fight at the heart of the BIP-110 debate.",
+                            "link": "https://github.com/supertestnet/spam_tester",
+                            "linkLabel": "Try spam_tester"
+                        },
+                        {
+                            "heading": "Why We Love It",
+                            "bullets": [
+                                "It targets 100-400kb data transactions — the range Core treats as standard but Knots rejects as nonstandard — and lets you see the resource difference",
+                                "Empirical, not ideological: the point is you can prove that spam filters reduce strain on node resources",
+                                "Intellectual honesty on display: Super publicly corrected his own RAM claim in Oct 2025 after re-reading the code (Knots' extrapool keeps the txs anyway)",
+                                "Classic Super: clean, front-end, hands-on. Follow his work at github.com/supertestnet"
+                            ],
+                            "link": "https://github.com/supertestnet?tab=repositories",
+                            "linkLabel": "Super's Repositories"
+                        }
+                    ]
+                },
+                {
+                    "id": "quick-tip",
+                    "title": "Quick Tip of the Week",
+                    "description": "How to safely handle a fork airdrop without losing your real coins",
+                    "type": "tool",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Quick Tip: Surviving a Fork Airdrop",
+                            "body": "With Sztorc's hard fork promising a 1:1 'free coin' airdrop in August, here's the self-custody rule: the danger isn't the fork — it's the rush to claim. Scam 'claim' tools will ask for your seed phrase or private keys. Never paste them anywhere. Wait for replay protection, and if you ever do claim forkcoins, move your real BTC to a fresh wallet first. Free coins are never worth a drained wallet."
+                        }
+                    ]
+                },
+                {
+                    "id": "community-news",
+                    "title": "Community News & Topics",
+                    "description": "Share what you're interested in talking about!",
+                    "type": "text",
+                    "slides": [
+                        {
+                            "heading": "Next Week's Meetup",
+                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                            "linkLabel": "Submit a Topic"
+                        }
+                    ]
+                }
+            ]
+        },
         "2026-W25": {
             "week": "2026-W25",
             "date": "2026-06-17",
@@ -1479,6 +1807,7 @@
             // Build slides and TOC
             buildSlides(data);
             buildTOC(data);
+            initLiveDashboard();
 
             // Show first slide
             loadingState.style.display = 'none';
