@@ -1,0 +1,370 @@
+{
+    "week": "2026-W28",
+    "date": "2026-07-08",
+    "title": "Strategy Sells $216M, Trump's $1.4B Crypto Year & Getting Started on Nostr",
+    "subtitle": "This week in Bitcoin & Nostr news",
+    "timerMinutes": 20,
+    "topics": [
+        {
+            "id": "market",
+            "title": "Live Dashboard & Market",
+            "description": "Where Bitcoin sits live — a six-day streak, a wobble, and the ETF bleeding finally stops",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Live Dashboard",
+                    "body": "Before the headlines — here's where Bitcoin sits right now. Open the full dashboards below:",
+                    "widget": "live-price",
+                    "links": [
+                        { "url": "https://bitcoin.clarkmoody.com/dashboard/", "label": "Clark Moody Dashboard" },
+                        { "url": "https://mempool.space", "label": "mempool.space" }
+                    ]
+                },
+                {
+                    "heading": "The Bounce, and the Wobble",
+                    "body": "After June's historic ugliness, July opened with Bitcoin's longest winning streak since March — six green days — before pulling back into tonight around the low $60Ks.",
+                    "bullets": [
+                        "The streak carried Bitcoin back toward $64K before Tuesday's reversal — the strongest start to a month since May",
+                        "The bigger signal: US spot Bitcoin ETFs snapped a 10-day outflow streak with +$221.7M — their largest daily haul in two months, right after the worst month on record",
+                        "The caution flag: the Coinbase Premium has now been negative for 50 straight days — US spot demand still hasn't shown up",
+                        "Discussion: after a -20% June, is this the turn — or a relief rally into weak hands?"
+                    ],
+                    "link": "https://www.coindesk.com/daybook-us/2026/07/07/bitcoin-s-july-gains-may-be-fleeting-as-u-s-demand-stays-weak",
+                    "linkLabel": "The Demand Picture"
+                }
+            ]
+        },
+        {
+            "id": "strategy-sells",
+            "title": "Strategy Sells 3,588 BTC",
+            "description": "Last week the doctrine ended on paper — this week $216M of bitcoin actually left the stack",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "3,588 BTC, $216 Million",
+                    "body": "Last week we covered Strategy formally ending 'never sell.' This week the theory became practice: Monday's disclosure showed the company sold 3,588 BTC for $216 million — a dramatic escalation from May's 32-BTC test sale.",
+                    "bullets": [
+                        "CEO Phong Le: 'Strategy is evolving from one-way capital issuance to active capital management' — sales now fund dividends and obligations instead of fresh capital raises",
+                        "The context underneath: an $8.32 BILLION loss on digital assets in Q2 as Bitcoin traded from ~$68K down to ~$60K",
+                        "This is exactly the rules-based selling framework the board adopted June 29 — replenish the cash buffer, pay the 12% STRC dividend, fund buybacks",
+                        "From 32 BTC to 3,588 BTC in six weeks — the question is no longer whether Strategy sells, but on what schedule"
+                    ],
+                    "link": "https://www.coindesk.com/tech/2026/07/06/live-markets-bitcoin-pops-to-usd63-900-then-reverses-as-week-begins",
+                    "linkLabel": "The Disclosure Coverage"
+                },
+                {
+                    "heading": "The Inoculation Worked + Discussion",
+                    "bullets": [
+                        "Remember May: a 32-BTC sale helped panic the market from $74K to $60K. This time, 112x more bitcoin sold — and the price recovered above $63K the same day",
+                        "That was Saylor's stated plan: 'inoculate' the market by preparing it for sales until they stop being news",
+                        "The uncomfortable read: the largest corporate holder is now a rules-based seller sitting above the market — permanently",
+                        "Discussion: does a well-telegraphed seller change your thesis — or is a boring, orderly Strategy actually the bullish outcome?"
+                    ],
+                    "link": "https://www.coindesk.com/markets/2026/06/29/strategy-opens-the-door-to-selling-bitcoin-under-new-capital-plan-here-s-what-it-means",
+                    "linkLabel": "The Framework (Last Week)"
+                }
+            ]
+        },
+        {
+            "id": "trump-crypto-income",
+            "title": "Trump's $1.4B Crypto Year",
+            "description": "The disclosure is out: crypto was the President's biggest income source — and his buyers' biggest loss",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "The $1.4 Billion Disclosure",
+                    "body": "The Office of Government Ethics released President Trump's 927-page financial disclosure for 2025 on Tuesday — and crypto was his single largest source of income, dwarfing real estate.",
+                    "bullets": [
+                        "Total income from crypto ventures: more than $1.4 BILLION for the year",
+                        "The $TRUMP meme coin licensing alone brought in $635M+ (via the 'Celebration Coins' agreement)",
+                        "World Liberty Financial token sales added $550M+ — the venture launched by his sons, with Trump as 'co-founder emeritus'",
+                        "For scale: the President of the United States earned more from token launches last year than most public Bitcoin miners are worth"
+                    ],
+                    "link": "https://www.nbcnews.com/politics/donald-trump/financial-disclosure-1-billion-cryptocurrency-earnings-meme-coins-rcna352497",
+                    "linkLabel": "The Disclosure Story"
+                },
+                {
+                    "heading": "The Other Side of the Trade",
+                    "body": "The same week the disclosure landed, the on-chain data on who funded those earnings came into focus — and it's brutal.",
+                    "bullets": [
+                        "Roughly 66% of the 1.48 million wallets that ever bought $TRUMP — 988,905 wallets — were underwater by end of June",
+                        "Their combined losses: $3.81 BILLION. The licensor profited regardless of price",
+                        "This is the meme-coin design working as intended: an issuer, a licensing deal, and a brand extract value; holders provide it",
+                        "The discussion writes itself: this is exactly what Bitcoin isn't — no issuer, no insider allocation, no license. When people say 'crypto,' make them say which one"
+                    ],
+                    "link": "https://fortune.com/2026/07/07/donald-trump-meme-coin-world-liberty-financial-finance-politics/",
+                    "linkLabel": "The Holder Data"
+                }
+            ]
+        },
+        {
+            "id": "mining-stress",
+            "title": "Mining: Capitulation Territory",
+            "description": "Hashprice at 2020-crash levels, a pool shutting down, and the AI escape hatch widening",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Capitulation-Grade Numbers",
+                    "body": "The mining stress we've tracked for weeks is reaching the point where analysts start calling bottoms — because someone's about to get carried out.",
+                    "bullets": [
+                        "Hashprice sits near $29/PH/day — levels last seen after the 2020 COVID crash; JPMorgan says Bitcoin has traded below its ~$78K average production cost for five straight months, with ~20% of miners operating at a loss",
+                        "Public miners have sold 15,000+ BTC off their treasuries from peak levels — and MARA's latest 10-K authorizes sales from its ENTIRE 53,822 BTC reserve",
+                        "SBI Crypto is shutting its mining pool July 31 — about 20.9 EH/s, roughly 2.2% of the network, needs a new home",
+                        "The next difficulty adjustment lands in ~2-3 days (period 474 ends ~July 10-11) — watch whether June's exodus resumes"
+                    ],
+                    "link": "https://www.tftc.io/sbi-crypto-mining-pool-shutdown-july-2026",
+                    "linkLabel": "The SBI Shutdown"
+                },
+                {
+                    "heading": "The AI Escape Hatch",
+                    "body": "Last week we said the capacity leaving Bitcoin is defecting to AI. This week that thesis printed its biggest number yet.",
+                    "bullets": [
+                        "TeraWulf — a Bitcoin miner — jumped 17% in a day after announcing a reported $19B datacenter lease deal with AI lab Anthropic",
+                        "The playbook: miners hold the two things AI money can't conjure — powered land and grid interconnects",
+                        "The fork in the road for every stressed miner: sell bitcoin, sell hashrate... or sell your substation to AI",
+                        "Discussion: is the AI pivot saving Bitcoin miners — or hollowing out the network's security budget from the inside?"
+                    ],
+                    "link": "https://cryptoslate.com/bitcoin-miner-bottom-signal-now-depends-on-who-survives-weak-mining-profits/",
+                    "linkLabel": "Who Survives?"
+                }
+            ]
+        },
+        {
+            "id": "sec-policy",
+            "title": "The SEC Draws Its Lines",
+            "description": "Clear guidance on mining and staking at last — while the Strategic Reserve idles in committee",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Securities Law Gets Its Lines",
+                    "body": "After more than a decade of regulation-by-enforcement, the SEC published formal guidance on how federal securities laws apply to crypto assets.",
+                    "bullets": [
+                        "Covered explicitly: airdrops, protocol mining, protocol staking, and wrapping of non-security assets",
+                        "Chairman Paul Atkins: 'This is what regulatory agencies are supposed to do: draw clear lines in clear terms'",
+                        "For this room, the mining clarity matters most — proof-of-work mining rewards treated clearly outside securities law removes a decade-old gray zone",
+                        "The pattern of 2026 policy: less drama, more paperwork — which is what maturing infrastructure looks like"
+                    ],
+                    "link": "https://www.sec.gov/newsroom/press-releases/2026-30-sec-clarifies-application-federal-securities-laws-crypto-assets",
+                    "linkLabel": "The SEC Release"
+                },
+                {
+                    "heading": "Meanwhile, the Reserve Sits in Limbo",
+                    "bullets": [
+                        "The US Strategic Bitcoin Reserve is still a work-in-progress: agencies are reportedly fighting over whether Treasury or Commerce should house it",
+                        "Congress still hasn't produced the enabling legislation the White House says the final structure needs",
+                        "A year after the executive order, the reserve remains an announcement, not an institution",
+                        "The contrast beat abroad: India's RBI is internally backing a lean toward a blanket crypto ban — the policy world is diverging, not converging"
+                    ],
+                    "link": "https://www.coindesk.com/policy/2026/07/06/bitcoin-s-u-s-reserve-still-a-work-in-progress-as-federal-agencies-hash-it-out",
+                    "linkLabel": "Reserve Status Report"
+                }
+            ]
+        },
+        {
+            "id": "quantum-corner",
+            "title": "Core's Quiet Quantum Exit",
+            "description": "This week's Optech reads like a post-quantum design review — the escape plan is taking shape",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Designing Bitcoin's Quantum Exit",
+                    "body": "Bitcoin Optech #412 was wall-to-wall post-quantum engineering. Nobody's panicking — but the reference-client developers are methodically designing for the day secp256k1 breaks.",
+                    "bullets": [
+                        "Pieter Wuille is working through 'Bird of Prey 2' hybrid signatures — Schnorr and post-quantum signatures bound together so neither can be stripped or swapped",
+                        "STARK proof aggregation benchmarks: 512 hash-based signatures compress from 3.8 MiB raw to ~454 KiB — the math that could make quantum-safe blocks affordable",
+                        "Wuille also proposed two 'kill-switch' triggers for the old curve: a tripwire (someone provably cracks a NUMS point) and a miner lockdown (hashrate-majority activation)",
+                        "Also this week: Bitcoin Core 31.1rc1 fixes an IP-address leak affecting transaction-origin privacy — worth the upgrade when it ships"
+                    ],
+                    "link": "https://bitcoinops.org/en/newsletters/2026/07/03/",
+                    "linkLabel": "Optech #412"
+                }
+            ]
+        },
+        {
+            "id": "zeus-cashu",
+            "title": "Zeus Puts Ecash in Your Pocket",
+            "description": "A friend of the meetup ships the first ecash integration in a major Lightning wallet",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Zeus + Cashu: Lightning Without the Channel",
+                    "body": "Zeus — built by Evan Kaloudis, a good friend of this meetup — shipped an alpha integration of Cashu ecash: the first time ecash has landed in a major Bitcoin Lightning wallet.",
+                    "bullets": [
+                        "The problem it solves: receiving your first sats on Lightning normally means opening a channel — thousands of sats of friction before your first zap",
+                        "With Cashu, Zeus can receive zaps and small payments with NO channel at all — then nudges you to upgrade to real self-custody as your balance grows",
+                        "The honest caveat, on the slide where it belongs: ecash means trusting the mint that issues it — it's a privacy and onboarding tool, not a vault",
+                        "This is the onboarding ramp Nostr zaps have been waiting for — hold that thought for two topics from now"
+                    ],
+                    "link": "https://bitcoinmagazine.com/business/how-zeus-is-redefining-bitcoin-with-cashu-ecash-integration",
+                    "linkLabel": "The Zeus Story"
+                }
+            ]
+        },
+        {
+            "id": "nostr-getting-started",
+            "title": "Getting Started on Nostr",
+            "description": "The promised segment — keys, clients, signers, and the app universe, in ten minutes",
+            "type": "tool",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "What Nostr Actually Is",
+                    "body": "We've been promising this segment for weeks — tonight's the night. Nostr is not another app. It's an open protocol, like email: your identity is a keypair you own, and no company can delete your account.",
+                    "bullets": [
+                        "Your PUBLIC key (npub) is your handle — share it everywhere. Your PRIVATE key (nsec) is your password forever — it never gets reset, so it never gets typed into websites",
+                        "Your posts travel over independent relays — take your keys to any client and your identity, follows, and posts come with you",
+                        "The ecosystem today: 320+ apps, 800+ relays, 140+ clients — one identity across all of them",
+                        "After the GitHub and Apple stories of past weeks, the point should land: own the identity layer and there is nothing to ban"
+                    ],
+                    "link": "https://nostr.how/en/get-started",
+                    "linkLabel": "The 10-Minute Guide"
+                },
+                {
+                    "heading": "Get On in 10 Minutes — Our Recommended Stack",
+                    "body": "This is the exact stack we've been recommending to members. Pick your lane and you're posting tonight — no email, no phone number.",
+                    "bullets": [
+                        "PHONE: Damus (iOS) or Primal (iOS/Android, built-in wallet). DESKTOP / power users: noStrudel, Coracle, or Primal on the web",
+                        "When your client generates keys: back up the nsec on PAPER. It is the one unrecoverable secret in this whole ecosystem",
+                        "Then protect it with a signer so apps never touch it: on desktop, the OG nos2x browser extension; on Android, Amber — one app holds your key and signs for every other app",
+                        "Amber shipped v6.2.3 this week (July 1) — actively maintained, open source, on F-Droid and the Zap Store"
+                    ],
+                    "link": "https://github.com/greenart7c3/Amber",
+                    "linkLabel": "Amber (Android Signer)"
+                },
+                {
+                    "heading": "Beyond Social: The App Universe + Zaps",
+                    "body": "The 'Twitter replacement' framing undersells it. One keypair unlocks a whole parallel app ecosystem — and the browsing catalog is nostrapps.com.",
+                    "bullets": [
+                        "On nostrapps.com right now: marketplaces (Shopstr, Plebeian Market), long-form blogging, music and video streaming, group chat, wikis, file sharing — filterable by platform",
+                        "Zaps are the native economy: Lightning micropayments attached to posts — value-for-value instead of ads and engagement farming",
+                        "And the Zeus news from two slides ago is the missing onramp: receive your first zaps with no channel, no setup, no friction",
+                        "Homework: create keys, back up the nsec, follow five people, and zap one post before next Wednesday — report back"
+                    ],
+                    "link": "https://nostrapps.com",
+                    "linkLabel": "Browse the App Universe"
+                }
+            ]
+        },
+        {
+            "id": "fips-watch",
+            "title": "FIPS Watch: Week 2",
+            "description": "Our standing tracker — a quiet bugfix week as v0.5.0 development opens",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "FIPS Watch: Steady-State Week",
+                    "body": "Week two of our standing tracker on the Nostr-native mesh internet. No fireworks — which for infrastructure is what progress looks like.",
+                    "bullets": [
+                        "Latest commits (July 2): a routing-tree bugfix — invalidating stale coordinates when a parent node drops — plus maintenance merges; the v0.5.0 development cycle is open on master",
+                        "No new release since v0.4.0 (June 27, the Nym-transport release we covered at the debut); the public test mesh remains live",
+                        "The standing caveat stands: still PRE-AUDIT — experiment, join the mesh, but don't bet funds or safety on it",
+                        "Reminder of why we track it: Bitcoin separated money from the state; Nostr separated identity from the platform; FIPS wants to separate connectivity from the ISP"
+                    ],
+                    "link": "https://github.com/jmcorgan/fips",
+                    "linkLabel": "FIPS on GitHub"
+                }
+            ]
+        },
+        {
+            "id": "bip-110-watch",
+            "title": "BIP-110 Watch: Four Weeks Out",
+            "description": "Our standing tracker — signaling ticks up to 0.86% as Adam Back predicts self-fork or failure",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "BIP-110 Watch: The Numbers",
+                    "body": "Four weeks to the flag day. The signaling needle moved this week — from 0.59% to 0.86% — which at this pace gets to 55% sometime around 2031.",
+                    "bullets": [
+                        "Miner signaling: 0.86% of blocks — 14 of the 1,634 tracked in difficulty period 474, which ends in ~2-3 days (~July 10-11)",
+                        "In hashrate terms: still roughly 5 EH/s of a ~940+ EH/s network — and still zero major pools signaling",
+                        "Node support remains disputed (estimates 2-8%) — and Knots' ~22% node share still doesn't equal BIP-110 endorsement",
+                        "The countdown: voluntary signaling ends at block 961,632 (~August 7), then the mandatory window begins — BIP-110 nodes would start rejecting non-signaling blocks"
+                    ],
+                    "link": "https://bip110monitor.com/",
+                    "linkLabel": "Live Signaling Monitor"
+                },
+                {
+                    "heading": "'Self-Fork or Fail' + a Spec Marked Complete",
+                    "bullets": [
+                        "Adam Back sharpened his warning this week: BIP-110 will either 'self-fork or fail to activate' by August 7 — and he called the proposal 'technically defective... it really doesn't work, breaks multiple things, doesn't have tech nor ecosystem consensus. Each is fatal'",
+                        "Lopp's standing charge remains: 'reckless' and 'doomed to fail' — chain-split risk, Taproot edge cases that could freeze funds, and burdens on pre-signed transactions",
+                        "The odd footnote: the BIPs repo formally advanced BIP-110's spec to 'Complete' status this week — the paperwork matured while the support flatlined; a complete spec is not consensus",
+                        "Our position is unchanged: we stand with Super Testnet and URSF-110 — sound money, wrong vehicle. Watch the new difficulty period starting ~July 10 for any sign of life"
+                    ],
+                    "link": "https://cryptobriefing.com/bip-110-fork-fail-activate-adam-back/",
+                    "linkLabel": "Back's Warning"
+                }
+            ]
+        },
+        {
+            "id": "builder-spotlight",
+            "title": "Builder Spotlight: Monero Privacy Leaks",
+            "description": "Super Testnet catalogs how the 'untraceable' coin gets traced — with receipts",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Builder Spotlight: moneroleaks.xyz",
+                    "body": "The spotlight stays with Super Testnet — this time for moneroleaks.xyz, a plain-HTML catalog of every way Monero transactions leak identifying information, updated as recently as July 4.",
+                    "bullets": [
+                        "The core claim, with receipts: EVERY Monero transaction leaks something — organized into receiver leaks, sender leaks, and amount leaks",
+                        "Examples: at least one real input revealed per transaction, 16-key rings vulnerable to decoy elimination, and fee patterns that fingerprint which wallet you're using",
+                        "It documents six real prosecutions from 2024-25 where these exact techniques traced 'untraceable' money",
+                        "Classic Super: CC0 public domain, pure HTML, no server, no framework — the argument IS the website"
+                    ],
+                    "link": "https://supertestnet.github.io/monero-privacy-leaks/",
+                    "linkLabel": "Read the Catalog"
+                },
+                {
+                    "heading": "Why a Bitcoiner Built This + What We Learn",
+                    "bullets": [
+                        "This isn't a Monero hit piece — it's privacy realism from the 'Bitcoin is money' camp: know what your privacy tech actually promises before you rely on it",
+                        "The six attack methods — collusion, poisoned outputs, timing analysis, decoy elimination, spy nodes, seized-key history lookups — nearly all have Bitcoin analogues",
+                        "The honest takeaway: Monero hides more by default; Bitcoin's privacy is opt-in and takes work. Neither is magic, and 'untraceable' is marketing in both cases",
+                        "Follow Super's repos — between URSF-110, node_faker, and this, something new lands almost weekly"
+                    ],
+                    "link": "https://github.com/supertestnet?tab=repositories",
+                    "linkLabel": "Super's Repositories"
+                }
+            ]
+        },
+        {
+            "id": "quick-tip",
+            "title": "Quick Tip of the Week",
+            "description": "Privacy lessons from the leaks — the same mistakes deanonymize Bitcoiners",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Quick Tip: Steal the Lessons From the Leaks",
+                    "body": "Tonight's spotlight is secretly a Bitcoin privacy checklist. The same three mistakes that trace Monero users trace Bitcoiners: reuse, timing, and spy nodes. So: never reuse a receive address — every wallet generates fresh ones free. Watch your timing patterns — paying the same person at the same time weekly is a signature. And your wallet is only as private as the node it talks to: run your own, or at minimum connect to a trusted node over Tor. Privacy isn't a product you buy — it's a set of habits.",
+                    "link": "https://en.bitcoin.it/wiki/Privacy",
+                    "linkLabel": "The Bitcoin Privacy Wiki"
+                }
+            ]
+        },
+        {
+            "id": "community-news",
+            "title": "Community News & Topics",
+            "description": "Share what you're interested in talking about!",
+            "type": "text",
+            "slides": [
+                {
+                    "heading": "Next Week's Meetup",
+                    "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                    "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                    "linkLabel": "Submit a Topic"
+                }
+            ]
+        }
+    ]
+}
