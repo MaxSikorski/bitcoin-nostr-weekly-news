@@ -946,6 +946,239 @@
     // === Inline fallback data for file:// protocol ===
     // Keep in sync with weeks/2026-W24.json
     const INLINE_WEEKS = {
+        "2026-W29": {
+            "week": "2026-W29",
+            "date": "2026-07-15",
+            "title": "Back and Saylor Reject BIP-110, Core 31.1's Privacy Fix & the ETF Whipsaw",
+            "subtitle": "This week in Bitcoin & Nostr news",
+            "timerMinutes": 20,
+            "topics": [
+                {
+                    "id": "market",
+                    "title": "Live Dashboard & Market",
+                    "description": "Where Bitcoin sits live — a $425M flush, a $181M bounce, and a war premium",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Live Dashboard",
+                            "body": "Before the headlines — here's where Bitcoin sits right now. Open the full dashboards below:",
+                            "widget": "live-price",
+                            "links": [
+                                {
+                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                                    "label": "Clark Moody Dashboard"
+                                },
+                                {
+                                    "url": "https://mempool.space",
+                                    "label": "mempool.space"
+                                }
+                            ]
+                        },
+                        {
+                            "heading": "The Whipsaw",
+                            "body": "Two days told opposite stories this week, and the honest read is that neither one settles it.",
+                            "bullets": [
+                                "Monday: US spot Bitcoin ETFs bled -$424.7M — the biggest single-day outflow this month. Fidelity's FBTC took -$245.6M, BlackRock's IBIT -$185.5M",
+                                "Tuesday: +$181.1M back in — but BlackRock alone was +$138.9M of it, over three-quarters of the day. One issuer carried the rebound",
+                                "The macro overhang: resurgent US-Iran hostilities pulled price down even on the day demand showed up",
+                                "Discussion: a fragile rebound, not a confirmed recovery — does a one-day bounce on one issuer's flows mean anything?"
+                            ],
+                            "link": "https://cryptoslate.com/bitcoin-etfs-lose-over-424m-wiping-out-last-weeks-gains-as-recovery-fails-first-test/",
+                            "linkLabel": "The Flush and the Bounce"
+                        }
+                    ]
+                },
+                {
+                    "id": "bip-110-watch",
+                    "title": "BIP-110 Watch: Three Weeks Out",
+                    "description": "Our standing tracker — Back and Saylor both say no, and the signaling still hasn't found a pulse",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "BIP-110 Watch: The Numbers",
+                            "body": "Three weeks to the flag day. Signaling is at 1.19% — up from 0.86% last week, which sounds like movement until you count the blocks.",
+                            "bullets": [
+                                "Miner signaling: 1.19% — 7 of the 590 blocks so far in difficulty period 475. To lock in, it needs 55%: that's 1,109 of 2,016 blocks, roughly 110 a day. It has seven",
+                                "Node support stays in the low single digits, carried almost entirely by Bitcoin Knots — and Knots' node share still isn't BIP-110 endorsement",
+                                "The countdown: block 958,189 tonight, flag day at 961,632 — 3,443 blocks out, about 24 days (~August 8). Then BIP-110 nodes start rejecting non-signaling blocks",
+                                "Still zero major pools. The arithmetic hasn't changed since May; only the deadline has moved closer"
+                            ],
+                            "link": "https://bip110monitor.com/",
+                            "linkLabel": "Live Signaling Monitor"
+                        },
+                        {
+                            "heading": "Back and Saylor Both Say No",
+                            "body": "The story this week isn't the number — it's who lined up against it. Two of the loudest voices in Bitcoin came out swinging on the same day, from different directions.",
+                            "bullets": [
+                                "Michael Saylor: BIP-110 'turns a spam dispute into a consensus change that would invalidate some currently valid, fee-paying transactions.' His argument is the precedent, not the spam",
+                                "Adam Back: it tries to police transactions other people choose to send — 'Bitcoin respectfully says no to what you want.' His advice to proponents is to fork away, but 'bitcoin won't be joining it'",
+                                "Note they disagree with it for different reasons — Saylor on precedent, Back on permissionless design and minority-chain risk, Super Testnet on miniscript funds freezing via OP_IF in Taproot. Three separate objections, not one pile-on",
+                                "The proponents' case, fairly: cap arbitrary non-financial data (34-byte scriptPubKeys, 83-byte OP_RETURN) for one year. Our position is unchanged — sound money, wrong vehicle. We stand with Super and URSF-110"
+                            ],
+                            "link": "https://crypto.news/adam-back-and-michael-saylor-oppose-bip-110-as-fork-risk-grows/",
+                            "linkLabel": "Back and Saylor's Objections"
+                        }
+                    ]
+                },
+                {
+                    "id": "core-31-1",
+                    "title": "Core 31.1: The Privacy Feature That Leaked",
+                    "description": "An IP leak in -privatebroadcast, patched — plus less disk churn for the rest of us",
+                    "type": "tool",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "When the Privacy Feature Leaks",
+                            "body": "Bitcoin Core 31.1 landed July 8, and the headline fix carries a certain irony: the feature built to hide where your transactions come from was leaking your IP address.",
+                            "bullets": [
+                                "In Core's own words: 'This release fixes an ip address leak when using the -privatebroadcast feature'",
+                                "Scope check, honestly: -privatebroadcast is opt-in. If you never turned it on, this particular bug never touched you — this is not an emergency",
+                                "But if you did turn it on, you turned it on precisely because you wanted that privacy. That's exactly who should update tonight",
+                                "The lesson worth keeping: privacy features are software, and software has bugs. Flipping a privacy flag is not the same as having privacy"
+                            ],
+                            "link": "https://bitcoincore.org/en/releases/31.1/",
+                            "linkLabel": "Core 31.1 Release Notes"
+                        },
+                        {
+                            "heading": "The Quiet Win: Less Disk Churn",
+                            "bullets": [
+                                "The fix more of us will actually feel: Core now compacts the chainstate database regularly, cutting excessive disk reads and writes",
+                                "If you've ever watched a node hammer an SSD, that's the one — node hardware lasting longer is part of how self-custody stays cheap",
+                                "Also in the release: better wallet input-size estimation, proxy handling on v2-to-v1 reconnects, and MuSig2 pubkey list validation",
+                                "Verdict: routine, not urgent — unless you run -privatebroadcast, in which case it's tonight's homework"
+                            ],
+                            "link": "https://bitcoincore.org/en/releases/",
+                            "linkLabel": "All Core Releases"
+                        }
+                    ]
+                },
+                {
+                    "id": "fountain-codes",
+                    "title": "Making Pruned Nodes Pull Their Weight",
+                    "description": "Research on letting pruned nodes help new nodes sync — without keeping the whole chain",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Fountain Codes for Initial Block Download",
+                            "body": "From this week's Optech: researcher Lucas Lima is exploring fountain codes to solve an old, unglamorous problem — pruned nodes can't help anyone else sync.",
+                            "bullets": [
+                                "The problem: a pruned node deletes old blocks to save disk, which also means it can't serve them. Every new node syncing the chain leans on the shrinking set of archival nodes",
+                                "The idea: chop the chain into fixed-length chunks and encode them, so a receiving node can reconstruct the data from pieces held by many pruned peers — verifying against block headers as it goes",
+                                "Why it matters: initial block download is the single biggest barrier to running your own node. Spreading that load makes the network harder to squeeze",
+                                "The honest caveats, per the discussion: slower IBD, a node-fingerprinting risk, and more DoS surface. This is research, not a release"
+                            ],
+                            "link": "https://bitcoinops.org/en/newsletters/2026/07/10/",
+                            "linkLabel": "Optech Newsletter #413"
+                        }
+                    ]
+                },
+                {
+                    "id": "lightning-updates",
+                    "title": "Lightning: Safer Payments, Friendlier Closes",
+                    "description": "LND tightens expiry validation and Core Lightning makes breakups less awkward",
+                    "type": "tool",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Two Small Lightning Wins",
+                            "bullets": [
+                                "LND v0.20.2-beta adds stronger expiry validation on payments — a quiet class of bug where a badly-set expiry can cost you money",
+                                "Core Lightning shipped experimental support for 'simple close' — a friendlier way to shut a channel when the two sides disagree about fees",
+                                "Channel closes are one of Lightning's sharpest edges: historically, disagreeing on the fee at close time is how a routine exit turns into a force-close",
+                                "Neither is headline material on its own. Together they're the pattern that matters — Lightning getting less sharp, one release at a time"
+                            ],
+                            "link": "https://bitcoinops.org/en/newsletters/2026/07/10/",
+                            "linkLabel": "The Release Roundup"
+                        }
+                    ]
+                },
+                {
+                    "id": "fips-watch",
+                    "title": "FIPS Watch: Under the Hood",
+                    "description": "Our standing tracker — no new release, but the internals are being rebuilt",
+                    "type": "discussion",
+                    "accent": "nostr",
+                    "slides": [
+                        {
+                            "heading": "FIPS Watch: Quiet Week, Busy Repo",
+                            "body": "A short one tonight. Johnathan Corgan's Nostr-native mesh — npubs as network addresses instead of IPs — shipped nothing new this week, but the commit log is anything but idle.",
+                            "bullets": [
+                                "Still on v0.4.0 from June 27 — the release we covered when we picked this up two weeks ago. No new tag",
+                                "What's happening instead: a deep internals rebuild — per-peer connection handling and peer discovery are being pulled out into small, independently testable pieces, and the supervisor now reports Full / Degraded / Failed health states",
+                                "The pattern is the tell: build the new piece with tests, wire it in without changing behavior, then move on. That's maintenance discipline, not feature-chasing",
+                                "Still pre-audit — as always, interesting to watch, not something to trust with anything that matters yet"
+                            ],
+                            "link": "https://github.com/jmcorgan/fips",
+                            "linkLabel": "The FIPS Repo"
+                        }
+                    ]
+                },
+                {
+                    "id": "builder-spotlight",
+                    "title": "Builder Spotlight: URSF-110",
+                    "description": "Super Testnet's User Rejected Soft Fork — finished since March, and three weeks from mattering",
+                    "type": "tool",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Builder Spotlight: URSF-110",
+                            "body": "With the flag day three weeks out, the spotlight goes to the tool built for exactly this moment — Super Testnet's URSF-110, the User Rejected Soft Fork.",
+                            "bullets": [
+                                "What it does: if BIP-110 ever activates, URSF-110 lets your node reject blocks that signal for it — using Core's own invalidateblock, no patched software required",
+                                "The name is the joke and the argument: BIP-110 is a User Activated Soft Fork, so this is the User Rejected Soft Fork. If 55% of miners can force a rule, users can decline it the same way",
+                                "Why Super opposes BIP-110 — and it's worth being precise: not because he likes inscriptions, but because OP_IF in Taproot means the rule can freeze miniscript funds, and a 55% UASF risks the chain split it claims to prevent",
+                                "Classic Super: it's a small script, it's public, and it's been finished since March. Nothing to update — it was done when he wrote it"
+                            ],
+                            "link": "https://github.com/supertestnet/URSF-110",
+                            "linkLabel": "URSF-110 on GitHub"
+                        },
+                        {
+                            "heading": "A Finished Tool Is Its Own Statement",
+                            "bullets": [
+                                "Nothing has been committed to URSF-110 since March 31 — and that's the point. It isn't abandoned; it's ready. The insurance policy doesn't need a changelog",
+                                "It's also a good lesson in how Bitcoin actually resolves disputes: not by winning an argument, but by making the alternative cheap and available to anyone",
+                                "Reality check: with signaling at 1.19% and no major pool on board, URSF-110 will probably never need to run. That's the best outcome for everyone, including Super",
+                                "Super's other work is where his attention is now — most recently hedgehog. Follow the repos; something new lands most weeks"
+                            ],
+                            "link": "https://github.com/supertestnet?tab=repositories",
+                            "linkLabel": "Super's Repositories"
+                        }
+                    ]
+                },
+                {
+                    "id": "quick-tip",
+                    "title": "Quick Tip of the Week",
+                    "description": "Three weeks out, know what your own node will actually do",
+                    "type": "tool",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Quick Tip: Know What Your Node Does on August 7",
+                            "body": "Here's tonight's homework, and it takes about thirty seconds. If you run a node, find out what software it's actually running before the flag day — because that single fact decides what your node does on August 7. Run 'bitcoin-cli -netinfo' or check the About screen: it'll tell you whether you're on Core or Knots, and which version. If you're on Bitcoin Core, nothing happens — you keep following the chain with the most work, same as always. If you're on Knots with BIP-110 enforcement enabled, your node would begin rejecting blocks that don't signal, and with signaling near zero that means following a chain almost nobody is mining. Neither choice is wrong. Not knowing which one you've made is.",
+                            "link": "https://bip110.org/",
+                            "linkLabel": "Read the Proposal Yourself"
+                        }
+                    ]
+                },
+                {
+                    "id": "community-news",
+                    "title": "Community News & Topics",
+                    "description": "Share what you're interested in talking about!",
+                    "type": "text",
+                    "slides": [
+                        {
+                            "heading": "Next Week's Meetup",
+                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                            "linkLabel": "Submit a Topic"
+                        }
+                    ]
+                }
+            ]
+        },
         "2026-W28": {
             "week": "2026-W28",
             "date": "2026-07-08",
@@ -1323,7 +1556,6 @@
             ]
         },
         "2026-W27": {
-
             "week": "2026-W27",
             "date": "2026-07-01",
             "title": "Worst Month Since 2022, Strategy's 'Never Sell' Ends & a Nostr-Native Internet",
