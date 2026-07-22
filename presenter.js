@@ -565,6 +565,14 @@
 
                 slideHTML += '</div>';
                 slide.innerHTML = slideHTML;
+
+                // Curtain Reveal (opt-in): hide this slide behind a glass curtain until clicked
+                if (slideData.reveal) {
+                    slide.classList.add('reveal-armed');
+                    slide.dataset.revealConfig = JSON.stringify(slideData.reveal === true ? {} : slideData.reveal);
+                    slide.insertAdjacentHTML('beforeend', revealCurtainHTML(slideData.reveal));
+                }
+
                 container.appendChild(slide);
 
                 // Determine URL for QR code
@@ -589,6 +597,123 @@
         slide.dataset.type = type;
         return slide;
     }
+
+    // === Curtain Reveal — opt-in per slide via a "reveal" key (true | {kicker, label, confetti}) ===
+    // A one-shot theatrical unveil: the slide hides behind a glass curtain with a single
+    // button; clicking parts the curtain and staggers the content in. Reloading re-arms it.
+    // Mirrored 2026-07-16 from the 3DP site (their W29 Curve Cut spotlight); dormant here
+    // until a slide opts in.
+    function revealCurtainHTML(reveal) {
+        const cfg = (typeof reveal === 'object' && reveal !== null) ? reveal : {};
+        const kicker = cfg.kicker || 'Builder Spotlight';
+        const label = cfg.label || 'Unveil';
+        return `
+            <div class="slide-reveal-curtain">
+                <div class="slide-reveal-panel slide-reveal-panel-left"></div>
+                <div class="slide-reveal-panel slide-reveal-panel-right"></div>
+                <div class="slide-reveal-seam"></div>
+                <div class="slide-reveal-center">
+                    <p class="slide-reveal-kicker">${kicker}</p>
+                    <button type="button" class="slide-reveal-btn">${label}</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function playReveal(slideEl) {
+        if (!slideEl || slideEl.dataset.revealed === 'true') return;
+        slideEl.dataset.revealed = 'true';
+        const curtain = slideEl.querySelector('.slide-reveal-curtain');
+        const content = slideEl.querySelector('.slide-content');
+        if (!curtain || !content) return;
+
+        let cfg = {};
+        try { cfg = JSON.parse(slideEl.dataset.revealConfig || '{}'); } catch (e) { /* defaults */ }
+
+        const left = curtain.querySelector('.slide-reveal-panel-left');
+        const right = curtain.querySelector('.slide-reveal-panel-right');
+        const seam = curtain.querySelector('.slide-reveal-seam');
+        const center = curtain.querySelector('.slide-reveal-center');
+        const heading = content.querySelector('.slide-heading');
+        const inner = content.querySelectorAll('.slide-topic-badge, .slide-heading, .slide-body, .slide-bullets li, .slide-link, .video-container, .slide-image-container, .slide-affiliate-group');
+
+        // Light sweep: sits under the parting panels, over the content
+        const sweep = document.createElement('div');
+        sweep.className = 'slide-reveal-sweep';
+        slideEl.appendChild(sweep);
+
+        gsap.set(inner, { opacity: 0, y: 26 });
+        slideEl.classList.remove('reveal-armed'); // content column back; children start hidden
+
+        const tl = gsap.timeline({
+            onComplete: () => { curtain.remove(); sweep.remove(); }
+        });
+        tl.to(center, { opacity: 0, y: -14, duration: 0.35, ease: 'power2.in' }, 0)
+          .to(seam, { opacity: 0.5, duration: 0.25, ease: 'power2.out' }, 0.1)
+          .to(seam, { opacity: 0, duration: 0.6, ease: 'power2.out' }, 0.45)
+          .to(left, { xPercent: -103, duration: 1.15, ease: 'power4.inOut' }, 0.3)
+          .to(right, { xPercent: 103, duration: 1.15, ease: 'power4.inOut' }, 0.3)
+          .fromTo(sweep, { xPercent: -120 }, { xPercent: 120, duration: 1.0, ease: 'power2.out' }, 0.85)
+          .to(inner, { opacity: 1, y: 0, duration: 0.9, ease: 'power4.out', stagger: 0.1 }, 0.9);
+        // The heading lands with a pop, not just a fade
+        if (heading) {
+            tl.fromTo(heading, { scale: 0.92 }, { scale: 1, duration: 0.8, ease: 'back.out(1.7)', clearProps: 'scale' }, 1.0);
+        }
+        // Settle body copy at the engine's resting opacity
+        content.querySelectorAll('.slide-body, .slide-bullets li').forEach(el => {
+            tl.to(el, { opacity: 0.85, duration: 0.5, ease: 'power2.out' }, 1.9);
+        });
+        // Celebration extra — opt-in via the reveal config
+        if (cfg.confetti) tl.add(() => spawnRevealConfetti(slideEl), 1.05);
+    }
+
+    // Multicolor confetti burst — the ONE sanctioned color exception (Max's call, 2026-07-16):
+    // everything else stays monochrome; the confetti alone gets party colors.
+    const REVEAL_CONFETTI_COLORS = [
+        '#ff3b30', // red
+        '#ff9500', // orange
+        '#ffcc00', // yellow
+        '#34c759', // green
+        '#14b8a6', // teal
+        '#007aff', // blue
+        '#af52de', // purple
+        '#ff2d55'  // pink
+    ];
+
+    function spawnRevealConfetti(slideEl) {
+        const box = document.createElement('div');
+        box.className = 'slide-reveal-confetti';
+        slideEl.appendChild(box);
+        const W = slideEl.clientWidth, H = slideEl.clientHeight;
+        const COUNT = 80;
+        for (let i = 0; i < COUNT; i++) {
+            const p = document.createElement('div');
+            p.className = 'slide-reveal-confetti-piece';
+            const strip = Math.random() < 0.5;
+            const s = 5 + Math.random() * 6;
+            p.style.width = s + 'px';
+            p.style.height = (strip ? s * 2.4 : s) + 'px';
+            p.style.background = REVEAL_CONFETTI_COLORS[Math.floor(Math.random() * REVEAL_CONFETTI_COLORS.length)];
+            p.style.opacity = String(0.85 + Math.random() * 0.15); // full color, slight depth
+            box.appendChild(p);
+            const x0 = W / 2, y0 = H * 0.62;
+            const drift = (Math.random() - 0.5) * W * 0.9;
+            const rise = H * (0.25 + Math.random() * 0.45);
+            const d1 = 0.55 + Math.random() * 0.35;
+            const d2 = 0.9 + Math.random() * 0.6;
+            gsap.set(p, { x: x0, y: y0, rotation: Math.random() * 360 });
+            gsap.timeline({ onComplete: () => p.remove() })
+                .to(p, { x: x0 + drift * 0.6, y: y0 - rise, rotation: '+=' + (180 + Math.random() * 360), duration: d1, ease: 'power2.out' })
+                .to(p, { x: x0 + drift, y: y0 + H * 0.25, rotation: '+=' + (180 + Math.random() * 360), duration: d2, ease: 'power1.in' })
+                .to(p, { opacity: 0, duration: 0.35 }, '-=0.35');
+        }
+        gsap.delayedCall(3.2, () => box.remove());
+    }
+
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.slide-reveal-btn');
+        if (btn) playReveal(btn.closest('.slide'));
+    });
 
     // === Navigation ===
     function goToSlide(index, direction) {
@@ -946,6 +1071,208 @@
     // === Inline fallback data for file:// protocol ===
     // Keep in sync with weeks/2026-W24.json
     const INLINE_WEEKS = {
+        "2026-W30": {
+            "week": "2026-W30",
+            "date": "2026-07-22",
+            "title": "Voltage Pulls the Plug on Hobby Nodes, the Streak Turns & the Two August 7ths",
+            "subtitle": "This week in Bitcoin & Nostr news",
+            "timerMinutes": 20,
+            "topics": [
+                {
+                    "id": "market",
+                    "title": "Live Dashboard & Market",
+                    "description": "Where Bitcoin sits live — and six green days that answered last week's question",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Live Dashboard",
+                            "body": "Before the headlines — here's where Bitcoin sits right now. Open the full dashboards below:",
+                            "widget": "live-price",
+                            "links": [
+                                {
+                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                                    "label": "Clark Moody Dashboard"
+                                },
+                                {
+                                    "url": "https://mempool.space",
+                                    "label": "mempool.space"
+                                }
+                            ]
+                        },
+                        {
+                            "heading": "The Streak Turned",
+                            "body": "Last week we called the bounce 'a fragile rebound, not a confirmed recovery' and asked whether one green day meant anything. Six green days later, we have an answer.",
+                            "bullets": [
+                                "US spot Bitcoin ETFs have now posted six consecutive sessions of net inflows — roughly $727M over the five days through July 20, plus another $203M on July 21. Longest streak since early May",
+                                "July 20 alone brought in $227M, the strongest single day since July 6 — and total ETF assets climbed back above $80 billion",
+                                "Price followed: a five-week high, more than 15% off the June lows. The live number is on the dashboard behind us",
+                                "The honest caveat from the coverage: this could be sellers getting tired rather than institutions coming back. But 'fragile' is no longer the right word"
+                            ],
+                            "link": "https://www.coindesk.com/business/2026/07/21/live-markets-bitcoin-etfs-post-a-fifth-straight-day-of-inflows-in-a-first-since-april",
+                            "linkLabel": "The Five-Day Streak"
+                        }
+                    ]
+                },
+                {
+                    "id": "voltage-sunset",
+                    "title": "Voltage Sunsets Self-Serve Nodes",
+                    "description": "The hosted hobby node is going away — if yours lives on Voltage, August 31 is your deadline",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Voltage Pulls the Plug on Self-Serve",
+                            "body": "The week's biggest practical story: Voltage — the cloud host where a lot of hobbyists run their Lightning nodes — is shutting down its entire self-serve tier to go enterprise-only.",
+                            "bullets": [
+                                "The dates: new self-serve provisioning was already disabled July 13. On August 31, the self-serve infrastructure — LND nodes, LNbits, BTCPay instances — goes away entirely",
+                                "Enterprise customers are unaffected; that side grew ~1,000% in 18 months serving exchanges, neobanks, wallets and gaming platforms. That's the business now",
+                                "Their stated logic: one enterprise integration reaches more Lightning users than a thousand hobby nodes. Cold, but probably true",
+                                "What the post does NOT include: any automatic migration of your node or funds. Closing channels and moving sats is on you — and channel closes take time. Don't discover this on August 30"
+                            ],
+                            "link": "https://voltage.cloud/blog/sunsetting-self-serve",
+                            "linkLabel": "The Sunset Announcement"
+                        },
+                        {
+                            "heading": "The End of the Hosted Hobby Node",
+                            "bullets": [
+                                "The bigger pattern: 'your node, our hardware' was always a halfway house — your keys, someone else's uptime, and a monthly bill that never quite covered what hobbyists cost to serve",
+                                "If you're affected, the realistic paths: bring the node home (Umbrel, Start9, RaspiBolt on your own box), or admit you wanted a wallet all along and pick a good one with eyes open",
+                                "Worth saying plainly: this is not a rug. Funds aren't at risk if you act — it's a shutdown with six weeks' notice. The lesson is about dependence, not danger",
+                                "Discussion for the room: who here runs a hosted node — and what would it take to run it at home instead?"
+                            ],
+                            "link": "https://umbrel.com",
+                            "linkLabel": "One Way to Bring It Home"
+                        }
+                    ]
+                },
+                {
+                    "id": "bip-110-watch",
+                    "title": "BIP-110 Watch: Two Weeks Out",
+                    "description": "Our standing tracker — signaling at 1%, and the quietest week yet is the story itself",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "BIP-110 Watch: The Numbers",
+                            "body": "A little over two weeks to the flag day, and the monitor tells the same story it's told all summer — just with less time left.",
+                            "bullets": [
+                                "Miner signaling: 1.07% — 17 of the 1,584 blocks so far in difficulty period 475. Ten more signaling blocks than last week's seven, but the share actually fell as the period filled out",
+                                "To activate it needs 55% of one difficulty period — 1,109 of 2,016 blocks. It has 17",
+                                "The countdown: block 959,183 tonight, flag day at 961,632 — about 2,449 blocks out, roughly seventeen days (~August 8). The current difficulty period closes in about three days; the next one is the last full period before the deadline",
+                                "Node support stays where it's been — low single digits, carried almost entirely by Knots, and Knots' share still isn't BIP-110 endorsement. Still zero major pools"
+                            ],
+                            "link": "https://bip110monitor.com/",
+                            "linkLabel": "Live Signaling Monitor"
+                        },
+                        {
+                            "heading": "What a Failed UASF Looks Like From the Inside",
+                            "body": "No new heavyweight statements this week — Back and Saylor said their piece last week and nobody answered. So the useful question now is: what actually happens on August 8 if nothing changes?",
+                            "bullets": [
+                                "For almost everyone: nothing. Core nodes keep following the most-work chain. You will not notice the flag day happened",
+                                "For the handful of nodes enforcing BIP-110: they start rejecting non-signaling blocks — which, at 1% signaling, means waiting on a chain almost nobody is mining. That's not a fork; it's a very quiet room",
+                                "The proponents' goal, stated fairly one more time: cap arbitrary non-financial data (34-byte scriptPubKeys, 83-byte OP_RETURN) for one year. The failure isn't the goal — it's trying to get there with a 55% UASF nobody joined",
+                                "Our position is unchanged and now looks like the consensus: sound money, wrong vehicle. We stand with Super and URSF-110 — which, at these numbers, will likely never need to run. Two more weeks on the watch"
+                            ],
+                            "link": "https://www.coindesk.com/tech/2026/07/12/bitcoin-s-bip-110-fork-deadline-nears-with-miner-support-at-zero",
+                            "linkLabel": "Miner Support at Zero"
+                        }
+                    ]
+                },
+                {
+                    "id": "clarity-act",
+                    "title": "The Other August 7th",
+                    "description": "The Clarity Act has three weeks, three disputes, and the same deadline as the flag day",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Two Deadlines, One Week of August",
+                            "body": "Here's a coincidence worth savoring: the Senate's last working day before August recess is August 7 — the same week Bitcoin's flag day lands. Washington's crypto deadline and Bitcoin's governance deadline, side by side. Only one of them has suspense left.",
+                            "bullets": [
+                                "The Clarity Act — the market-structure bill that would finally say which agency regulates what — cleared committee 15-9 back in May, then stalled. No floor vote, no cloture motion",
+                                "Three disputes are holding back the seven-to-nine Democratic votes it needs to beat the filibuster: DeFi regulation, stablecoin oversight, and AML reporting",
+                                "The window: the Senate came back July 13 and disperses for recess after August 7. Miss it, and 'crypto regulation 2026' likely becomes 'crypto regulation 2027'",
+                                "This is also what moved price this week — the coverage credits Clarity Act optimism for a chunk of the ETF streak. Markets are trading a bill that hasn't been scheduled"
+                            ],
+                            "link": "https://news.bitcoin.com/senate-republicans-push-clarity-act-with-15-days-left-as-bitcoin-struggles-near-66k/",
+                            "linkLabel": "The Senate Countdown"
+                        }
+                    ]
+                },
+                {
+                    "id": "fips-watch",
+                    "title": "FIPS Watch: v0.4.1 Ships",
+                    "description": "Our standing tracker — a maintenance release whose notes admit exactly what it doesn't fix",
+                    "type": "discussion",
+                    "accent": "nostr",
+                    "slides": [
+                        {
+                            "heading": "FIPS Watch: The Honest Point Release",
+                            "body": "Last week we watched Johnathan Corgan quietly rebuild the internals of his Nostr-native mesh. This week that discipline produced something: v0.4.1 landed July 19.",
+                            "bullets": [
+                                "It's a maintenance release, and the notes say so: wire-compatible with v0.4.0, rolling upgrades supported, no coordinated restart needed. No new features, no format changes",
+                                "Real fixes: nodes that re-parent no longer route through stale coordinates, and path-MTU values can't be overwritten by looser estimates anymore — both the kind of bug you only find by running a real mesh",
+                                "The refreshing part: the bloom-filter headroom bump comes with the developer's own caveat — it 'buys headroom, it does not fix anything.' The structural fix is deferred to the v2 filter work. When did you last read release notes that honest?",
+                                "Still pre-audit, as always — watch it, don't trust it with anything that matters yet. But three weeks on this tracker and the pattern holds: small, tested, honest steps"
+                            ],
+                            "link": "https://github.com/jmcorgan/fips/releases/tag/v0.4.1",
+                            "linkLabel": "The v0.4.1 Release Notes"
+                        }
+                    ]
+                },
+                {
+                    "id": "formal-verification",
+                    "title": "Proving Bitcoin Correct",
+                    "description": "From Optech: a project that wants to settle consensus arguments with mathematics",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "btc-verified: Proofs Instead of Arguments",
+                            "body": "From this week's Optech: a new project called btc-verified is using the Lean4 theorem prover to mathematically verify properties of Bitcoin's consensus rules. Given the year we're having, the timing is almost poetic.",
+                            "bullets": [
+                                "The idea: instead of arguing about whether a protocol change breaks something, prove it — machine-checked mathematics, the same approach used to verify aircraft software and cryptographic libraries",
+                                "Think about this week's other stories: BIP-110 is dying on a question of what a rule change might freeze or split. Formal verification is the long game for answering exactly that class of question with proofs",
+                                "Also in Optech #414: Core 30.3 and 29.4 maintenance releases backport the chainstate-compaction fix we covered in 31.1 — less disk churn for nodes on older versions too",
+                                "And a validation PR under review fetches transaction inputs in parallel, speeding initial block download 1.18x to 3x — the same 'make running a node cheaper' theme as last week's fountain codes"
+                            ],
+                            "link": "https://bitcoinops.org/en/newsletters/2026/07/17/",
+                            "linkLabel": "Optech Newsletter #414"
+                        }
+                    ]
+                },
+                {
+                    "id": "quick-tip",
+                    "title": "Quick Tip of the Week",
+                    "description": "Know where your Lightning node actually lives",
+                    "type": "tool",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Quick Tip: Know Where Your Node Lives",
+                            "body": "Tonight's homework comes straight from the Voltage story, and it takes five minutes. Open your Lightning wallet and answer one question: whose node is it talking to? If it's your own hardware at home, you're done. If it's a hosted node — Voltage self-serve or anywhere else — write down two things: where it runs, and what the shutdown procedure is. How do you close channels? How long does that take? Where do the sats land? Voltage's customers just got six weeks' notice, which is actually generous — the next provider might offer less. A hosted node isn't a mistake, but not knowing your exit is. If tonight's check turns up an answer you don't like, the fix is a weekend project, not an emergency.",
+                            "link": "https://voltage.cloud/blog/sunsetting-self-serve",
+                            "linkLabel": "Why This Matters This Week"
+                        }
+                    ]
+                },
+                {
+                    "id": "community-news",
+                    "title": "Community News & Topics",
+                    "description": "Share what you're interested in talking about!",
+                    "type": "text",
+                    "slides": [
+                        {
+                            "heading": "Next Week's Meetup",
+                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                            "linkLabel": "Submit a Topic"
+                        }
+                    ]
+                }
+            ]
+        },
         "2026-W29": {
             "week": "2026-W29",
             "date": "2026-07-15",
