@@ -1,6 +1,11 @@
 {
     "weeks": [
         {
+            "id": "2026-W30",
+            "date": "2026-07-22",
+            "title": "Voltage Pulls the Plug on Hobby Nodes, the Streak Turns & the Two August 7ths"
+        },
+        {
             "id": "2026-W29",
             "date": "2026-07-15",
             "title": "Back and Saylor Reject BIP-110, Core 31.1's Privacy Fix & the ETF Whipsaw"
