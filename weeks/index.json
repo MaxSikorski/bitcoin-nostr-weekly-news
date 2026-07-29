@@ -1,6 +1,11 @@
 {
     "weeks": [
         {
+            "id": "2026-W31",
+            "date": "2026-07-29",
+            "title": "BIP-110's Math Runs Out, Dorsey Puts Agents on Nostr & Clarity Misses Its Window"
+        },
+        {
             "id": "2026-W30",
             "date": "2026-07-22",
             "title": "Voltage Pulls the Plug on Hobby Nodes, the Streak Turns & the Two August 7ths"

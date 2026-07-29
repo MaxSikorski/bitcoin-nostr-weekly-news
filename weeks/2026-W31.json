@@ -1,0 +1,354 @@
+{
+    "week": "2026-W31",
+    "date": "2026-07-29",
+    "title": "BIP-110's Math Runs Out, Dorsey Puts Agents on Nostr & Clarity Misses Its Window",
+    "subtitle": "This week in Bitcoin & Nostr news",
+    "timerMinutes": 20,
+    "topics": [
+        {
+            "id": "market",
+            "title": "Live Dashboard & Market",
+            "description": "Where Bitcoin sits live — and the streak died Thursday",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Live Dashboard",
+                    "body": "Where Bitcoin sits right now. The full dashboards:",
+                    "widget": "live-price",
+                    "links": [
+                        {
+                            "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                            "label": "Clark Moody Dashboard"
+                        },
+                        {
+                            "url": "https://mempool.space",
+                            "label": "mempool.space"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Third Green Week, and It Barely Counts",
+                    "body": "Last week I said \"fragile\" was the wrong word. Retracted. The streak died Thursday.",
+                    "bullets": [
+                        "Week ending July 24: $33.79M net in. Third green week, and a rounding error at this size",
+                        "Thursday: $225.2M out. Friday: $240.1M out. IBIT was nearly $415M of it",
+                        "Price above $66,500 Tuesday, under $64,000 by Friday",
+                        "The cause wasn't Bitcoin — profit-taking and a weak Nasdaq. Three green weeks after eight red ones still counts. Barely"
+                    ],
+                    "link": "https://www.coindesk.com/markets/2026/07/27/bitcoin-etfs-record-third-consecutive-weekly-inflows-despite-losses-of-usd465-million-to-end-week",
+                    "linkLabel": "The Week's ETF Ledger"
+                }
+            ]
+        },
+        {
+            "id": "bip-110-watch",
+            "title": "BIP-110 Watch: The Math Runs Out",
+            "description": "Standing tracker — this week it stops being about votes",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "BIP-110 Watch: Ten Days and One Period Left",
+                    "body": "The clock sets tonight's running order. One number ends the suspense.",
+                    "bullets": [
+                        "Signaling: 1.91% — 10 of 524 blocks in period 476. Height 960,139. Flag day 961,632, about 1,493 blocks out. Roughly August 8",
+                        "Now the division: 961,632 ÷ 2,016 = exactly 477. Period 476 ends the instant the flag day begins. It's the last period lock-in is possible in",
+                        "Lock-in needs 1,109 blocks. It has 10, with 1,493 left. That's 73.6% of every remaining block, starting now",
+                        "Ocean turned signaling on by default — the whole reason it crossed 1%. Antpool, ViaBTC and F2Pool haven't moved. Foundry is polling its customers"
+                    ],
+                    "link": "https://bip110monitor.com/",
+                    "linkLabel": "Live Signaling Monitor"
+                },
+                {
+                    "heading": "The Target Already Routed Around It",
+                    "body": "Two developments this week. Both cut the same way.",
+                    "bullets": [
+                        "lifofifo shipped an Ordinals update and summed it up in four words: \"Ordinals are now BIP-110 ready.\" Files split into 256-byte fragments. Inscriptions survive — they just cost more",
+                        "Ocean's VP Jason Hughes, who says he is \"not pro BIP110, and I'm not anti-BIP110\": 0.6% of blocks over 60 days, and no new entrants",
+                        "His sharpest point — signaling through Ocean costs a miner nothing before the fork, so it's a weak proxy for conviction",
+                        "Node counts depend on the crawler: 7–15% per Hughes, 2–8% capable per others. Knots is ~22% of nodes and the only enforcer, but Knots share isn't endorsement",
+                        "Dashjr: \"Rejecting BIP110 is a contentious hardfork attempt.\" Alex Thorn: \"extremely disruptive & dangerous.\" We haven't moved — sound money, wrong vehicle"
+                    ],
+                    "link": "https://bitcoinmagazine.com/bitcoin-mining/ocean-mining-vp-jason-hughes-bip-110-on-track-to-fail-as-miner-signaling-stays-below-1",
+                    "linkLabel": "Ocean's Own VP on the Numbers"
+                }
+            ]
+        },
+        {
+            "id": "money-and-power",
+            "title": "The Money Corner: Clarity Dies, Strategy Stops",
+            "description": "Washington ran out of calendar. The biggest buyer went quiet",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "The Clarity Act Ran Out of Calendar",
+                    "body": "Last week I called August 7 a deadline with suspense in it. Leadership just answered.",
+                    "bullets": [
+                        "Thune, July 23: \"I would like to at least get Clarity started. We'll see where the votes are.\" That is not a man scheduling a vote",
+                        "The floor went to a Russia sanctions package and a nominations backlog. Clarity needs debate, amendments, and 60 votes for cloture",
+                        "Polymarket has 2026 passage near 28%, down from 82% in February. White House adviser Patrick Witt says he's \"slightly more optimistic\"",
+                        "Next window: three Senate weeks in September, then midterms swallow it. And the House still has to pass it"
+                    ],
+                    "link": "https://www.coindesk.com/policy/2026/07/23/clarity-act-expected-to-miss-its-window-before-congress-summer-break-leadership-says",
+                    "linkLabel": "Leadership Calls It"
+                },
+                {
+                    "heading": "Strategy Has Stopped Buying",
+                    "body": "The company that made \"corporations are buying\" a sentence hasn't bought a bitcoin in over a month.",
+                    "bullets": [
+                        "The position: 843,775 BTC at $75,476 average, $63.7B in. About 4% of the 21 million cap, roughly $9B underwater",
+                        "July 13–19: sold 2,732,318 MSTR shares for $263.5M, bought zero bitcoin. Proceeds went into a dollar reserve, about $3.2B",
+                        "Three weeks ago we covered the 3,588 BTC sold for $216M. This is the sequel — not selling, not buying, raising equity to hold cash",
+                        "Their stated pain threshold: bitcoin at $8,000–$10,000. Earnings tomorrow. Is this prudence, or the treasury model finding its limit?"
+                    ],
+                    "link": "https://www.theblock.co/post/408892/strategy-sells-263-5-million-in-mstr-shares-buys-no-bitcoin-as-usd-reserve-tops-3-2-billion",
+                    "linkLabel": "Shares Sold, No Bitcoin Bought"
+                }
+            ]
+        },
+        {
+            "id": "buzz",
+            "title": "Dorsey Puts AI Agents on Nostr",
+            "description": "Block shipped Buzz — every agent gets its own keypair",
+            "type": "tool",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "Buzz: One Event Log for Humans and Agents",
+                    "body": "Block shipped this July 21. The interesting part is that Nostr is just the plumbing.",
+                    "bullets": [
+                        "What it is: a self-hostable workspace where people and AI agents share the same channels. Chat, project management, code review, CI approvals, git",
+                        "How: a Nostr relay at the center — NIP-01, NIP-42 for auth, NIP-34 for git. Every message, approval and commit is one signed event in a hash-chained log",
+                        "Agents are members, not bots. Each gets its own keypair and permissions. Block's claim: identity is the unsolved problem in multi-agent work",
+                        "Rust relay, React web and desktop, Flutter mobile, Apache 2.0. Works with Claude Code, Codex or Block's own goose. Workflows and git hosting still being built"
+                    ],
+                    "link": "https://github.com/block/buzz",
+                    "linkLabel": "block/buzz on GitHub"
+                },
+                {
+                    "heading": "Why This Is a Nostr Story, Not an AI Story",
+                    "body": "The easy version of this slide is \"Dorsey likes Nostr.\" The real story is what he picked it for.",
+                    "bullets": [
+                        "An agent's identity and history live in a keypair, so they travel. Fire the vendor, keep the record",
+                        "First time a company this size treated Nostr as boring infrastructure instead of a Twitter alternative",
+                        "The skeptic's seat: \"self-hostable\" and \"self-hosted\" are different words. An audit trail is only as honest as whoever runs the relay",
+                        "Would you give an agent its own npub — and sign anything on its behalf?"
+                    ],
+                    "link": "https://buzz.xyz/",
+                    "linkLabel": "Try the Early Build"
+                }
+            ]
+        },
+        {
+            "id": "ecash-hardfork",
+            "title": "The Other August Fork",
+            "description": "Sztorc's hard fork is three weeks out, Satoshi's coins included",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "August's Other Fork",
+                    "body": "On Super's agenda tonight, and we covered it in June. August has two forks. This is the loud one.",
+                    "bullets": [
+                        "On or around August 22, at block 963,648. It activates drivechains — BIP 300 and 301 — as opt-in sidechains, without touching main-chain rules",
+                        "Every BTC holder gets a 1:1 balance on the forked chain. Ordinary fork mechanics. Nothing for you to do",
+                        "The part that isn't ordinary: it reassigns Satoshi-era coins. That's why coverage since April keeps using the word theft",
+                        "It also shares a name with the XEC \"eCash\" altcoin, apparently on purpose. That coin stays out of this room. Sztorc's is a Bitcoin fork, so it's ours"
+                    ],
+                    "link": "https://ecash.com/",
+                    "linkLabel": "The Fork's Own Page"
+                }
+            ]
+        },
+        {
+            "id": "seminar-privacy",
+            "title": "Super's Room I: The Privacy Stack",
+            "description": "From Seminar 27 — silent payments went from spec to shipped",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Silent Payments Quietly Became Real",
+                    "body": "Super's San Juan BitDevs runs Seminar 27 tonight and we're walking his whole agenda. Fair warning — it's a roundup since the last seminar, not a week of news.",
+                    "bullets": [
+                        "Sparrow 2.5.0 added silent-payments receiving on May 21, airgapped signers included. 2.5.2 followed with dust detection",
+                        "libsecp256k1 merged an optional silent-payments module last week. Once the primitive is in the reference library, everyone else's job gets easier",
+                        "Also listed: Hal Wallet — silent payments, Ark and Lightning in one app, per the agenda. I couldn't verify it, so treat it as a lead",
+                        "Coinjoin isn't dead either. Joinstr is working on sybil resistance. Joinmarket-NG 0.32.0 added mempool support so takers can verify maker broadcasts"
+                    ],
+                    "link": "https://sanjuanbitdevs.org/2026-07-29-socratic-seminar-27",
+                    "linkLabel": "The Full Seminar 27 Agenda"
+                }
+            ]
+        },
+        {
+            "id": "seminar-data",
+            "title": "Super's Room II: The Data Fight",
+            "description": "A prunable data region, and an argument about process",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "SegData, and an Argument About Process",
+                    "body": "Same war we've covered all summer, moved off the activation battlefield and onto design and process.",
+                    "bullets": [
+                        "SegData is a new BIP draft: a prunable, script-isolated block region for data. If data is coming anyway, give it a place nodes can throw away",
+                        "The top reply in the thread is the whole objection: \"Why would bitcoin noderunners want to store nonmonetary data for free?\"",
+                        "Also on the agenda: Ocean's stratum v1 opt-in for BIP-110, the mechanism behind the signaling bump we opened with",
+                        "The culture item is \"The Merge,\" hodlonaut's June essay. It argues Core's OP_RETURN reversal was engineered procedurally, and it names living developers",
+                        "It's an argument, not a finding. The PRs it cites are public and numbered. Read it, read those, decide yourself — including when it argues for our side"
+                    ],
+                    "link": "https://delvingbitcoin.org/t/bip-draft-segregated-data-a-prunable-script-isolated-block-region-for-data-carriage/2641/4",
+                    "linkLabel": "The SegData BIP Draft"
+                }
+            ]
+        },
+        {
+            "id": "seminar-toys",
+            "title": "Super's Room III: New Toys, Exits & Mining",
+            "description": "Offline Lightning receiving, exits, and the first Stratum V2 block",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Lightning That Works While Your Phone Is Asleep",
+                    "body": "The new-toys section has one badly underrated item. It fixes a problem every mobile wallet user has hit.",
+                    "bullets": [
+                        "LDK shipped async payments — receiving while offline — on June 26",
+                        "Your LSP holds a static, hash-less invoice. The sender locks funds with their own LSP. An onion message waits. You come online and release the secret",
+                        "Why it matters: phones won't let an app run after a push notification without VoIP privileges. That one OS rule made mobile tips awkward for years",
+                        "Still beta, LDK-to-LDK only. Also in the section: a BTCPay Ark prototype and Lightning Labs' Wavelength alpha on signet",
+                        "And the exits — Spark, Bark, BitVM garbled circuits. Both Ark and Spark rest on unilateral exit. Watching people actually use it is how you learn whether it holds"
+                    ],
+                    "link": "https://lightningdevkit.org/blog/async-payments-receiving-while-offline",
+                    "linkLabel": "How Async Payments Work"
+                },
+                {
+                    "heading": "A Miner Built Its Own Block",
+                    "body": "The mining section closes out the agenda, and this milestone deserved more noise than it got.",
+                    "bullets": [
+                        "DMND Pool mined the first fully-compliant Stratum V2 block — 955,318, late June, for GoMining",
+                        "First real use of Job Declaration: the miner assembles its own template, the pool validates it, and the miner's version ships",
+                        "Template construction is where pool centralization actually bites. This hands it back. DMND is also standing up the first dedicated SV2 pool",
+                        "Also listed: Testnet 5's draft BIP, output descriptors, BIP157 from guggero. And LND's BOLT 12 work began — PR #10789 merged June 16"
+                    ],
+                    "link": "https://github.com/lightningnetwork/lnd/pull/10789",
+                    "linkLabel": "LND's First BOLT 12 Merge"
+                }
+            ]
+        },
+        {
+            "id": "optech-415",
+            "title": "One Signature for the Whole Block",
+            "description": "Optech #415: full Schnorr aggregation — plus a Lightning goodbye",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "BIP-459: Full Aggregation of Schnorr Signatures",
+                    "body": "From this week's Optech. Simple idea, enormous consequences.",
+                    "bullets": [
+                        "Fabian Jahr proposed BIP-459: full aggregation of Schnorr signatures into a single 64-byte signature. Two signers or two thousand, same 64 bytes",
+                        "Two interactive rounds — nonces through an untrusted coordinator, then partial signatures. The coordinator needs no trust, which is what makes it usable",
+                        "Jahr names cross-input signature aggregation as an application while keeping that consensus change out of scope. Sensible, given the year we're having",
+                        "Also in #415: Wasabi 2.8.0 fetches block filters peer-to-peer with no backend, Inquisition 29.4 activated OP_TEMPLATEHASH, and Core turned on BIP-324 by default for DNS seeds"
+                    ],
+                    "link": "https://bitcoinops.org/en/newsletters/2026/07/24/",
+                    "linkLabel": "Optech Newsletter #415"
+                },
+                {
+                    "heading": "Rusty Russell Steps Away After Eleven Years",
+                    "body": "Rusty Russell has left Blockstream after eleven years of Lightning work, timed to Core Lightning 26.06 in June.",
+                    "bullets": [
+                        "9,762 commits. 53.9% of Core Lightning's entire history. More than half an implementation, written by one person",
+                        "18 reverts across nearly ten thousand commits. Anyone who ships production software knows how absurd that ratio is",
+                        "He led the BOLT spec process, wrote lnprototest so implementations could prove they conform, and championed BOLT 12 — the first new BOLT since 2017",
+                        "He hasn't said what's next. LND merged its first BOLT 12 PR in June, so his spec is being picked up by the last holdout. Decent send-off"
+                    ],
+                    "link": "https://blog.blockstream.com/rusty-russell-eleven-years-of-lightning-at-blockstream/",
+                    "linkLabel": "Eleven Years of Lightning"
+                }
+            ]
+        },
+        {
+            "id": "fips-watch",
+            "title": "FIPS Watch: Holding at v0.4.1",
+            "description": "Standing tracker — nothing shipped, which is its own update",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "FIPS Watch: A Quiet Week",
+                    "body": "Standing tracker, short entry. Nothing has shipped since v0.4.1 on July 19 — I checked the releases page tonight.",
+                    "bullets": [
+                        "v0.4.1 is still the head: convergence and path-MTU fixes, plus a bloom-filter cap the notes admit \"buys headroom, it does not fix anything\"",
+                        "The premise, for anyone new: Nostr keypairs as node identities. Your npub is your address. No DNS, no IP allocation, no routing authority",
+                        "Four weeks on this tracker and the pattern holds — small releases, tested, honest notes. A quiet week after a point release is health, not a warning",
+                        "Still pre-audit. Run it, don't trust it with anything that matters yet"
+                    ],
+                    "link": "https://github.com/jmcorgan/fips/releases",
+                    "linkLabel": "FIPS Releases"
+                }
+            ]
+        },
+        {
+            "id": "builder-spotlight",
+            "title": "Builder Spotlight: Car Gonzalez's PlebWatch",
+            "description": "The Clark Moody dashboard, shrunk down and strapped to your wrist",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Builder Spotlight: PlebWatch",
+                    "body": "Tonight's spotlight is Car Gonzalez's PlebWatch. We open every meetup on the Clark Moody dashboard. Car shrunk it down to something you wear.",
+                    "bullets": [
+                        "Who Car is, briefly: co-founder and CEO of PlebLab, the Austin Bitcoin hackerspace and accelerator. PlebWatch is his own build",
+                        "An M5StickC Plus2 — thumb-sized ESP32 with a screen. That exact model, because the firmware needs its HOLD pin. Analog watch face over the artwork",
+                        "On it: BTC/USD, sats-per-dollar, mempool fees across four tiers, difficulty, hashrate, halving countdown, Lightning capacity and node count. Plus random Satoshi quotes",
+                        "The part I respect is the power budget — one to three days untethered, using deep sleep, five-minute display windows and hourly refreshes",
+                        "C++ on PlatformIO, MIT, no tagged releases. Clone it, flash over USB-C. Under an hour, and then you're wearing the mempool. Who's building one before next Wednesday?"
+                    ],
+                    "link": "https://github.com/thrillerxx/plebwatch",
+                    "linkLabel": "Build Your Own PlebWatch",
+                    "links": [
+                        {
+                            "url": "https://pleblab.dev/",
+                            "label": "PlebLab"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "quick-tip",
+            "title": "Quick Tip of the Week",
+            "description": "Set up one silent-payments receiving address",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Quick Tip: Get Yourself a Reusable Address",
+                    "body": "Tonight's homework comes from Super's privacy list, and it's been ready for two months. Silent payments give you one address to post publicly and reuse forever, receiving to a fresh output every time. No address reuse, no xpub handed to a third party. Update Sparrow to 2.5.2, make a silent-payments receiving wallet, and give the address to one person who pays you regularly. Airgapped signers work too. Then go look at what your current public address has been telling the world all along.",
+                    "link": "https://github.com/sparrowwallet/sparrow/releases",
+                    "linkLabel": "Get Sparrow 2.5.2"
+                }
+            ]
+        },
+        {
+            "id": "community-news",
+            "title": "Community News & Topics",
+            "description": "Share what you're interested in talking about!",
+            "type": "text",
+            "slides": [
+                {
+                    "heading": "Next Week's Meetup",
+                    "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                    "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                    "linkLabel": "Submit a Topic"
+                }
+            ]
+        }
+    ]
+}
