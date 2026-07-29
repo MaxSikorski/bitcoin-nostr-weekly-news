@@ -52,9 +52,10 @@
                     "heading": "BIP-110 Watch: Ten Days and One Period Left",
                     "body": "The clock sets tonight's running order. One number ends the suspense.",
                     "bullets": [
-                        "Signaling: 1.91% — 10 of 524 blocks in period 476. Height 960,139. Flag day 961,632, about 1,493 blocks out. Roughly August 8",
+                        "Signaling: about 1.9% — 10 signaling blocks out of roughly 530 in period 476. Height around 960,150, flag day at 961,632, call it 1,480 blocks and ten days out",
                         "Now the division: 961,632 ÷ 2,016 = exactly 477. Period 476 ends the instant the flag day begins. It's the last period lock-in is possible in",
-                        "Lock-in needs 1,109 blocks. It has 10, with 1,493 left. That's 73.6% of every remaining block, starting now",
+                        "Lock-in needs 1,109 blocks. It has 10, with about 1,480 left. That's roughly 74% of every remaining block, starting now",
+                        "And if it somehow got there: mandatory signaling at the flag day, lock-in near block 963,648 around August 23, activation near 965,664 around September 6",
                         "Ocean turned signaling on by default — the whole reason it crossed 1%. Antpool, ViaBTC and F2Pool haven't moved. Foundry is polling its customers"
                     ],
                     "link": "https://bip110monitor.com/",
@@ -68,7 +69,9 @@
                         "Ocean's VP Jason Hughes, who says he is \"not pro BIP110, and I'm not anti-BIP110\": 0.6% of blocks over 60 days, and no new entrants",
                         "His sharpest point — signaling through Ocean costs a miner nothing before the fork, so it's a weak proxy for conviction",
                         "Node counts depend on the crawler: 7–15% per Hughes, 2–8% capable per others. Knots is ~22% of nodes and the only enforcer, but Knots share isn't endorsement",
-                        "Dashjr: \"Rejecting BIP110 is a contentious hardfork attempt.\" Alex Thorn: \"extremely disruptive & dangerous.\" We haven't moved — sound money, wrong vehicle"
+                        "Dashjr: \"Rejecting BIP110 is a contentious hardfork attempt.\" Alex Thorn: \"extremely disruptive & dangerous.\" We haven't moved — sound money, wrong vehicle",
+                        "And today, Saylor again: \"Bitcoin has won. Now it must survive victory. Its gravest threat is not an enemy at the gates, but corruption from within.\" He calls consensus the constitution, and says BIP-110 fixes no critical bug",
+                        "Samson Mow adds that restricting fee-paying transactions \"would turn Bitcoin into a fiat currency.\" BIP-110 advocate Fred Krueger's rebuttal was to call Saylor's argument AI-generated. That's where the debate is ten days out"
                     ],
                     "link": "https://bitcoinmagazine.com/bitcoin-mining/ocean-mining-vp-jason-hughes-bip-110-on-track-to-fail-as-miner-signaling-stays-below-1",
                     "linkLabel": "Ocean's Own VP on the Numbers"
