@@ -139,6 +139,19 @@
                     ],
                     "link": "https://sparrowwallet.com/download/",
                     "linkLabel": "Software-First Setup"
+                },
+                {
+                    "heading": "Lastly",
+                    "body": "We've covered the mitigations before. This week they stopped being theory.",
+                    "bullets": [
+                        "Rule one, above everything: never rely on one vendor. Distribute your attack vectors",
+                        "In multisig that means a mixture — not all Coldcards, not all BlueWallet. And never a majority of keys in any one party",
+                        "One vendor's five-year mistake should cost you one key, never a quorum. That's the whole design",
+                        "And my second takeaway: this week verified what HODLing and diamond hands really mean. It's your acumen in your setup, not just your conviction in Bitcoin",
+                        "Conviction survives price. Coins survive engineering. You need both"
+                    ],
+                    "link": "https://sparrowwallet.com/docs/",
+                    "linkLabel": "Sparrow Docs: Build It Right"
                 }
             ]
         },
