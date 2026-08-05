@@ -1389,6 +1389,35 @@
                     ]
                 },
                 {
+                    "id": "boltz-shutdown",
+                    "title": "Boltz Shuts Its Doors",
+                    "description": "The swap service many of us used, gone indefinitely — and why",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Boltz Suspends Swaps Indefinitely",
+                            "body": "One more before homework, and it's a sad one. A tool many of us have actually used.",
+                            "bullets": [
+                                "Sunday, on Nostr: Boltz suspended all swaps — mainchain, Lightning, Liquid — \"until further notice.\" Their words: don't expect it back shortly",
+                                "The reason is the theme of this whole week: months of automated, AI-assisted probing, several exploits, and \"attackers now iterate faster than a team our size can find and patch\"",
+                                "Your funds were never at risk — non-custodial by design. The refund API is still up for pending swaps, unilateral refunds work without them, and the company ate the losses itself",
+                                "The blast radius is real: ZEUS, Aqua and Bull Bitcoin all leaned on Boltz for swaps",
+                                "Sit with the pattern: AI reviewers missed Coldcard's bug for five years, and AI attackers just out-iterated Boltz's defenders. The tooling cuts both ways, and this week it cut ours",
+                                "Genuinely sad to see. They did it right — non-custodial, honest disclosure, refunds live — and honest engineering still lost to economics. Raise a glass, and check your wallet's swap settings"
+                            ],
+                            "link": "https://boltz.exchange/",
+                            "linkLabel": "Boltz's Notice",
+                            "links": [
+                                {
+                                    "url": "https://primal.net/e/nevent1qqs8hp7s0n4u7cg0gdqc9qdey9tszkfgd5r0qt8qq2qjg7kxqqfvd3qz78kjs",
+                                    "label": "The Announcement on Nostr"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     "id": "quick-tip",
                     "title": "Quick Tip of the Week",
                     "description": "Audit your seed's birth certificate",
