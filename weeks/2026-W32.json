@@ -1,0 +1,263 @@
+{
+    "week": "2026-W32",
+    "date": "2026-08-05",
+    "title": "The Coldcard Seed Heist & BIP-110's Flag Day",
+    "subtitle": "This week in Bitcoin & Nostr news",
+    "timerMinutes": 20,
+    "topics": [
+        {
+            "id": "market",
+            "title": "Live Dashboard & Market",
+            "description": "Where Bitcoin sits live — and the week self-custody got scared",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Live Dashboard",
+                    "body": "Where Bitcoin sits right now. The full dashboards:",
+                    "widget": "live-price",
+                    "links": [
+                        {
+                            "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                            "label": "Clark Moody Dashboard"
+                        },
+                        {
+                            "url": "https://mempool.space",
+                            "label": "mempool.space"
+                        }
+                    ]
+                },
+                {
+                    "heading": "The Green Streak Is Gone",
+                    "body": "Last week the three green weeks \"barely counted.\" One day erased them.",
+                    "bullets": [
+                        "July 31: $265M net out of the spot ETFs in a single day, IBIT leading. The three-week green run is over",
+                        "August opened heavy — roughly 7,300 BTC of net selling in the first days — then steadied near $64,000 Monday",
+                        "Two names on the fear: the Coldcard heist hit self-custody confidence, and Warsh declined to signal a September rate cut",
+                        "And the calendar looms — BIP-110's flag day and Sztorc's eCash fork both land within three weeks. Tonight is prep night"
+                    ],
+                    "link": "https://crypto.news/bitcoin-price-tests-63k-as-etf-outflows-hit-265m/",
+                    "linkLabel": "The Outflow Day"
+                }
+            ]
+        },
+        {
+            "id": "coldcard-heist",
+            "title": "The Coldcard Seed Heist",
+            "description": "A five-year-old firmware bug, 1,300+ BTC gone — and the full recovery playbook",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "41 Minutes",
+                    "body": "The largest Bitcoin theft of 2026, and nobody's device was ever touched.",
+                    "bullets": [
+                        "July 30: 1,082.65 BTC — about $70M — drained from 1,196 addresses in 41 minutes. Galaxy Research mapped the sweep",
+                        "It kept going: three waves, ~1,367 BTC across 4,585 addresses. Elliptic's running estimate passed $130M by Tuesday, at least a dozen attackers",
+                        "No malware, no phishing, no seizure. The attackers regenerated victims' seeds offline and swept them",
+                        "One victim, Jonathan Goodman, lost $1.6M: \"I did everything right… My devices never touched the internet… None of it mattered\""
+                    ],
+                    "link": "https://techcrunch.com/2026/08/04/hackers-steal-over-130-million-by-exploiting-bug-in-offline-hardware-wallets/",
+                    "linkLabel": "The Running Tally"
+                },
+                {
+                    "heading": "One Wrong #ifndef",
+                    "body": "The bug is five years old and two characters wide. Worth two minutes of your night.",
+                    "bullets": [
+                        "March 2021: Coldcard's build config defines the hardware-RNG flag as zero. The crypto library checks whether the flag exists — not whether it's on",
+                        "Result: seed generation silently used Yasmarang, a software PRNG seeded from the chip's ID and timers. Never the hardware RNG",
+                        "Effective entropy: ~40 bits on Mk2/Mk3 against the 128 a 12-word seed promises. Mk4, Mk5 and Q got ~72 bits",
+                        "40 bits is brute-forceable. That's how you drain a thousand air-gapped wallets without touching one",
+                        "Block's team traced the root cause within a day of the first loss reports. Coinkite notes AI review tools missed it for five years too",
+                        "The lesson isn't \"Coldcard bad.\" It's that seed generation is the one moment your wallet has to be perfect — and you can't see it fail"
+                    ],
+                    "link": "https://engineering.block.xyz/blog/predictable-rng-fallback-and-32-bit-reseed-in-coldcard-firmware",
+                    "linkLabel": "Block's Full Autopsy"
+                },
+                {
+                    "heading": "Are You Affected?",
+                    "body": "The advisory in plain words. If this is you, the next two slides are your homework tonight.",
+                    "bullets": [
+                        "At risk: seeds generated on Mk2/Mk3 firmware 4.0.0–4.1.9, Mk4/Mk5 before 5.6.0, Q before 1.5.0Q, Edge before 6.6.0X/QX",
+                        "Not at risk from this bug alone: seeds built with 50+ real dice rolls, or wallets behind a strong, unique BIP-39 passphrase",
+                        "Restoring your old seed onto new firmware keeps the weak seed. The seed is the problem, not the device",
+                        "Multisig only helps if a quorum of your keys came from unaffected devices",
+                        "Coinkite halted shipments and destroyed remaining stock with the old firmware. Emergency release 4.2.0 shipped July 31"
+                    ],
+                    "link": "https://blog.coinkite.com/coldcard-mk3-seed-generation-warning/",
+                    "linkLabel": "The Official Advisory",
+                    "links": [
+                        {
+                            "url": "https://blog.coinkite.com/adding-to-public-record/",
+                            "label": "Coinkite: Adding to the Public Record"
+                        }
+                    ]
+                },
+                {
+                    "heading": "The Migration, Step by Step",
+                    "body": "My recommendation: spin up a fresh wallet in software you can verify — Sparrow on desktop, BlueWallet on mobile — and walk, don't run.",
+                    "bullets": [
+                        "Step 1: on a machine you trust, download Sparrow or BlueWallet and verify the download signature before installing",
+                        "Step 2: create a NEW wallet so it generates a NEW seed. Never type your old seed into anything — that's recovery, not migration",
+                        "Step 3: write the seed on paper or steel. No screenshots, no cloud notes, no password manager",
+                        "Step 4: send a small test amount. Wait for a confirmation. Restore-test your backup before the big move",
+                        "Step 5: move the rest, then keep the old wallet around until every balance is confirmed at the new one",
+                        "Still want hardware in the loop? Fine — update the firmware FIRST, then generate the fresh seed on the patched device. Same steps otherwise",
+                        "And if any of this feels over your head: book time with me and we'll do it together, one on one, completely free. Grab the 15-minute slot from the link in this week's email — we'll take as long as we need"
+                    ],
+                    "link": "https://sparrowwallet.com/download/",
+                    "linkLabel": "Get Sparrow",
+                    "links": [
+                        {
+                            "url": "https://bluewallet.io/",
+                            "label": "BlueWallet"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Harden It While You're In There",
+                    "body": "If you're touching your cold storage tonight anyway, upgrade the practices, not just the seed.",
+                    "bullets": [
+                        "Add a BIP-39 passphrase — the 25th word. It's what separated the safe Coldcard users from the swept ones this week",
+                        "Making a seed yourself? Use dice: 50+ real rolls, alone, no cameras. Trust your own entropy over anyone's chip",
+                        "Split the backup with Shamir's secret sharing — 2-of-3 shares in separate places beats one paper in one drawer",
+                        "Bigger balances: multisig across different vendors and different software, so no single bug is fatal — this week's exact failure mode",
+                        "And schedule a restore test. A backup you've never restored is a hope, not a backup"
+                    ],
+                    "link": "https://blog.coinkite.com/coldcard-mk3-seed-generation-warning/",
+                    "linkLabel": "Check the Advisory"
+                },
+                {
+                    "heading": "My Take: The Hardware Wallet Question",
+                    "body": "Where I've landed after this week — my opinion, and I'm happy to argue about it.",
+                    "bullets": [
+                        "Hardware wallets sell you an offline box, but Bitcoin lives online, on nodes. Every spend has to cross that gap and broadcast anyway",
+                        "So the 'air gap' is marketing more than architecture. This week proved the box can fail invisibly at the one job it claims to own",
+                        "Secure elements are closed silicon. No hardware wallet is 100% open source — you're trusting a chip you can't audit",
+                        "Multisig built from software wallets — Sparrow, BlueWallet and friends — is just as good, arguably better: auditable code, no vendor silicon in the trust path",
+                        "Push back on me here. But 'I bought the safest brand' died as a strategy on July 30"
+                    ],
+                    "link": "https://sparrowwallet.com/download/",
+                    "linkLabel": "Software-First Setup"
+                }
+            ]
+        },
+        {
+            "id": "bip-110-watch",
+            "title": "BIP-110 Watch: Flag Day",
+            "description": "Standing tracker, final form — the live board, the fork playbook, the node question",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "BIP-110 Live Dashboard",
+                    "body": "One week only: the tracker gets its own live board. These numbers update as we talk.",
+                    "widget": "bip110-live",
+                    "links": [
+                        {
+                            "url": "https://bip110monitor.com/",
+                            "label": "BIP-110 Monitor"
+                        },
+                        {
+                            "url": "https://bip110.org/ursf-monitor",
+                            "label": "URSF Status"
+                        }
+                    ]
+                },
+                {
+                    "heading": "The Voluntary Path Is Dead",
+                    "body": "Last week I said lock-in needed 74% of every remaining block. The math finished the argument.",
+                    "bullets": [
+                        "Signaling this period: about 40 blocks of ~1,560 — 2.56%. The trend: 0.45% → 0.99% → 1.29% → 2.56%. Rising, and irrelevant",
+                        "Lock-in needs 1,109 blocks. With ~456 left in the period, the ceiling is about 496. Voluntary lock-in is now mathematically impossible",
+                        "Saylor, Monday: \"At 961,022, BIP-110 has 38 signals (2.70%). Its 55% voluntary threshold is impossible.\" His word to backers: stand down",
+                        "Super called it Friday, in one Nostr post: even if BIP-110 miners took every remaining block, they'd miss 55%. \"So they will fork off in 1018 blocks. Come back with a better proposal than bip110\"",
+                        "Ocean remains the only signaling pool. Foundry, AntPool, F2Pool, ViaBTC: still zero. That's over 70% of hashrate sitting it out"
+                    ],
+                    "link": "https://news.bitcoin.com/featured/strategys-saylor-tells-bip-110-backers-to-stand-down-before-fork/",
+                    "linkLabel": "Saylor's Stand-Down Call",
+                    "links": [
+                        {
+                            "url": "https://primal.net/e/nevent1qqsrsnzpdye2zlt5xc54neym9paejazas2548ryclvjtdv9ejc0lrpg9hkja6",
+                            "label": "Super's Post on Nostr"
+                        }
+                    ]
+                },
+                {
+                    "heading": "What Happens at Block 961,632",
+                    "body": "Roughly Friday. Here's the mechanical version, no drama added.",
+                    "bullets": [
+                        "From 961,632 through 963,647, enforcing nodes reject every block that doesn't signal bit 4. At under 3% hashrate, those nodes land on a minority chain",
+                        "Knots is ~22% of reachable nodes, but running Knots isn't the same as enforcing — most won't have the flag on",
+                        "No replay protection. BIP-110 wasn't designed to split, so if a split happens anyway, one transaction can be valid on both chains",
+                        "Jon Atack's advice, and ours: pause transfers around the flag block. Short reorgs are possible even if the whole thing fizzles",
+                        "Even Bitcoin Magazine's corporate desk published fork-window guidance Monday: exchanges should raise confirmation counts, watch both branches, and pause big settlements. When the suits get a checklist, it's real"
+                    ],
+                    "link": "https://www.tftc.io/bip-110-mandatory-signaling-window-miner-support-bitcoin-consensus",
+                    "linkLabel": "Flag-Day Mechanics, Explained",
+                    "links": [
+                        {
+                            "url": "https://bitcoinmagazine.com/bitcoin-for-corporations/corp-bip-110-soft-fork",
+                            "label": "The Corporate Playbook"
+                        }
+                    ]
+                },
+                {
+                    "heading": "If It Actually Forks: Your Coins, Both Chains",
+                    "body": "Super says they fork off. If a real minority chain survives, here's the holder's playbook.",
+                    "bullets": [
+                        "First: every coin you held before the fork exists on BOTH chains automatically. There is nothing to 'claim' and no deadline. Anyone who says otherwise is phishing you",
+                        "NEVER type your seed into a claiming site or 'fork wallet.' That's how forks steal more than the fork ever pays",
+                        "No replay protection means a spend on one chain can be replayed on the other. Splitting coins safely means waiting for tools that mix in post-fork coins — or waiting for exchanges to credit both sides",
+                        "The sober math: a chain with under 3% of hashrate makes a block every 5+ hours and can't retarget for a full 2,016-block period. It may simply never be worth splitting for",
+                        "So the playbook is patience: don't transact through the window, don't chase the new ticker on day one, and let the dust settle. Same advice for Sztorc's eCash fork two weeks later"
+                    ],
+                    "link": "https://bip110.org/",
+                    "linkLabel": "The BIP-110 Project Site"
+                },
+                {
+                    "heading": "The Node Question",
+                    "body": "People keep asking what to run if they agree with us — sound money, wrong vehicle. Here's my answer.",
+                    "bullets": [
+                        "Run stock Bitcoin Core, current release, and you're done. It follows the most-work valid chain and enforces no BIP-110 rules — exactly our position",
+                        "Nothing wrong with Knots as software — but its BIP-110 enforcement is the thing we're declining. If you run Knots, leave that flag off",
+                        "Either way, your node keeps working through the flag day and your coins don't move. The fork risk lives with enforcers and miners, not you",
+                        "Verify your download signature — this of all weeks — and if you're spinning up your first node, tonight's a fine night to start syncing",
+                        "And Super's real ask isn't about node software at all: \"Come back with a better proposal than bip110.\" The data debate deserves a better vehicle"
+                    ],
+                    "link": "https://bitcoincore.org/en/download/",
+                    "linkLabel": "Bitcoin Core Downloads"
+                }
+            ]
+        },
+        {
+            "id": "quick-tip",
+            "title": "Quick Tip of the Week",
+            "description": "Audit your seed's birth certificate",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Quick Tip: Know Where Your Seed Was Born",
+                    "body": "Tonight's homework works even if you've never owned a Coldcard. Write down what you actually know about your seed: what device made it, what firmware era, whether dice were involved, whether a passphrase protects it. If you can't answer those questions, that's the finding. Coldcard owners — check your firmware against the advisory tonight, and if you're in the affected range without dice or a passphrase, make a new seed on patched firmware and migrate. Everyone else: your seed was born once, and it can't be re-born by an update. Know its story.",
+                    "link": "https://blog.coinkite.com/coldcard-mk3-seed-generation-warning/",
+                    "linkLabel": "Check the Advisory"
+                }
+            ]
+        },
+        {
+            "id": "community-news",
+            "title": "Community News & Topics",
+            "description": "Share what you're interested in talking about!",
+            "type": "text",
+            "slides": [
+                {
+                    "heading": "Next Week's Meetup",
+                    "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                    "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                    "linkLabel": "Submit a Topic"
+                }
+            ]
+        }
+    ]
+}

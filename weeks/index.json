@@ -1,6 +1,11 @@
 {
     "weeks": [
         {
+            "id": "2026-W32",
+            "date": "2026-08-05",
+            "title": "The Coldcard Seed Heist & BIP-110's Flag Day"
+        },
+        {
             "id": "2026-W31",
             "date": "2026-07-29",
             "title": "BIP-110's Math Runs Out, Dorsey Puts Agents on Nostr & Clarity Misses Its Window"
