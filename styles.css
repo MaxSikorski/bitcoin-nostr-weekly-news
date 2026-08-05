@@ -1109,6 +1109,20 @@ button.card:hover .card-arrow {
     transform: translateX(3px);
 }
 
+/* === This Week (featured newest card) === */
+.current-section {
+    padding-bottom: 28px;
+}
+
+.current-list {
+    padding-top: 20px;
+}
+
+.current-card {
+    padding: 32px;
+    border-radius: 24px;
+}
+
 /* === Empty State === */
 .empty-state {
     text-align: center;
@@ -1312,4 +1326,130 @@ button.card:hover .card-arrow {
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 8px;
+}
+
+/* ============================================================
+   Curtain Reveal — opt-in "reveal" slide key (presenter.js)
+   Glass curtain over a slide until the button is clicked.
+   Mirrored 2026-07-16 from the 3DP site. Monochrome only.
+   ============================================================ */
+.slide.reveal-armed {
+    overflow: hidden;
+}
+
+.slide.reveal-armed .slide-content {
+    opacity: 0;
+}
+
+.slide-reveal-curtain {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.slide-reveal-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50.5%;
+    background: var(--card-bg);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    backdrop-filter: blur(24px) saturate(140%);
+    will-change: transform;
+}
+
+.slide-reveal-panel-left {
+    left: 0;
+    border-right: 1px solid var(--card-border);
+}
+
+.slide-reveal-panel-right {
+    right: 0;
+    border-left: 1px solid var(--card-border);
+}
+
+.slide-reveal-seam {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: var(--text-color);
+    opacity: 0;
+    z-index: 6;
+    pointer-events: none;
+}
+
+.slide-reveal-center {
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    text-align: center;
+    padding: 40px;
+}
+
+.slide-reveal-kicker {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.slide-reveal-btn {
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 16px 44px;
+    border-radius: 999px;
+    border: 1px solid var(--card-border);
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.slide-reveal-btn:hover {
+    background: var(--btn-hover);
+    transform: scale(1.04);
+}
+
+.slide-reveal-btn:active {
+    transform: scale(0.98);
+}
+
+.slide-reveal-sweep {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 40%, var(--reveal-sweep, rgba(255, 255, 255, 0.10)) 50%, transparent 60%);
+}
+
+[data-theme="light"] .slide-reveal-sweep {
+    --reveal-sweep: rgba(0, 0, 0, 0.06);
+}
+
+/* Curtain Reveal extra: confetti (2026-07-16). Piece colors are set inline by
+   presenter.js — multicolor by Max's explicit exception to the monochrome rule. */
+.slide-reveal-confetti {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.slide-reveal-confetti-piece {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 1px;
+    will-change: transform;
 }

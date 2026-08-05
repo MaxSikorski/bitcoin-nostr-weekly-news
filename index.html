@@ -34,13 +34,19 @@
         <div class="hero-content">
             <h1 class="hero-title">Bitcoin &amp; Nostr<br>Weekly</h1>
             <p class="hero-subtitle">News, policy, and discussion topics curated for our weekly meetup.</p>
-            <a href="#presentations" class="scroll-cue" aria-label="Scroll to presentations">
+            <a href="#current-section" class="scroll-cue" aria-label="Scroll to presentations">
                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 5v14M19 12l-7 7-7-7"/>
                 </svg>
             </a>
         </div>
     </section>
+
+    <!-- Current Presentation -->
+    <div class="content-section current-section" id="current-section">
+        <p class="section-label">This Week</p>
+        <div id="current-list" class="archive-list current-list"></div>
+    </div>
 
     <!-- Archive List -->
     <div class="content-section" id="presentations">
@@ -117,7 +123,35 @@
             };
 
             const archiveList = document.getElementById('archive-list');
+            const currentList = document.getElementById('current-list');
+            const pastSection = document.getElementById('presentations');
             const emptyState = document.getElementById('empty-state');
+
+            function buildCard(week, index, featured) {
+                const card = document.createElement('a');
+                card.href = `week.html?week=${week.id}`;
+                card.className = featured ? 'archive-card current-card' : 'archive-card';
+                card.dataset.delay = index * 0.1;
+
+                const dateObj = new Date(week.date + 'T12:00:00');
+                const formattedDate = dateObj.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                card.innerHTML = `
+                    <div class="archive-card-info">
+                        <p class="archive-card-date">${formattedDate}</p>
+                        <h3 class="archive-card-title">${week.title}</h3>
+                    </div>
+                    <svg class="archive-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                `;
+                return card;
+            }
 
             function renderArchive(data) {
                 if (!data.weeks || data.weeks.length === 0) {
@@ -126,38 +160,22 @@
                 }
 
                 // Sort weeks newest first
-                const sorted = data.weeks.sort((a, b) => b.date.localeCompare(a.date));
+                const sorted = data.weeks.slice().sort((a, b) => b.date.localeCompare(a.date));
 
-                sorted.forEach((week, index) => {
-                    const card = document.createElement('a');
-                    card.href = `week.html?week=${week.id}`;
-                    card.className = 'archive-card';
-                    card.dataset.delay = index * 0.1;
+                // Newest week is featured up top as "This Week"
+                currentList.appendChild(buildCard(sorted[0], 0, true));
 
-                    const dateObj = new Date(week.date + 'T12:00:00');
-                    const formattedDate = dateObj.toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-
-                    card.innerHTML = `
-                        <div class="archive-card-info">
-                            <p class="archive-card-date">${formattedDate}</p>
-                            <h3 class="archive-card-title">${week.title}</h3>
-                        </div>
-                        <svg class="archive-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 18l6-6-6-6"/>
-                        </svg>
-                    `;
-
-                    archiveList.appendChild(card);
-                });
+                // Everything else goes under "Past Presentations"
+                const past = sorted.slice(1);
+                if (past.length === 0) {
+                    pastSection.style.display = 'none';
+                } else {
+                    past.forEach((week, index) => archiveList.appendChild(buildCard(week, index, false)));
+                }
 
                 // Trigger scroll reveals for dynamically added cards
                 if (typeof gsap !== 'undefined') {
-                    const cards = archiveList.querySelectorAll('.archive-card');
+                    const cards = document.querySelectorAll('.archive-card');
                     gsap.set(cards, { opacity: 0, y: 20 });
 
                     const observer = new IntersectionObserver((entries) => {
