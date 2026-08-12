@@ -1143,6 +1143,377 @@
     // === Inline fallback data for file:// protocol ===
     // Keep in sync with weeks/2026-W24.json
     const INLINE_WEEKS = {
+        "2026-W33": {
+            "week": "2026-W33",
+            "date": "2026-08-12",
+            "title": "BIP-110 Is Dead & the Rise of the Bitcoin Red Team",
+            "subtitle": "This week in Bitcoin & Nostr news",
+            "timerMinutes": 20,
+            "topics": [
+                {
+                    "id": "market",
+                    "title": "Live Dashboard & Market",
+                    "description": "Where Bitcoin sits live — the week the fork died and the ETFs came back",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Live Dashboard",
+                            "body": "Where Bitcoin sits right now. The full dashboards:",
+                            "widget": "live-price",
+                            "links": [
+                                {
+                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                                    "label": "Clark Moody Dashboard"
+                                },
+                                {
+                                    "url": "https://mempool.space",
+                                    "label": "mempool.space"
+                                }
+                            ]
+                        },
+                        {
+                            "heading": "The Buyers Came Back — Mostly",
+                            "body": "Last week ended with a $265M outflow day. This week flipped the tape.",
+                            "bullets": [
+                                "Five straight days of ETF inflows, Aug 3–7 — about $853M net. The fear from the Coldcard week faded fast",
+                                "Price rode it: from the mid-$63Ks up through $65K by Sunday, the strongest stretch in a month",
+                                "Monday broke the streak — about $145M out, IBIT and GBTC splitting the selling almost evenly",
+                                "Worth saying out loud: the fork died Saturday morning and the market never blinked. The board behind me is the same board"
+                            ],
+                            "link": "https://crypto.news/bitcoin-etfs-draw-853-5m-in-five-day-inflow-streak/",
+                            "linkLabel": "The Inflow Streak"
+                        }
+                    ]
+                },
+                {
+                    "id": "bip110-dead",
+                    "title": "BIP-110 Is Dead",
+                    "description": "The fork mined two blocks, the math buried it — and the sequel is an altcoin",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Two Blocks, Then Silence",
+                            "body": "Saturday morning, block 961,632. Exactly what we walked through last week — except quieter.",
+                            "bullets": [
+                                "The flag day fired: BIP-110 nodes rejected block 961,632 for not signaling, and split onto their own chain",
+                                "That chain mined its first block at 961,633, then one more — two blocks in eight hours. Then nothing",
+                                "Roughly 99.85% of hashpower stayed on the main chain, which never broke stride — dozens of blocks ahead by dinner",
+                                "No pool defected, no exchange listed a fork ticker, no replay chaos. The split everyone gamed out for months lasted a morning"
+                            ],
+                            "link": "https://crypto.news/bip-110-bitcoin-fork-failed-governance-2026/",
+                            "linkLabel": "The Obituary"
+                        },
+                        {
+                            "heading": "The Math That Buried It",
+                            "body": "Nobody attacked the fork chain. It just inherited a bill it couldn't pay.",
+                            "bullets": [
+                                "Final signaling: 2.53% — 51 blocks of 2,016 — against the 55% bar BIP-110 set for itself",
+                                "The fork chain kept mainnet's full difficulty with a sliver of its hashpower. Next difficulty adjustment at that pace: roughly 350 days away",
+                                "So it isn't 'defeated' so much as frozen — a chain that can't make blocks can't retarget, and a chain that can't retarget can't make blocks",
+                                "The monitor we watched all summer, as of this afternoon: one unified chain, tip past 962,100, and zero signaling blocks in the new period. Zero",
+                                "Our advice last week was pause transfers through the window. Right call, easy week — short reorgs never came"
+                            ],
+                            "link": "https://bip110monitor.com/",
+                            "linkLabel": "The Board, Final Score"
+                        },
+                        {
+                            "heading": "The Post-Mortem",
+                            "body": "Everyone's drawing lessons. Here are the ones I buy.",
+                            "bullets": [
+                                "Saylor, at the end of his 110-point case against it: 'Bitcoin is working as designed.' For once, most camps agree with him",
+                                "Giacomo Zucco, Plan B Network's director, says the failure proves Bitcoin would be 'almost impossible to reproduce' — changing it needs consensus nobody can buy or force",
+                                "Super called the ending a week early: fork off in 1,018 blocks, 'come back with a better proposal.' That ask still stands — the data debate is real even though this vehicle is dead",
+                                "His parting jab, Saturday on Nostr: even BIP-110's own miners were paying their bills with coins from the chain they rejected. An economy of two blocks was never going to feed anyone",
+                                "The spam fight isn't over — and the BIP-110 camp has a sequel planned. That's the next slide",
+                                "And with that — the BIP-110 Watch, a segment of this meetup since spring, retires tonight. The board comes down"
+                            ],
+                            "link": "https://www.theblock.co/news/ecosystems/2026-08-12-bip-110-failure-bitcoin-impossible-reproduce-plan-b-network-director-411596",
+                            "linkLabel": "The Governance Take",
+                            "links": [
+                                {
+                                    "url": "https://x.com/saylor/status/2086057411056447861",
+                                    "label": "Saylor's Verdict"
+                                },
+                                {
+                                    "url": "https://primal.net/p/nprofile1qqszrqlfgavys8g0zf8mmy79dn92ghn723wwawx49py0nqjn7jtmjagg0r085",
+                                    "label": "Super on Nostr"
+                                }
+                            ]
+                        },
+                        {
+                            "heading": "The Sequel: 'Fire the Miners'",
+                            "body": "The BIP-110 camp isn't burying their chain. They're planning a transplant — and think about what that math means.",
+                            "bullets": [
+                                "The author, Dathon Ohm, announced work on a proof-of-work change for the frozen chain — his phrase: 'fire the miners.' Luke Dashjr, who helped draft BIP-110, backs it, and Chris Guida has already rebased Luke's 2017 PoW-fork code onto Knots",
+                                "Why they have no choice: the chain carries Bitcoin's full difficulty with nobody mining it. At fork-day pace the retarget was 'a year away' — at the actual trickle since, my napkin says about five years. At today's rate: never. Sit with that — all that difficulty, and no one there to work it",
+                                "A new mining algorithm means every existing rig is worthless on that chain — which makes it, literally, a new altcoin. Fork the chain, change the PoW, keep the brand: that's the 2017 playbook, beat for beat",
+                                "The drama followed the code: on August 10, Luke was removed from the BIP editor team for prematurely assigning BIP-110 its number. The governance fight outlived the fork",
+                                "Watch it unfold live: 'BIP110 proof-of-work change preparation' is on San Juan BitDevs' agenda next Wednesday"
+                            ],
+                            "link": "https://cryptoslate.com/bitcoins-bip-110-fork-is-back-but-its-backers-want-to-replace-the-miners/",
+                            "linkLabel": "The PoW-Reset Plan",
+                            "links": [
+                                {
+                                    "url": "https://crypto.news/bitcoin-bip-editor-seeks-luke-dashjrs-removal/",
+                                    "label": "The Editor Fight"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "coldcard-update",
+                    "title": "Coldcard, Week Two",
+                    "description": "The tally nobody agrees on — and the homework that hasn't changed",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "The Tally Nobody Agrees On",
+                            "body": "Last week we said ~1,367 BTC. Every tracker now has a bigger number — and they don't match.",
+                            "bullets": [
+                                "CryptoQuant: 1,432 BTC confirmed. Galaxy: at least 1,730. TRM Labs: about 1,816 BTC across 5,200+ addresses — $116M to $130M depending on who's counting",
+                                "Why the spread? Self-custody theft has no registry. Without victims self-reporting, nobody can draw the line between stolen and moved",
+                                "Four distinct attack waves since July 30. It's now the third-largest crypto theft of 2026 — and still creeping",
+                                "Super's question on Nostr cuts deepest: the 'bad' RNG was seeded with keypresses, the timestamp and the device ID — 'it's probably how I would seed it.' So: 'What was the \"good\" one seeded with?' The scary part isn't that the fallback was crazy. It's that it was reasonable",
+                                "The homework from last week hasn't changed: patched firmware is NOT enough. Affected seed → new seed on fixed firmware → migrate. Full playbook is in last week's deck, and my offer to walk anyone through it still stands"
+                            ],
+                            "link": "https://thehackernews.com/2026/08/coldcard-hardware-wallet-flaw-linked-to.html",
+                            "linkLabel": "The Technical Recap",
+                            "links": [
+                                {
+                                    "url": "https://primal.net/e/nevent1qvzqqqqqqypzqgvra9r4sjqapufyl0vnc4kv4fz70e29em4c655y37vz206f0wt4qqsdsz3huvfckws8avdvxyejl8klmkh68ynx4lknxaztwxd4659ug0cspj2ca",
+                                    "label": "Super's Question"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "btcpay-exploit",
+                    "title": "BTCPay's Turn",
+                    "description": "Merchant servers leaked their Lightning keys — and the response was pure Bitcoin",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "The Macaroon Leak",
+                            "body": "Third domino in three weeks: Boltz, Coldcard, now the merchant stack.",
+                            "bullets": [
+                                "BTCPay Server before 2.4.2: a remote attacker, no login needed, could read the admin credential for a connected LND node — then control it and drain the Lightning wallet",
+                                "Disclosed August 7, already being exploited. Foundation and Citadel21 both reported drained nodes; on-chain BTCPay wallets were never at risk",
+                                "If you run a server: upgrade to 2.4.2 tonight or take it offline. There is no middle option",
+                                "The response is the good part: a recovery bounty of 10% of returned funds up to 3 BTC — about $190K — plus 0.21 BTC each to the researchers who found it: Craig Raw of Sparrow, and the Bitcoin Red Team fund. Hold that name for the spotlight"
+                            ],
+                            "link": "https://www.coindesk.com/markets/2026/08/11/btcpay-offers-usd190-000-bounty-after-bitcoin-payment-servers-drained-in-exploit",
+                            "linkLabel": "The Bounty Story"
+                        }
+                    ]
+                },
+                {
+                    "id": "boltz-canary",
+                    "title": "Lightning's Rough Stretch: Boltz & Zeus",
+                    "description": "The Boltz deep-dive I promised, a canary scare — and Zeus's five-day comeback",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "The Canary Went Quiet",
+                            "body": "Quick primer: a warrant canary is a signed statement — 'no government has secretly demanded our data.' You prove the negative by repeating it on schedule. Miss the schedule, and readers must assume the worst. Boltz's own canary says exactly that.",
+                            "bullets": [
+                                "Boltz's last canary was dated May 31 and promised a refresh within 60 days — due July 30",
+                                "July 30 passed in silence. August 3, all swaps suspended 'until further notice.' Still no canary",
+                                "So the internet did the math: silence plus shutdown equals seizure? Protos ran the question straight: did Boltz just signal a government takeover?",
+                                "For two days, that read was completely defensible — by the canary's own rules"
+                            ],
+                            "link": "https://protos.com/did-bitcoin-bridge-boltz-silently-warn-of-a-government-takeover/",
+                            "linkLabel": "The Scare, As Reported"
+                        },
+                        {
+                            "heading": "The All-Clear — and the Lesson",
+                            "body": "August 5: a fresh canary, valid PGP signature, unambiguous text.",
+                            "bullets": [
+                                "The new canary states no third party — no government included — has requested user information. The signature checks out",
+                                "So the boring truth: a small team drowning in an AI-attack crisis let a compliance deadline slip. Sloppy, human, and not sinister",
+                                "But the lesson is real: a canary only works if it's boringly punctual. Miss it once in a crisis and you manufacture a second crisis for free",
+                                "Meanwhile the swaps are still down, no restart date — ZEUS, Aqua and Bull Bitcoin are still rerouting around the hole Boltz left",
+                                "Keep watching their Nostr. If the harness in tonight's spotlight had existed six months ago, Boltz might still be running"
+                            ],
+                            "link": "https://www.tftc.io/boltz-bitcoin-swaps-suspended-ai-attacks",
+                            "linkLabel": "The Full Timeline"
+                        },
+                        {
+                            "heading": "Zeus Took a Hit Too — and Got Back Up",
+                            "body": "Two days after Boltz went dark, Zeus got attacked. Different story, different ending.",
+                            "bullets": [
+                                "August 5: a cyberattack on ZEUS infrastructure — the third Lightning outage in a week. They mitigated it, then took everything offline themselves for a full audit. No customer funds lost or at risk",
+                                "Some Olympus LSP customers saw channels force-closed. The attack hit Zeus's servers, not the Lightning software — your self-custodied node was never the problem",
+                                "The comeback, day by day: Lightning addresses back Aug 6 · the Olympus node Aug 8 · LSP channels Aug 10 · replacement channels for affected users processing by Aug 11",
+                                "Evan's ask on Nostr while bootstrapping back: big nodes, open an inbound channel to Olympus. That's Lightning's immune system — recovery is a community act",
+                                "Put the two side by side: Zeus absorbed the hit and restored in five days; Boltz looked at the same attacker economics and closed the doors. Same storm, different boats — and both were honest about it"
+                            ],
+                            "link": "https://zeusln.com/blog/security-update-2026-08-05/",
+                            "linkLabel": "Zeus's Security Update",
+                            "links": [
+                                {
+                                    "url": "https://primal.net/e/nevent1qqsgqdn9nqn5qy6nkwz8wjv09secl977ewyulaezq9f5dwj2qa0fnlshcu44d",
+                                    "label": "Evan's Note"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "riot-anthropic",
+                    "title": "The Miner Becomes the Landlord",
+                    "description": "Riot signs $9.1B with Anthropic — the hashrate-to-AI pivot goes structural",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Riot × Anthropic: $9.1 Billion",
+                            "body": "The biggest miner story of the year isn't about mining.",
+                            "bullets": [
+                                "Riot signed a 20-year deal supplying 191 megawatts at its Rockdale, Texas campus to Anthropic — $9.1B over the term, up to $16.1B with extensions",
+                                "Staged buildout: 96 MW by December 2027, the full 191 by mid-2028, with $573M from Morgan Stanley bridging construction",
+                                "Riot is selling bitcoin holdings to fund it — trading BTC on the balance sheet for rent from an AI lab. The stock jumped ~20% on the name",
+                                "The pattern to watch: mining built the power infrastructure, AI is outbidding mining for it. Every exhausted miner with a substation is now a data-center landlord in waiting",
+                                "Same week AI attacks shut down Boltz, AI demand is writing miners nine-figure checks. Both edges of the same blade — hold that thought for the quick tip"
+                            ],
+                            "link": "https://www.cnbc.com/2026/08/11/riot-platforms-signs-anthropic-deal-as-miners-shift-to-ai-infrastructure-.html",
+                            "linkLabel": "The Deal"
+                        }
+                    ]
+                },
+                {
+                    "id": "new-resources",
+                    "title": "Resources Worth Your Week",
+                    "description": "Two daily reads and a sister meetup — plus the watch desk signs off",
+                    "type": "tool",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Two Daily Reads",
+                            "body": "Between our Wednesdays, these two keep you current — both free, both in your inbox by morning.",
+                            "bullets": [
+                                "Tangents Daily — Bitcoin Park's newsletter, every weekday. Short and sharp: today's issue alone covered the BTCPay response, the Riot–Anthropic deal, and the Coldcard tally mess — half our deck before coffee",
+                                "TFTC's Bitcoin Brief — Marty Bent's crew at Truth for the Commoner. More editorial voice, strong on mining, energy and the macro picture — the other half of tonight's sourcing",
+                                "Between them you get the daily pulse; this meetup is where we argue about what it means. Subscribe to both and skim"
+                            ],
+                            "link": "https://tangentsdaily.substack.com/p/wednesday-aug12",
+                            "linkLabel": "Tangents Daily",
+                            "links": [
+                                {
+                                    "url": "https://www.tftc.io/bitcoin-brief",
+                                    "label": "TFTC Bitcoin Brief"
+                                }
+                            ]
+                        },
+                        {
+                            "heading": "San Juan BitDevs — Socratic Seminar 28",
+                            "body": "Super Testnet's meetup in Puerto Rico. Next session: Wednesday, August 19 — yes, same night as us.",
+                            "bullets": [
+                                "Their agenda reads like our deck with a week's head start: Coldcard, the Boltz canary, BIP-110's chain-split autopsy — plus a whole Bitcoin-and-AI block",
+                                "Deeper cuts on deck there: Lightning Labs' third Ark implementation, SuperScalar channel factories, Bolt12 payment proofs landing in the spec",
+                                "Socratic format — no slides, everyone argues. If you want the technical layer under what we do here, this is the room",
+                                "The topic list alone is worth the click. Steal from it like I do"
+                            ],
+                            "link": "https://sanjuanbitdevs.org/2026-08-19-socratic-seminar-28",
+                            "linkLabel": "The Full Agenda"
+                        },
+                        {
+                            "heading": "The Watch Desk Signs Off",
+                            "body": "Housekeeping on our two standing trackers.",
+                            "bullets": [
+                                "BIP-110 Watch: retired as of tonight. It ran every single week from the first signaling period to the two-block fork. Whatever the spam debate does next, it starts a new segment",
+                                "FIPS Watch: quiet in the best way. Nothing new since v0.4.1 on July 19 — a maintenance release, still wire-compatible, still pre-audit. Corgan's building, not posting",
+                                "When FIPS has real news — an audit, a public mesh milestone — it gets its slide back. Watch the repo with me"
+                            ],
+                            "link": "https://github.com/jmcorgan/fips/releases",
+                            "linkLabel": "FIPS Releases"
+                        }
+                    ]
+                },
+                {
+                    "id": "builder-spotlight",
+                    "title": "Builder Spotlight: The Bitcoin Red Team",
+                    "description": "16 volunteers, 27.5 hours, 4,962 findings — the defense finally picked up AI",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "The Sprint",
+                            "body": "All month we've watched AI empower attackers — Boltz, the probing waves, five years of missed review. This is the other side finally showing up.",
+                            "bullets": [
+                                "August 4–5: a 16-person volunteer 'Bitcoin Red Team' audited 390 open-source Bitcoin projects in one 27.5-hour sprint",
+                                "The haul: 4,962 findings — 85 critical, 635 high-severity. Numbers no human-only review team could touch in a month",
+                                "Led by Calle — the Cashu creator — and Rob Hamilton, CEO of AnchorWatch. OpenSats funded it; roughly $40K went straight into AI tokens",
+                                "The trigger was Coldcard: one five-year-old bug proved the ecosystem's review capacity wasn't keeping up. Their answer: scan everything, now"
+                            ],
+                            "link": "https://bitcoinmagazine.com/business/bitcoin-red-team-finds-85-critical-flaws-across-390-open-source-repos-after-coldcard-exploit",
+                            "linkLabel": "The Full Story"
+                        },
+                        {
+                            "heading": "How It Works — and What's Next",
+                            "body": "Not a scanner spraying alerts. A harness with discipline.",
+                            "bullets": [
+                                "The pipeline: AI models flag suspect code, the team reproduces each bug locally, then discloses privately to maintainers — findings, not noise",
+                                "The fleet: Kimi K3 quarterbacking, with GPT Sol, Claude's Fable and Opus, and GLM 5.2 cross-checking each other",
+                                "Mid-sprint plot twist: OpenAI blocked Rob's account over the security workload — so the team leaned harder on the open Chinese models. Permissionless tools for permissionless money",
+                                "BTCPay just seeded their fund with 0.21 BTC, and the team plans to open-source the whole harness so any Bitcoin company can run it against private code",
+                                "Follow Rob's running updates for the disclosures as they land — this is the story of the next six months"
+                            ],
+                            "link": "https://bitcoinmagazine.com/business/bitcoin-red-team-finds-85-critical-flaws-across-390-open-source-repos-after-coldcard-exploit",
+                            "linkLabel": "The Full Story",
+                            "links": [
+                                {
+                                    "url": "https://x.com/Rob1Ham/status/2084140242915782743",
+                                    "label": "Rob's Thread"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "quick-tip",
+                    "title": "Quick Tip of the Week",
+                    "description": "Raise your floor — the probing era is here",
+                    "type": "tool",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Quick Tip: Raise Your Floor",
+                            "body": "Count the month: Boltz, Coldcard, BTCPay, Zeus. AI made probing cheap, and Bitcoin targets pay out instantly — the bar for 'secure enough' just moved for everyone. Including you.",
+                            "bullets": [
+                                "Tonight: update everything that touches your coins — wallet, node, server, firmware. Verified downloads only",
+                                "Add a passphrase to your seed — the 25th word. It's what saved the safe Coldcard users",
+                                "Real balances get multisig across different vendors — one company's bug should cost you one key, never a quorum",
+                                "Run a restore test. A backup you've never restored is a hope, not a backup",
+                                "Want a second set of eyes on your setup? Book time with me — the 15-minute intro is free, one on one, and we'll go as deep as your stack needs"
+                            ],
+                            "link": "https://cal.com/maxsikorski",
+                            "linkLabel": "Book Time With Max"
+                        }
+                    ]
+                },
+                {
+                    "id": "community-news",
+                    "title": "Community News & Topics",
+                    "description": "Share what you're interested in talking about!",
+                    "type": "text",
+                    "slides": [
+                        {
+                            "heading": "Next Week's Meetup",
+                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                            "linkLabel": "Submit a Topic"
+                        }
+                    ]
+                }
+            ]
+        },
         "2026-W32": {
             "week": "2026-W32",
             "date": "2026-08-05",
