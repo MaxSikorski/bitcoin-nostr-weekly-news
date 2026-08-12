@@ -155,6 +155,29 @@
                         <path d="M9 18l6-6-6-6"/>
                     </svg>
                 `;
+
+                // Breathing glow on the featured card — a soft halo swells in and melts
+                // away (1s in, 1s out), then 2s fully dark; orange pulse, purple pulse,
+                // forever (Max's sanctioned color exception, 2026-08-12).
+                if (featured) {
+                    const halo = document.createElement('div');
+                    halo.className = 'glow-halo';
+                    halo.setAttribute('aria-hidden', 'true');
+                    card.appendChild(halo);
+
+                    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    if (!reduceMotion && typeof gsap !== 'undefined') {
+                        const tl = gsap.timeline({ repeat: -1 });
+                        const addPulse = (color) => {
+                            tl.set(halo, { boxShadow: `0 0 14px 2px ${color}, 0 0 42px 12px ${color}` });
+                            tl.to(halo, { opacity: 1, duration: 1, ease: 'sine.inOut' });
+                            tl.to(halo, { opacity: 0, duration: 1, ease: 'sine.inOut' });
+                            tl.to({}, { duration: 2 });
+                        };
+                        addPulse('#f7931a'); // bitcoin orange
+                        addPulse('#a06af9'); // nostr purple
+                    }
+                }
                 return card;
             }
 

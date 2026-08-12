@@ -37,6 +37,21 @@
     const presenterControls = document.getElementById('presenter-controls');
     const keyboardHints = document.getElementById('keyboard-hints');
 
+    // === Branding / contact (Max Sikorski) ===
+    // Email is assembled at runtime so plain-text scrapers don't harvest it off the page.
+    const CONTACT_EMAIL = ['bitcoinmax.7l388b', 'bumpmail.io'].join('@');
+    const LINKS = {
+        youtube: 'https://www.youtube.com/@maxwellsikorski4926',
+        github: 'https://github.com/MaxSikorski',
+        buzz: 'https://buzz.xyz/',
+        cal: 'https://cal.com/maxsikorski'
+    };
+    const WORK_WITH_MAILTO = (() => {
+        const subject = 'Bitcoin & Nostr Weekly — Work With You';
+        const body = "Hi Max,\n\nI'd like to talk about working together — wallet security / self-custody / Nostr / a project.\n\n";
+        return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    })();
+
     // === Utility: Extract YouTube embed URL ===
     function getYouTubeEmbedUrl(url) {
         if (!url) return null;
@@ -620,6 +635,25 @@
             });
         });
 
+        // === Closing slide: Connect with Max (engine-level — appears on every deck) ===
+        const connectSlide = createSlide('connect');
+        connectSlide.innerHTML = `
+            <div class="slide-content" style="text-align: center;">
+                <p class="slide-topic-badge">Connect</p>
+                <h2 class="slide-heading">Connect with Max Sikorski</h2>
+                <p class="slide-body" style="max-width: 580px; margin: 0 auto 32px;">Bitcoin &amp; Nostr Weekly — self-custody help · wallet security checkups · Nostr onboarding. Subscribe, say hi, or grab time with me below.</p>
+                <div class="connect-links">
+                    <a class="connect-link" href="${LINKS.youtube}" target="_blank" rel="noopener noreferrer">YouTube</a>
+                    <a class="connect-link" href="${LINKS.github}" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <a class="connect-link" href="${LINKS.buzz}" target="_blank" rel="noopener noreferrer">Buzz</a>
+                    <a class="connect-link" href="${LINKS.cal}" target="_blank" rel="noopener noreferrer">Schedule a Chat</a>
+                    <a class="connect-link" href="${WORK_WITH_MAILTO}">Work With Me</a>
+                </div>
+            </div>
+        `;
+        container.appendChild(connectSlide);
+        slides.push({ type: 'connect', el: connectSlide, topicId: null, url: LINKS.cal, accent: null });
+
         return slides;
     }
 
@@ -1194,7 +1228,7 @@
                     "accent": "bitcoin",
                     "slides": [
                         {
-                            "heading": "Two Blocks, Then Silence",
+                            "heading": "BIP-110 Is Dead: Two Blocks, Then Silence",
                             "body": "Saturday morning, block 961,632. Exactly what we walked through last week — except quieter.",
                             "bullets": [
                                 "The flag day fired: BIP-110 nodes rejected block 961,632 for not signaling, and split onto their own chain",
@@ -1271,7 +1305,7 @@
                     "accent": "bitcoin",
                     "slides": [
                         {
-                            "heading": "The Tally Nobody Agrees On",
+                            "heading": "Coldcard: The Tally Nobody Agrees On",
                             "body": "Last week we said ~1,367 BTC. Every tracker now has a bigger number — and they don't match.",
                             "bullets": [
                                 "CryptoQuant: 1,432 BTC confirmed. Galaxy: at least 1,730. TRM Labs: about 1,816 BTC across 5,200+ addresses — $116M to $130M depending on who's counting",
@@ -1299,7 +1333,7 @@
                     "accent": "bitcoin",
                     "slides": [
                         {
-                            "heading": "The Macaroon Leak",
+                            "heading": "BTCPay Exploit: The Macaroon Leak",
                             "body": "Third domino in three weeks: Boltz, Coldcard, now the merchant stack.",
                             "bullets": [
                                 "BTCPay Server before 2.4.2: a remote attacker, no login needed, could read the admin credential for a connected LND node — then control it and drain the Lightning wallet",
@@ -1320,7 +1354,7 @@
                     "accent": "bitcoin",
                     "slides": [
                         {
-                            "heading": "The Canary Went Quiet",
+                            "heading": "Boltz: The Canary Went Quiet",
                             "body": "Quick primer: a warrant canary is a signed statement — 'no government has secretly demanded our data.' You prove the negative by repeating it on schedule. Miss the schedule, and readers must assume the worst. Boltz's own canary says exactly that.",
                             "bullets": [
                                 "Boltz's last canary was dated May 31 and promised a refresh within 60 days — due July 30",
@@ -1444,7 +1478,7 @@
                     "accent": "bitcoin",
                     "slides": [
                         {
-                            "heading": "The Sprint",
+                            "heading": "Builder Spotlight: The Bitcoin Red Team",
                             "body": "All month we've watched AI empower attackers — Boltz, the probing waves, five years of missed review. This is the other side finally showing up.",
                             "bullets": [
                                 "August 4–5: a 16-person volunteer 'Bitcoin Red Team' audited 390 open-source Bitcoin projects in one 27.5-hour sprint",

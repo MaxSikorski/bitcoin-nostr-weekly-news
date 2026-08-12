@@ -1119,8 +1119,64 @@ button.card:hover .card-arrow {
 }
 
 .current-card {
+    position: relative;
     padding: 32px;
     border-radius: 24px;
+}
+
+.current-card .archive-card-date {
+    font-size: 0.75rem;
+}
+
+.current-card .archive-card-title {
+    font-size: 1.9rem;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+}
+
+/* Breathing glow on the This Week card — orange/purple alternating pulse.
+   Sanctioned color exception (Max, 2026-08-12), alongside the progress-bar accents. */
+.glow-halo {
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    pointer-events: none;
+    opacity: 0; /* dark by default — the GSAP timeline breathes it in and out */
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .glow-halo {
+        display: none;
+    }
+}
+
+/* === Connect (closing) slide === */
+.connect-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.connect-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 22px;
+    background: var(--card-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.connect-link:hover {
+    background: var(--card-hover);
+    transform: translateY(-2px);
 }
 
 /* === Empty State === */
@@ -1188,6 +1244,14 @@ button.card:hover .card-arrow {
 
     .content-section {
         padding: 0 20px 60px;
+    }
+
+    .current-card {
+        padding: 24px;
+    }
+
+    .current-card .archive-card-title {
+        font-size: 1.35rem;
     }
 
     .slide {
