@@ -1,0 +1,383 @@
+{
+    "week": "2026-W35",
+    "date": "2026-08-26",
+    "title": "Squeeze to $80K & a Million Sats in Guadalajara",
+    "subtitle": "This week in Bitcoin & Nostr news",
+    "timerMinutes": 20,
+    "topics": [
+        {
+            "id": "market",
+            "title": "Live Dashboard & Market",
+            "description": "Where Bitcoin sits live — and the tape that flipped again, the other way",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Live Dashboard",
+                    "body": "Where Bitcoin sits right now. The full dashboards:",
+                    "widget": "live-price",
+                    "links": [
+                        {
+                            "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                            "label": "Clark Moody Dashboard"
+                        },
+                        {
+                            "url": "https://mempool.space",
+                            "label": "mempool.space"
+                        }
+                    ]
+                },
+                {
+                    "heading": "The Tape Flipped Back",
+                    "body": "Last week: $390M out, Hashdex winding down. This week ran the tape backwards — again.",
+                    "bullets": [
+                        "Spot ETFs took in $1.1B across Wednesday and Thursday alone",
+                        "NYDIG's read on the turn: 'exhausted marginal sellers' and 'crowded short positioning' — the sellers simply ran out",
+                        "Two weeks, two opposite tapes. The flows follow price; they don't lead it",
+                        "What actually moved price is the next topic"
+                    ],
+                    "link": "https://tangentsdaily.substack.com/p/sunday-aug23",
+                    "linkLabel": "The Recovery Tape"
+                }
+            ]
+        },
+        {
+            "id": "squeeze",
+            "title": "The Squeeze",
+            "description": "$65K to $80K in a week — anatomy of the snap-back, and what the money men said",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "The Squeeze: $65K to $80K in a Week",
+                    "body": "Last Wednesday we presented the mildest bear on record. By the weekend it was fighting for its life.",
+                    "bullets": [
+                        "Bitcoin ran from about $65K to nearly $80K — 12% of it in two days",
+                        "$3.1B in short liquidations over those two days, the largest forced unwind since 2021",
+                        "Two sparks, same week: the White House Clarity Act push (next topic) and the Treasury doubling its bond buybacks to $4B+ per operation",
+                        "Last week's map said watch the 200-day moving average — price went and punched through it. A bounce becomes a trend only if it holds",
+                        "Same rule as always: the bear slides were data, this move is data. No victory laps at week one"
+                    ],
+                    "link": "https://www.cnbc.com/2026/08/20/bitcoin-surges-as-trump-crypto-execs-lead-final-push-for-clarity-act.html",
+                    "linkLabel": "The Two-Day Surge"
+                },
+                {
+                    "heading": "What the Money Men Said",
+                    "body": "The interesting part: the biggest names framed the rally as a symptom, not a celebration.",
+                    "bullets": [
+                        "Ray Dalio: put 10–15% into gold and 'a bit of Bitcoin' — his trigger is $10T of US refinancing carrying $1T a year in interest",
+                        "Druckenmiller, on the Treasury propping the bond market: 'governments defending prices against market fundamentals always lose'",
+                        "Jack Mallers' comparison: the US buyback playbook is Japan's playbook, and Japan sits at 200%+ debt-to-GDP",
+                        "Read it together: the fiscal stress IS the bull case these men are buying. Cheap money lifted Bitcoin; distrust of the printer keeps it"
+                    ],
+                    "link": "https://tangentsdaily.substack.com/p/wednesday-aug26",
+                    "linkLabel": "Today's Tangents"
+                }
+            ]
+        },
+        {
+            "id": "clarity-act",
+            "title": "The Clarity Act",
+            "description": "Trump summons the industry to the White House — and the bill's fate comes down to six votes",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Clarity Act: Crypto Goes to the White House",
+                    "body": "Wednesday, August 19 — the industry's CEOs sat down at the White House and the president made the ask.",
+                    "bullets": [
+                        "Trump: 'Now we need Congress to take the next step by passing the Clarity Act, a fair version of the Clarity Act… keep us ahead of China'",
+                        "In the room: Coinbase's Armstrong, Ripple's Garlinghouse, Robinhood's Tenev, the Winklevoss twins — plus SEC Chair Atkins and CFTC Chair Selig",
+                        "Bitcoin jumped 12% in the two days around the meeting — the spark for the squeeze we just covered",
+                        "Worth naming: this is a crypto market-structure bill. We care about the Bitcoin edges — custody, exchanges, and which regulator owns what"
+                    ],
+                    "link": "https://finance.yahoo.com/markets/crypto/articles/trump-calls-congress-pass-fair-195645644.html",
+                    "linkLabel": "The White House Meeting"
+                },
+                {
+                    "heading": "What the Bill Does, and the Math It Faces",
+                    "body": "H.R. 3633 passed the House back in July 2025. It's been sitting in the Senate ever since.",
+                    "bullets": [
+                        "The core: CFTC gets 'digital commodities' and their exchanges; the SEC keeps a slice of primary-market sales. One question — who regulates what — finally answered",
+                        "What stalled it: ethics provisions. The fight is over how to enforce a ban on government officials running crypto businesses — with a president who owns one",
+                        "The math: back on the Senate floor in September, and Republicans need roughly six Democratic votes to reach 60",
+                        "No procedural vote happened before recess. September is the whole game"
+                    ],
+                    "link": "https://www.govtrack.us/congress/bills/119/hr3633",
+                    "linkLabel": "H.R. 3633, Tracked"
+                }
+            ]
+        },
+        {
+            "id": "security-desk",
+            "title": "Security Desk",
+            "description": "Coldcard's patch and NVK's silence, an 86-minute supply-chain attack, and the defense filing reports",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Security Desk: Coldcard, Week Four",
+                    "body": "You asked where NVK went. Short answer: the patches shipped; the man went quiet.",
+                    "bullets": [
+                        "The fix finally landed August 20 — firmware 4.2.0 for Mk3, 5.6.0 for Mk4/Mk5, 6.6.0X for Edge. Upgrade, roll a NEW seed with dice mixed in, move the coins",
+                        "NVK's pinned apology still stands — 'I'm sorry and I'm devastated' — but he hasn't posted on Nostr since June 2, and he's been deleting old X posts. Peter Todd archived some before they vanished",
+                        "The stolen coins are barely moving: one 64.9 BTC Wasabi deposit and 200 ETH into Tornado Cash. The rest sits there, watched",
+                        "The trackers still disagree on the total — roughly 1,600 to 2,000 BTC. Coinkite has never published its own count. Law enforcement is on it"
+                    ],
+                    "link": "https://blog.coinkite.com/coldcard-mk3-seed-generation-warning/",
+                    "linkLabel": "Coinkite's Advisory",
+                    "links": [
+                        {
+                            "url": "https://wizardsardine.com/blog/coldcard-vuln-deep-dive/",
+                            "label": "The Technical Autopsy"
+                        }
+                    ]
+                },
+                {
+                    "heading": "86 Minutes of Poisoned Rust",
+                    "body": "The scariest story of the week didn't touch a wallet. It touched the toolchain that builds them.",
+                    "bullets": [
+                        "Attackers republished the Rust crate arrayref with malicious dependencies — a build script that downloads payloads the moment you compile",
+                        "It lived on crates.io for 86 minutes. Related crates internment and append-only-vec were hit too",
+                        "One confirmed casualty: a Frostsnap wallet engineer's laptop, compromised through blake3. The attackers are aiming at the people who write signing code",
+                        "Same week, BTCPay Server announced a feature freeze — Nicolas Dorier says future releases may REMOVE features to shrink attack surface",
+                        "The thread from Coldcard to this: your wallet is only as honest as the least-audited dependency in its build"
+                    ],
+                    "link": "https://tangentsdaily.substack.com/p/saturday-aug22",
+                    "linkLabel": "The Supply-Chain Story"
+                },
+                {
+                    "heading": "The Defense Files Its Reports",
+                    "body": "Last week we covered the defense getting tooling. This week the tooling produced paper.",
+                    "bullets": [
+                        "The 256 Foundation's ASIC red team has logged 41 security findings, each with a reproducible proof — on firmware ~90% of miners run and nobody audits",
+                        "The volunteer Bitcoin Red Team from early August is open-sourcing the AI harness behind its 4,962-finding sprint — the method becomes everyone's",
+                        "Trezor closed the books on its breach: 13,689 customers exposed via a hacked shipping partner, 11,742 with full name-phone-home-address records",
+                        "Trezor's answer is structural: an Anonymous Delivery option, EU in September, US by year-end. The right fix — data they never have can't leak"
+                    ],
+                    "link": "https://trezor.io/blog/news/recent-customer-data-exposed-in-shipping-provider-incident",
+                    "linkLabel": "Trezor's Disclosure",
+                    "links": [
+                        {
+                            "url": "https://www.256foundation.org/",
+                            "label": "256 Foundation"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "lightning-corner",
+            "title": "Lightning Corner",
+            "description": "A reorg vuln outlives its patch quietly, threshold custody without asking permission, and news from the field",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Lightning Corner: The Vuln That Waited for a Reorg",
+                    "body": "Optech #419 led with a disclosure: for years, LND trusted a single confirmation more than it should have.",
+                    "bullets": [
+                        "The bug: after a cooperative channel close, LND forgot the channel after ONE confirmation",
+                        "The attack: reorg that one block away, publish an old revoked state — and the node that forgot the channel can't fire its penalty. Funds gone",
+                        "Bastien Teinturier disclosed it; fixed since LND 0.20.0 (February), which now waits six confirmations. No known thefts",
+                        "If you run LND and haven't crossed 0.20.0 yet, that's tonight's homework"
+                    ],
+                    "link": "https://bitcoinops.org/en/newsletters/2026/08/21/",
+                    "linkLabel": "Optech #419"
+                },
+                {
+                    "heading": "Iceberg: Boardroom Keys on a Hot Network",
+                    "body": "Lightning's oldest institutional objection: the channel needs one hot key, always online. A new paper removes it.",
+                    "bullets": [
+                        "Iceberg nests a t-of-n threshold group INSIDE one side of a standard MuSig2 channel — the counterparty sees a normal peer and can't tell",
+                        "No protocol changes, no permission needed — deployable on today's network, unilaterally",
+                        "The cost of splitting the key across a committee: it still sustains 93%+ of normal payment throughput",
+                        "Why it matters: a desk can run Lightning with real key ceremonies instead of one server holding everything. The single-hot-key era didn't have to be permanent"
+                    ],
+                    "link": "https://eprint.iacr.org/2026/1757",
+                    "linkLabel": "The Iceberg Paper"
+                },
+                {
+                    "heading": "From the Field: BOLT12, Zeus, Glow",
+                    "body": "The plumbing above is theory becoming practice. This is practice.",
+                    "bullets": [
+                        "First documented real-world BOLT12 donations: a Ukrainian front-line supply charity takes reusable Lightning offers and publishes itemized purchases — Peter Todd wrote it up",
+                        "Zeus v13.2.0 shipped Friday: 24-word LDK seeds, embedded LND 0.21.2, a Cashu upgrade that speaks Minibits, and your own choice of mempool server",
+                        "Under Zeus's hood, the Cashu CDK itself is sprinting — v0.17.6 released today, 0.18 release candidates rolling. Ecash is becoming a standard wallet feature, quietly",
+                        "And Breez launched Glow: an open-source nodeless-Lightning wallet plus the toolkit to build your own"
+                    ],
+                    "link": "https://github.com/ZeusLN/zeus/releases",
+                    "linkLabel": "Zeus v13.2.0",
+                    "links": [
+                        {
+                            "url": "https://tangentsdaily.substack.com/p/friday-aug21",
+                            "label": "The BOLT12 Story"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "freedom-tech",
+            "title": "Freedom Tech",
+            "description": "HRF grants half a billion sats the same week the Kremlin outlaws them",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Freedom Tech: Funded and Outlawed, Same Week",
+                    "body": "Two headlines about the same organization, five days apart. Read them together.",
+                    "bullets": [
+                        "The Human Rights Foundation granted 500M+ sats (~$397K) to 16 projects across Africa, Asia and Latin America",
+                        "Among them: Bitspenda, bridging Lightning to mobile money in Nigeria and Kenya — and Project Island Resilience, offline payments over Bluetooth, NFC and ecash for protests and internet shutdowns",
+                        "Five days earlier, Russia's Prosecutor General declared HRF 'undesirable' — working with them inside Russia is now a crime",
+                        "That's the week's cleanest signal: one government criminalizes the org while it funds payment rails no government can switch off"
+                    ],
+                    "link": "https://hrf.org/latest/hrf-bitcoin-development-fund-grants-500-million-satoshis-to-projects-worldwide/",
+                    "linkLabel": "The Grant List",
+                    "links": [
+                        {
+                            "url": "https://bitcoinmagazine.com/news/human-rights-foundation-issues-more-grants",
+                            "label": "The Coverage"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "fips-watch",
+            "title": "FIPS Watch",
+            "description": "v0.4.2 lands — the mesh gets its armor on",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "FIPS Watch: v0.4.2",
+                    "body": "First release since July — and the biggest maintenance drop the project has had. Quick refresher: FIPS is Johnathan Corgan's mesh network where your Nostr key IS your network address.",
+                    "bullets": [
+                        "144 commits since v0.4.1, and the theme is armor: six ways an unauthenticated packet could change a node's session state — all closed",
+                        "NAT traversal fixed, plus real performance work: about 35ms per tick recovered at 240 peers",
+                        "New optional controls: rate limiting and admission control — the knobs you need before strangers join your mesh",
+                        "Still pre-audit, as always. But this is what pre-audit hardening is supposed to look like"
+                    ],
+                    "link": "https://github.com/jmcorgan/fips/releases",
+                    "linkLabel": "The Release Notes",
+                    "links": [
+                        {
+                            "url": "https://fips.network",
+                            "label": "fips.network"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "nostr-week",
+            "title": "Nostr This Week",
+            "description": "Clients pull keys out of the browser, and the protocol keeps moving — Compass #37",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "Nostr This Week: Keys Leave the Browser",
+                    "body": "Nostr Compass #37 dropped this morning. The theme rhymes with Bitcoin's month: defense.",
+                    "bullets": [
+                        "Shopstr pulled remote-signer and wallet-connect secrets out of browser localStorage — they now live in runtime memory and die with the tab",
+                        "nostr-tools closed a private-DM spoofing gap: a gift-wrapped message's inner author must now match the seal that carries it",
+                        "Postr v1.0.0, a new Android composer, trusts nothing: it only counts a post as sent after reading the signed event back and re-checking the signature",
+                        "Same instinct everywhere this week — assume the layer under you lies, and verify"
+                    ],
+                    "link": "https://nostrcompass.org/en/newsletters/2026-08-26-newsletter/",
+                    "linkLabel": "Nostr Compass #37"
+                },
+                {
+                    "heading": "Protocol Motion",
+                    "body": "The standards work that decides what Nostr looks like next year:",
+                    "bullets": [
+                        "NIP-22 comments are winning: Snort and Ditto now publish replies as kind 1111 by default — threaded conversation is becoming the norm",
+                        "A NIP-47 draft adds a max_fee ceiling to wallet-connect payments — your Nostr client finally gets to say what a Lightning payment may cost",
+                        "Haven, the personal relay, grew a real admin console — standard NIP-86 management with NIP-98 auth",
+                        "And the ambitious one: Heterodyne, a draft spec family for portable personas — Nostr events, Radicle storage, Marmot messaging and KERI key logs under one identity"
+                    ],
+                    "link": "https://nostrcompass.org/en/newsletters/2026-08-26-newsletter/",
+                    "linkLabel": "The Full Issue",
+                    "links": [
+                        {
+                            "url": "https://github.com/nostr-protocol/nips",
+                            "label": "The NIPs Repo"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "builder-spotlight",
+            "title": "Builder Spotlight",
+            "description": "PlebLab takes the accelerator to Mexico — Hackalajara 2.0 and a coordinatorless coinjoin workshop",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Builder Spotlight: Hackalajara 2.0",
+                    "body": "Mexico's first Bitcoin hackathon came back for round two last Thursday — and PlebLab brought Startup Day with it.",
+                    "bullets": [
+                        "August 20, Stacker Space, Guadalajara: a full build day around Bitcoin, Lightning and local adoption — Startup Day demos followed Friday",
+                        "1,000,000 sats across five prizes: Fulgur Ventures' 300K grand prize, ShockNet's 500K for CLINK integration, plus payments, design and community awards",
+                        "Judges: PlebLab's Car Gonzalez, Lightning dev Chris Guida, and White Paper House's Daniel",
+                        "Car's pitch for Guadalajara: 'really hardcore Bitcoiners' already building — the talent just isn't on English-language Bitcoin's radar yet",
+                        "Winners hadn't been posted as of tonight — Super Testnet is making the announcements. When he does, so will we"
+                    ],
+                    "link": "https://hackalajara.pleblab.com/",
+                    "linkLabel": "Hackalajara 2.0"
+                },
+                {
+                    "heading": "The Workshop: Coinjoins Without a Coordinator",
+                    "body": "One workshop deserves its own slide — Super Testnet taught Hackalajara his Emessbee protocol, remotely from Puerto Rico.",
+                    "bullets": [
+                        "The problem: every big coinjoin tool needed a coordinator — a server to subpoena, seize, or fee-farm. Ask Samourai's founders how that ends",
+                        "Emessbee runs the join in three rounds with nobody in charge: prove you own your inputs, register equal outputs behind ring signatures, then everyone signs",
+                        "Honest caveat, straight from the README: no kickout protocol yet, so trolls can still flood a round and stall it",
+                        "The repo has the slides, a demo video, and the full workshop recording — you can take the class he taught in Guadalajara tonight"
+                    ],
+                    "link": "https://github.com/supertestnet/coinjoin-workshop",
+                    "linkLabel": "Take the Workshop"
+                }
+            ]
+        },
+        {
+            "id": "quick-tip",
+            "title": "Quick Tip of the Week",
+            "description": "The highest-yield Bitcoin tool this week was a room full of people",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Quick Tip: Show Up in Person",
+                    "body": "Everything in tonight's Spotlight happened because people got in a room. That tool is available to you.",
+                    "bullets": [
+                        "Find a local meetup and actually go. BitDevs chapters run free socratic seminars in dozens of cities — the reading lists alone are worth it",
+                        "You don't need to present anything. Listening in the back row of the right room beats a month of headlines",
+                        "The people you meet become your sources — most of what hits these decks starts as 'someone at a meetup mentioned…'",
+                        "Next week I'm bringing a list of local meetups worth your calendar. Until then: you already found one. You're in it"
+                    ],
+                    "link": "https://bitdevs.org/",
+                    "linkLabel": "Find a BitDevs"
+                }
+            ]
+        },
+        {
+            "id": "community-news",
+            "title": "Community News & Topics",
+            "description": "Share what you're interested in talking about!",
+            "type": "text",
+            "slides": [
+                {
+                    "heading": "Next Week's Meetup",
+                    "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                    "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                    "linkLabel": "Submit a Topic"
+                }
+            ]
+        }
+    ]
+}
