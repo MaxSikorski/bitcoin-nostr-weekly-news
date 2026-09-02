@@ -1177,6 +1177,312 @@
     // === Inline fallback data for file:// protocol ===
     // Keep in sync with weeks/2026-W24.json
     const INLINE_WEEKS = {
+        "2026-W36": {
+            "week": "2026-W36",
+            "date": "2026-09-02",
+            "title": "Dashjr's Exit, the CLN Embargo & the Dead-Cat Question",
+            "subtitle": "This week in Bitcoin & Nostr news",
+            "timerMinutes": 20,
+            "topics": [
+                {
+                    "id": "market",
+                    "title": "Live Dashboard & Market",
+                    "description": "Where Bitcoin sits live — and whether last week's squeeze was a floor or a bounce",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Live Dashboard",
+                            "body": "Where Bitcoin sits right now. The full dashboards:",
+                            "widget": "live-price",
+                            "links": [
+                                {
+                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                                    "label": "Clark Moody Dashboard"
+                                },
+                                {
+                                    "url": "https://mempool.space",
+                                    "label": "mempool.space"
+                                }
+                            ]
+                        },
+                        {
+                            "heading": "Dead Cat or Real Floor?",
+                            "body": "Last week we covered the squeeze. This week: the hangover. The rally topped out above $81K and has been leaking since.",
+                            "bullets": [
+                                "August was the ETFs' best month of 2026: $3.52B in, assets up 31% to $99.6B, Bitcoin up 25% — its best month since November 2024",
+                                "Then September opened with $236M OUT on day one — $201M of it from BlackRock's IBIT alone",
+                                "The pattern worth knowing: twelve $3B+ ETF months since launch, and Bitcoin fell the month after seven of them. Average follow-up month: +0.13%",
+                                "The bull's rebuttal: August erased two-thirds of the ETFs' 2026 deficit, and the bounce off $63K happened AGAINST outflows",
+                                "Same rule as the bear slides three weeks ago: it's data, not destiny. A bounce becomes a floor only if it holds"
+                            ],
+                            "link": "https://coinpaper.com/35157/bitcoin-etfs-just-had-their-best-month-of-2026-but-september-starts-with-a-warning",
+                            "linkLabel": "The September Warning"
+                        }
+                    ]
+                },
+                {
+                    "id": "dashjr-ocean",
+                    "title": "Dashjr Exits OCEAN",
+                    "description": "The pool's co-founder walks after the fork fight — equity bought back, a mystery venture named CONVOY",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Dashjr Exits OCEAN: The Divorce",
+                            "body": "August 29, a joint statement: Luke Dashjr is out of OCEAN — the pool he helped Jack Dorsey's money launch in 2023.",
+                            "bullets": [
+                                "He resigned all three hats: chairman, CTO, and director. Parent company Mummolin bought back his entire equity stake — price undisclosed, no successor named",
+                                "Both sides call it mutual, citing 'different visions following recent protocol developments.' Nobody says BIP-110 out loud. Everybody means it",
+                                "The trail: July, OCEAN added BIP-110 signaling endpoints. August 9, it quietly moved its default back to the non-fork chain. Three weeks later, the founder's gone",
+                                "Scale check: OCEAN mines about 2.5–2.9% of blocks, roughly 25 EH/s. Small pool, outsized story — it was the flagship for transparent, non-custodial mining"
+                            ],
+                            "link": "https://cryptoslate.com/veteran-bitcoin-developer-luke-dashjr-exits-ocean-pool-will-hash-power-follow-him-to-new-pool/",
+                            "linkLabel": "The Exit, Reported"
+                        },
+                        {
+                            "heading": "CONVOY: The Next Act Nobody Can Verify",
+                            "body": "Dashjr says he's building a new venture called CONVOY, aimed at mining decentralization. That's roughly everything anyone knows.",
+                            "bullets": [
+                                "Published so far: no endpoint, no code, no participating miners, no fee structure, no infrastructure. A name and a mission statement",
+                                "His track record says don't dismiss it: he co-founded Eligius, one of the earliest pools, and has been shipping mining software since 2011",
+                                "The open question for OCEAN: how much of its hashrate was there FOR Luke? Watch whether miners follow him out",
+                                "The bigger read: the BIP-110 war keeps claiming casualties after its own death — first the fork froze, now the org chart"
+                            ],
+                            "link": "https://tangentsdaily.substack.com/p/tuesday-sep01",
+                            "linkLabel": "Tangents on the Split"
+                        }
+                    ]
+                },
+                {
+                    "id": "security-desk",
+                    "title": "Security Desk",
+                    "description": "Lightning patches under embargo, AI on both sides of the war, and Jade cleared of Coldcard's sin",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Security Desk: The 14-Day Embargo",
+                            "body": "Core Lightning shipped an emergency release this week — and did something Bitcoin projects almost never do: binaries first, source code later.",
+                            "bullets": [
+                                "CLN v26.06.7 fixes a vulnerability that surfaced after ten days of AI-generated CVE reports flooding the team",
+                                "The twist: signed binaries shipped within 48 hours, but the source stays sealed until September 11 — so attackers can't reverse-engineer the patch while nodes upgrade",
+                                "No known active exploit, per Christian Decker. Can't stomach running an unaudited binary? Restart with the --offline flag and wait out the embargo",
+                                "Community response: orangesurf audited the trust chain instead — Decker's signing key dates to 2015, with 31 third-party certifications backing it",
+                                "That's the trade on the table: for two weeks, Lightning operators are trusting signatures, not source. New disclosure playbook for the AI era"
+                            ],
+                            "link": "https://bitcoinops.org/en/newsletters/2026/08/28/",
+                            "linkLabel": "Optech #420"
+                        },
+                        {
+                            "heading": "The Cleanup: Sparrow Hardens, Jade Walks Free",
+                            "body": "The rest of the security week reads like aftermath — of Coldcard, and of AI joining both teams.",
+                            "bullets": [
+                                "Sparrow 2.5.4: security hardening after an AI-assisted code review. It now verifies what Electrum servers tell it, validates the proofs, and stopped writing your Core credentials into debug logs",
+                                "Blockstream's Jade: formally CLEARED of the Coldcard-style seed flaw. Its randomness mixes chip noise, timing jitter, and camera noise through SHA512 — independent analyses agree. Firmware 1.0.41 hardens it anyway",
+                                "Notice the shape of the week: AI-generated junk CVEs forced CLN's embargo, while an AI-assisted review hardened Sparrow. Same weapon, both hands",
+                                "Homework unchanged: Sparrow 2.5.4, Jade 1.0.41, and if you run CLN — upgrade or go offline"
+                            ],
+                            "link": "https://github.com/sparrowwallet/sparrow/releases",
+                            "linkLabel": "Sparrow Releases"
+                        }
+                    ]
+                },
+                {
+                    "id": "freedom-tech",
+                    "title": "Freedom Tech",
+                    "description": "Switzerland comes for Peach's no-KYC model, and Afghanistan proves the self-custody point",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Freedom Tech: Peach at a Crossroads",
+                            "body": "Peach Bitcoin — the Swiss peer-to-peer exchange that's run KYC-free since 2022 — hit a wall this week, and the wall was its own regulator.",
+                            "bullets": [
+                                "Swiss regulators requalified the framework Peach operated under. The old read: its escrow was a 'purely technical, non-custodial mechanism.' The new read: not good enough",
+                                "As of September 1, the KYC-free model is paused — selling is restricted to KYC'd users and whitelisted sellers",
+                                "Founder Steph Wetzel is contesting the reversal, and floating a pivot to fully self-custodial services if it stands",
+                                "Why it stings: Peach was the working example that compliant AND private could coexist in Europe. That example just got narrower"
+                            ],
+                            "link": "https://tangentsdaily.substack.com/p/wednesday-sep02",
+                            "linkLabel": "Peach's Statement, Covered"
+                        },
+                        {
+                            "heading": "Herat: What a Raid Can and Can't Seize",
+                            "body": "Same week, the other end of the enforcement spectrum — Afghanistan's Taliban moved on Bitcoin the old-fashioned way.",
+                            "bullets": [
+                                "20+ bitcoin shops shut down in Herat, at least 13 traders arrested",
+                                "Measured monthly flows collapsed from $150M to under $80,000 — a 99.9% wipeout of the visible market",
+                                "The distinction that survives: a raid closes storefronts and arrests the people running them. It cannot seize a private key it never located",
+                                "Read next to Peach: pressure everywhere lands on the INTERMEDIARIES. Self-custody is the part no requalification or raid reaches"
+                            ],
+                            "link": "https://tangentsdaily.substack.com/p/monday-aug31",
+                            "linkLabel": "The Herat Story"
+                        }
+                    ]
+                },
+                {
+                    "id": "bitgo-nydig",
+                    "title": "Money & Power",
+                    "description": "BitGo swallows NYDIG's trading desk — and NYDIG goes all-in on gigawatts",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Money & Power: BitGo Buys NYDIG's Trading Arm",
+                            "body": "The institutional plumbing consolidated this week: BitGo completed its purchase of NYDIG's trading business.",
+                            "bullets": [
+                                "What moved: about 30 employees and 250 institutional client relationships — derivatives, structured products, financing, capital markets",
+                                "The play: custody, trading, and financing under ONE regulated roof. Fewer counterparties, more concentration — pick which word worries you",
+                                "The other half of the story: NYDIG is now free to focus on mining and compute — 3+ gigawatts in the development pipeline, over 1 GW deliverable by 2028",
+                                "Translation: one of Wall Street's Bitcoin pioneers just chose energy infrastructure over the trading desk"
+                            ],
+                            "link": "https://tangentsdaily.substack.com/p/sunday-aug30",
+                            "linkLabel": "The Deal"
+                        }
+                    ]
+                },
+                {
+                    "id": "quantum-corner",
+                    "title": "Quantum Corner",
+                    "description": "New research says quantum computers may hit a wall — right where Bitcoin stops caring",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Quantum Corner: A Ceiling on the Threat?",
+                            "body": "The post-quantum debate got its most interesting twist in months — physics pushing back on the panic.",
+                            "bullets": [
+                                "The research: quantum computers may face a fundamental ceiling around 1,000 qubits — far below what's needed to break Bitcoin's secp256k1 curve",
+                                "If the ceiling is real, the whole 'quantum steals Satoshi's coins' scenario dies at the hardware layer",
+                                "The grown-up take, via Allen Farrington: implement the post-quantum BIP anyway, so the chain CAN move — then watch the qubit experiments that would falsify the ceiling",
+                                "Insurance you hope never pays out is still worth writing. That's the whole position in one line"
+                            ],
+                            "link": "https://tangentsdaily.substack.com/p/saturday-aug29",
+                            "linkLabel": "The Qubit-Ceiling Case"
+                        }
+                    ]
+                },
+                {
+                    "id": "optech-corner",
+                    "title": "Optech Corner",
+                    "description": "A faithful tool retires, and the ecosystem armors up for the next fork fight",
+                    "type": "discussion",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Optech Corner: HWI Rides Into the Sunset",
+                            "body": "From newsletter #420 — a retirement that's actually a success story.",
+                            "bullets": [
+                                "Ava Chow is winding down HWI, the tool that connects hardware wallets to Bitcoin Core. Mission accomplished: the support it pioneered is now everywhere",
+                                "The honest reason too: mostly one maintainer, and the builds can't be made reproducible. It gets MuSig2 support, a final release, then maintenance-only",
+                                "Also in the issue: a proposal for hierarchical block-range filters — light clients could download 70–80% less filter data",
+                                "The lesson in the retirement: in open source, the goal is to make yourself unnecessary. HWI did"
+                            ],
+                            "link": "https://bitcoinops.org/en/newsletters/2026/08/28/",
+                            "linkLabel": "Optech #420"
+                        },
+                        {
+                            "heading": "Fork Armor, Built in Peacetime",
+                            "body": "BIP-110 is dead, but look what the survivors are building — protections nobody had during the fight.",
+                            "bullets": [
+                                "Replay protection, opt-in: moonsettler proposed committing to a recent block hash via the taproot annex, so your transaction is only valid on YOUR chain. AJ Towns countered with a 6-byte version",
+                                "Why now: during an actual split, a transaction on one chain can be replayed on the other. This summer got close enough to make that real",
+                                "Meanwhile mempool.space now shows BIP-54 (Consensus Cleanup) readiness — which pools mine compatible blocks, as a public metric",
+                                "The theme: turning fork-readiness from a Twitter argument into visible infrastructure. Peacetime is when you build this"
+                            ],
+                            "link": "https://tangentsdaily.substack.com/p/thursday-aug27",
+                            "linkLabel": "BIP-54 Goes Visible"
+                        }
+                    ]
+                },
+                {
+                    "id": "fips-watch",
+                    "title": "FIPS Watch",
+                    "description": "v0.5.0 five days after v0.4.2 — the mesh lands on Android and your router",
+                    "type": "discussion",
+                    "accent": "nostr",
+                    "slides": [
+                        {
+                            "heading": "FIPS Watch: v0.5.0 — The Mesh Gets Legs",
+                            "body": "Last week: the armor release. Five days later, Johnathan Corgan shipped v0.5.0 — the expansion release. Refresher: FIPS is the mesh network where your Nostr key IS your network address.",
+                            "bullets": [
+                                "New platforms: Android and FreeBSD. The mesh now fits in your pocket",
+                                "The big one: OpenWrt support with 802.11s mesh backhaul and an open '!FIPS' access SSID — that's router firmware. Flash your neighbor's router, grow the neighborhood mesh",
+                                "Native datagram API: apps can now speak to the mesh directly instead of pretending it's IPv6",
+                                "Plus fipsctl probe/address commands and a proper NixOS module. Two releases in seven days — the project is sprinting",
+                                "Still pre-audit, as always. But the trajectory: July was hardening, this week is reach"
+                            ],
+                            "link": "https://github.com/jmcorgan/fips/releases",
+                            "linkLabel": "The v0.5.0 Notes",
+                            "links": [
+                                {
+                                    "url": "https://fips.network",
+                                    "label": "fips.network"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "nostr-week",
+                    "title": "Nostr This Week",
+                    "description": "Compass #38 — Nostr goes offline-first, and relays learn to guard the mailbox",
+                    "type": "discussion",
+                    "accent": "nostr",
+                    "slides": [
+                        {
+                            "heading": "Nostr This Week: Offline-First",
+                            "body": "Nostr Compass #38 dropped this morning. The through-line: Nostr working where the internet isn't.",
+                            "bullets": [
+                                "Voca 1.0: an offline Android reader for long-form Nostr — subscribes to writers, verifies the notes, and reads articles ALOUD. Nostr as a podcast of its own essays",
+                                "Amethyst shipped portable highlights; Napstr is publishing audio catalogues with seeder heartbeats — media distribution, Nostr-native",
+                                "On the relay side: Conduit now protects gift-wrap inboxes by default, and Nostream added relay-side job routing with authenticated operation",
+                                "Divine Mobile made wrapped-message deletion deterministic — private DMs that delete the same way every time",
+                                "Put it next to FIPS: the whole purple stack is optimizing for the disconnected case. That's not an accident"
+                            ],
+                            "link": "https://nostrcompass.org/en/newsletters/2026-09-02-newsletter/",
+                            "linkLabel": "Nostr Compass #38"
+                        }
+                    ]
+                },
+                {
+                    "id": "quick-tip",
+                    "title": "Quick Tip of the Week",
+                    "description": "Last week's homework, delivered: where to find your next Bitcoin meetup",
+                    "type": "tool",
+                    "accent": "bitcoin",
+                    "slides": [
+                        {
+                            "heading": "Quick Tip: The Meetup Map",
+                            "body": "Last week's tip was 'show up in person.' This week: the map that makes it easy.",
+                            "bullets": [
+                                "bitcoinonly.events keeps a running directory of Bitcoin-only meetups worldwide — filter by country, date, or event type",
+                                "September alone lists gatherings from Munich to Miami to Vancouver — odds are something's within driving distance",
+                                "Bitcoin-ONLY is the filter that matters: no altcoin pitches, just the people you actually want in the room",
+                                "Scan the QR, find your city, put one on the calendar. That's the whole tip"
+                            ],
+                            "link": "https://bitcoinonly.events/meetups/",
+                            "linkLabel": "Find a Meetup"
+                        }
+                    ]
+                },
+                {
+                    "id": "community-news",
+                    "title": "Community News & Topics",
+                    "description": "Share what you're interested in talking about!",
+                    "type": "text",
+                    "slides": [
+                        {
+                            "heading": "Next Week's Meetup",
+                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                            "linkLabel": "Submit a Topic"
+                        }
+                    ]
+                }
+            ]
+        },
         "2026-W35": {
             "week": "2026-W35",
             "date": "2026-08-26",
