@@ -1,0 +1,303 @@
+{
+    "week": "2026-W37",
+    "date": "2026-09-09",
+    "title": "The Liquid Heist, an On-Chain Ransom & the Self-Custody Dip",
+    "subtitle": "This week in Bitcoin & Nostr news",
+    "timerMinutes": 20,
+    "topics": [
+        {
+            "id": "market",
+            "title": "Live Dashboard & Market",
+            "description": "Where Bitcoin sits live — and the money's answer to last week's dead-cat question",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Live Dashboard",
+                    "body": "Where Bitcoin sits right now. The full dashboards:",
+                    "widget": "live-price",
+                    "links": [
+                        {
+                            "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                            "label": "Clark Moody Dashboard"
+                        },
+                        {
+                            "url": "https://mempool.space",
+                            "label": "mempool.space"
+                        }
+                    ]
+                },
+                {
+                    "heading": "The Floor Answers (For Now)",
+                    "body": "Last week's question: dead cat or real floor? This week the money answered.",
+                    "bullets": [
+                        "September's day-one outflow reversed hard: ETFs took in $986.9M for the week ending Friday — the three-week total hit $3.8B, the strongest stretch of 2026",
+                        "Thursday alone: roughly $731M in, the year's biggest single day. BlackRock's IBIT still takes about two-thirds of the flow",
+                        "The test: Friday's ugly payrolls print knocked price briefly under $79K — and buyers took the dip against bad macro news",
+                        "Scorecard: the bounce off $63K has now survived a September open AND a macro scare. That's floor behavior — same caveat as always: it's data, not destiny"
+                    ],
+                    "link": "https://coinmarketcap.com/academy/article/bitcoin-etfs-3-8b-three-week-inflow-streak-2026",
+                    "linkLabel": "The Flow Numbers"
+                }
+            ]
+        },
+        {
+            "id": "liquid-heist",
+            "title": "The Liquid Heist",
+            "description": "$320M walks out of the federation peg through a decade-old bugfix — then most of it walks back, negotiated entirely on-chain",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "The Liquid Heist: $320M Out of the Peg",
+                    "body": "Saturday, about 4,000 BTC — roughly $320M — left Liquid's federation wallet. Not a key theft. A money printer.",
+                    "bullets": [
+                        "The bug lived in Elements, Liquid's node software: an old 'fix' to range-proof caching glued two fields into the cache key with no separators. Stretch one field, shrink the other — same key, and an invalid proof sails through validation",
+                        "So the attacker minted unbacked L-BTC and pegged it out for real BTC — via SideSwap's authorization key, which was never compromised. Neither was any federation key",
+                        "mempool.space's mononaut traced it and delivered the line of the week: the most dangerous moment in a codebase is the commit that fixes something",
+                        "orangesurf's ops finding stings too: no cap on a single peg-out, no daily limit — a nine-figure withdrawal got no manual review",
+                        "Sidechain paused, bridge nodes off, exchanges froze L-BTC. Other Liquid assets unaffected"
+                    ],
+                    "link": "https://gizmodo.com/hackers-drain-320-million-from-bitcoins-liquid-network-keep-47-million-for-themselves-in-white-hat-operation-2000808262",
+                    "linkLabel": "The Heist, Reported"
+                },
+                {
+                    "heading": "The Ransom, Settled On-Chain",
+                    "body": "Then it got stranger: the negotiation happened in public, written into Bitcoin transactions.",
+                    "bullets": [
+                        "PGP-signed messages embedded on-chain, opening with a flourish: 'You shall pay for your dereliction of duty'",
+                        "Monday: 3,400 BTC came back to the federation. Kept: 598.5 BTC, about $47M — a self-awarded 'whitehat bounty' nobody agreed to",
+                        "Sit with the mechanics: two parties who trust nothing about each other settled a nine-figure dispute on a public ledger. No court, no custodian, no phone call",
+                        "Blockstream says the bug is patched and a coordinated federation restart is being prepared. The peg stays halted until it happens",
+                        "The discussion question: what is a federated peg actually backed by? This week's answer — the code review"
+                    ],
+                    "link": "https://unchainedcrypto.com/liquid-attackers-return-3400-btc-and-keep-nearly-600-as-blockstream-prepares-a-restart/",
+                    "linkLabel": "The Give-Back"
+                }
+            ]
+        },
+        {
+            "id": "custody-shift",
+            "title": "The Self-Custody Dip",
+            "description": "River's report catches something that has never happened: coins leaving self-custody, on net",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "The Self-Custody Dip: First Decline in 15 Years",
+                    "body": "River's new report caught a first: bitcoin held in self-custody went DOWN.",
+                    "bullets": [
+                        "The stock is still enormous: about 13.83M BTC in individual self-custody — 65.9% of supply, roughly $1.09 trillion, triple the ETFs and treasuries combined",
+                        "But the direction is new: the first net decline in about fifteen years of measurement",
+                        "Who's moving: large holders swapping coins directly for ETF shares — in-kind, tax-efficient, no keys to manage. BlackRock's IBIT has absorbed $3B+ this way",
+                        "Put it next to tonight's Liquid and Trezor stories: convenience keeps winning wallets back. Rooms like this one are the counter-argument"
+                    ],
+                    "link": "https://en.cryptonomist.ch/2026/08/26/bitcoin-custody-trends-etf-shift/",
+                    "linkLabel": "The River Report"
+                }
+            ]
+        },
+        {
+            "id": "security-desk",
+            "title": "Security Desk",
+            "description": "The Trezor breach quintuples on data that was 'deleted,' and Lightning merchants get two urgent patches",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Security Desk: The Breach That Was 'Deleted'",
+                    "body": "Trezor's shipping-partner breach got five times bigger this week — and the ugly part is why.",
+                    "bullets": [
+                        "67,000 more US customers exposed — orders from November 2019 to August 2021. August's disclosure said 13,689; same incident, now five times the size",
+                        "What leaked: names, emails, phones, home addresses, order numbers. What didn't: seeds, keys, funds. The devices are fine",
+                        "The kicker: ShipMonk gave Trezor written assurance that old data was deleted. It wasn't — attackers pulled it through a CVSS-10 hole in ShipMonk's analytics tool",
+                        "The ShinyHunters extortion crew claims the hit. Translation: a list of hardware-wallet owners with home addresses is in circulation",
+                        "Trezor's fix going forward is anonymized packaging. Yours is tonight's Quick Tip"
+                    ],
+                    "link": "https://trezor.io/blog/news/recent-customer-data-exposed-in-shipping-provider-incident",
+                    "linkLabel": "Trezor's Disclosure"
+                },
+                {
+                    "heading": "Lightning Merchants: Patch Week, Again",
+                    "body": "Two urgent updates for anyone running payments infrastructure.",
+                    "bullets": [
+                        "BTCPay Server 2.4.4: a security release after attackers drained Lightning funds from unpatched merchants. Eight breaking changes — NFC payments off by default, zero-amount invoices blocked, API keys stored hashed. The maintainers' words: all server admins update",
+                        "Alby Hub disclosed a critical flaw today: versions 1.7.0–1.18.5 with the management API reachable from the internet could be taken over — funds sent out. One known victim. Fix: v1.24.0",
+                        "Both stories rhyme: the wallet cryptography held; the config and the perimeter didn't",
+                        "If your node or store faces the internet, tonight's homework is two updates long"
+                    ],
+                    "link": "https://github.com/btcpayserver/btcpayserver/releases",
+                    "linkLabel": "BTCPay 2.4.4",
+                    "links": [
+                        {
+                            "url": "https://news.bitcoin.com/security/lightning-security-alert-alby-reveals-critical-hub-vulnerability/",
+                            "label": "The Alby Advisory"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "optech-corner",
+            "title": "Optech Corner",
+            "description": "#421: pools paying miners privately via silent payments, a Lightning ping-of-death, and the embargo clock runs out Thursday",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Optech Corner: Private Payouts for Miners",
+                    "body": "Newsletter #421's headline idea — pools paying miners without leaking every miner's finances.",
+                    "bullets": [
+                        "Today's setup: pools pay hashers from a shared xpub. One database breach and every payout, past and future, is exposed",
+                        "average_gary's proposal: BIP352 silent payments, right in the coinbase. The miner hands the pool one static address over Stratum v2's encrypted channel",
+                        "The pool derives a fresh key per block — 34 bytes in the coinbase scriptSig — and the miner scans the chain for money only they can recognize",
+                        "The theme: mining privacy is having a moment — Vinteum just ran a week-long mining-protocol deep dive in São Paulo, and the payout layer is catching up"
+                    ],
+                    "link": "https://bitcoinops.org/en/newsletters/2026/09/04/",
+                    "linkLabel": "Optech #421"
+                },
+                {
+                    "heading": "The Ping of Death & the Embargo Clock",
+                    "body": "Also in #421 — Lightning's disclosure culture keeps evolving.",
+                    "bullets": [
+                        "Erick Cestari disclosed a Core Lightning denial-of-service: flood a node with pings demanding 65KB replies and never read the answers — buffers fill, the node crashes out of memory. No channel required",
+                        "Fixed with backpressure in CLN's connect daemon; LND added its own ping rate-limits the same week. Upgrade line: CLN 25.09+, LND 0.21.3",
+                        "And the callback from last week: CLN's sealed source from the embargo release unseals THURSDAY, September 11. Two weeks of binaries-first, then the code shows its work",
+                        "Worth watching what precedent sticks: embargoed source may become the norm for money-adjacent bugs in the AI-report era"
+                    ],
+                    "link": "https://bitcoinops.org/en/newsletters/2026/09/04/#responsible-disclosure-of-a-denial-of-service-vulnerability-in-cln",
+                    "linkLabel": "The CLN Disclosure"
+                }
+            ]
+        },
+        {
+            "id": "freedom-tech",
+            "title": "Freedom Tech",
+            "description": "Peach's KYC-free pause gets its fine print — and the whitelist has zero names on it",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Freedom Tech: Peach's Pause, in Numbers",
+                    "body": "Last week: Swiss regulators requalified Peach's no-KYC escrow and the model paused. This week the fine print landed — and it's stricter than the headline.",
+                    "bullets": [
+                        "To sell now you need one of three things: full identity verification, a manual whitelist approval, or a track record of 60+ trades with zero disputes",
+                        "The whitelist currently has ZERO approved accounts. Buyers are capped at CHF 500 per trade with a 6% premium ceiling",
+                        "What survives: the 2-of-2 multisig escrow Peach never could spend alone, the 2% fee, in-app dispute resolution — it stays non-custodial through the appeal",
+                        "The stakes are bigger than one app: Switzerland is deciding whether NON-CUSTODIAL architecture counts as a regulatory defense at all",
+                        "Read it next to Herat from last week: pressure lands on intermediaries. The peer-to-peer part nobody can requalify is still you, your keys, and a counterparty"
+                    ],
+                    "link": "https://tangentsdaily.substack.com/p/wednesday-sep09",
+                    "linkLabel": "The Fine Print, Covered"
+                }
+            ]
+        },
+        {
+            "id": "fips-watch",
+            "title": "FIPS Watch",
+            "description": "v0.5.1 lands — the cleanup release that caps a fourteen-day sprint",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "FIPS Watch: v0.5.1 — The Cleanup Sprint",
+                    "body": "Third release in two weeks. Refresher: FIPS is the mesh network where your Nostr key IS your network address.",
+                    "bullets": [
+                        "v0.5.1 shipped Saturday: a maintenance release fixing the Debian 12 / Ubuntu 22.04 packaging bug that kept the daemon from starting at all",
+                        "Two discovery fixes teach the mesh better manners: a node no longer relays away the answer to its own lookup, and its own returning request no longer dings a peer's reputation",
+                        "Wire-compatible with v0.5.0 — rolling upgrades, zero config changes",
+                        "The cadence tells the story: armor (0.4.2) → reach (0.5.0) → polish (0.5.1), fourteen days end to end. Corgan is sprinting",
+                        "Still pre-audit — same asterisk as every week"
+                    ],
+                    "link": "https://github.com/jmcorgan/fips/releases",
+                    "linkLabel": "The v0.5.1 Notes",
+                    "links": [
+                        {
+                            "url": "https://fips.network",
+                            "label": "fips.network"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "nostr-week",
+            "title": "Nostr This Week",
+            "description": "NostrMag picks a fight worth having: purity or growth — and the ecosystem ships either way",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "Nostr This Week: The 500,000-Purist Problem",
+                    "body": "NostrMag started the argument this week: does Nostr want to stay pure, or get big?",
+                    "bullets": [
+                        "The op-ed's claim: shunning bots, brands and celebrities caps Nostr at roughly 500K technical purists. Its blunt version: without corporations no ad revenue, without celebrities no mainstream pull",
+                        "The proposed middle path: automation that declares itself (NIP-85), client-side filtering instead of relay censorship, and corporate npubs carrying their own trust scores",
+                        "The counter-argument writes itself — we all watched ad-funded networks optimize for advertisers over users. Discussion question: which failure mode scares you more, small or sold?",
+                        "Meanwhile the ecosystem shipped anyway: Block's Buzz and BitChat cracked GitHub's top-3 trending, and Damus Purple landed reliable large video uploads",
+                        "And fuel for all of it: HRF's latest grant wave put 500M+ sats into 16 freedom-tech projects, Nostr development included"
+                    ],
+                    "link": "https://nostrmag.com/article/w36nostr03",
+                    "linkLabel": "NostrMag's Week in Nostr"
+                }
+            ]
+        },
+        {
+            "id": "builder-spotlight",
+            "title": "Builder Spotlight",
+            "description": "Mr.Hodl's EntropyLab — a whole hardware-wallet lab in one offline HTML file",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Builder Spotlight: EntropyLab",
+                    "body": "Mr.Hodl built a hardware-wallet laboratory that fits in a single HTML file — and never touches the internet.",
+                    "bullets": [
+                        "One file, opened offline: bring your own randomness — dice rolls, playing cards, any number — and it becomes a BIP-39 seed, with the fingerprint, xpubs and addresses to check it",
+                        "The dice math matches COLDCARD, SeedSigner, Keystone and BitBox — same rolls, same seed. You can AUDIT your signer instead of trusting it",
+                        "Under the hood it's rust-bitcoin compiled to WebAssembly; recent additions: BIP-85 child seeds, silent payments, PSBT editing, Taproot multisig, even a check for reused Schnorr nonces",
+                        "Use it the way it's meant: download the file, run it air-gapped, wipe when done. It's a calculator, not a wallet — and it's labeled experimental, so treat it that way",
+                        "Try it tonight: entropylab.online — or just scan the QR"
+                    ],
+                    "link": "https://entropylab.online/",
+                    "linkLabel": "EntropyLab"
+                }
+            ]
+        },
+        {
+            "id": "quick-tip",
+            "title": "Quick Tip of the Week",
+            "description": "You're on a list now — ship, talk, and click like it",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Quick Tip: Ship Like You're Being Watched",
+                    "body": "If you ordered a Trezor between 2019 and 2021 — or any hardware wallet, ever — assume your name and home address are on a list.",
+                    "bullets": [
+                        "Never confirm you hold Bitcoin — not to callers, texters, or 'support.' The list proves a wallet was shipped; only YOU can confirm there's money behind it",
+                        "Add a passphrase to your hardware wallet — a leaked address can find your door, not your extra word",
+                        "Next device: ship to a PO box or pickup point, and use a nickname if the shop allows it",
+                        "Read breach-season email skeptically: these lists power very convincing phishing. Trezor will never ask for your seed. Nobody legitimate will"
+                    ],
+                    "link": "https://trezor.io/guides/backups-recovery/advanced-wallets/what-is-a-passphrase",
+                    "linkLabel": "Set Up a Passphrase"
+                }
+            ]
+        },
+        {
+            "id": "community-news",
+            "title": "Community News & Topics",
+            "description": "Share what you're interested in talking about!",
+            "type": "text",
+            "slides": [
+                {
+                    "heading": "Next Week's Meetup",
+                    "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                    "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                    "linkLabel": "Submit a Topic"
+                }
+            ]
+        }
+    ]
+}

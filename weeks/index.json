@@ -1,6 +1,11 @@
 {
     "weeks": [
         {
+            "id": "2026-W37",
+            "date": "2026-09-09",
+            "title": "The Liquid Heist, an On-Chain Ransom & the Self-Custody Dip"
+        },
+        {
             "id": "2026-W36",
             "date": "2026-09-02",
             "title": "Dashjr's Exit, the CLN Embargo & the Dead-Cat Question"
