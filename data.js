@@ -302,13 +302,13 @@ window.INLINE_WEEKS = {
             {
                 "id": "nostr-week",
                 "title": "Nostr This Week",
-                "description": "NostrMag picks a fight worth having: purity or growth — and the ecosystem ships either way",
+                "description": "NostrMag picks a fight worth having: purity or growth — and Compass #39's ship list answers it",
                 "type": "discussion",
                 "accent": "nostr",
                 "slides": [
                     {
                         "heading": "Nostr This Week: The 500,000-Purist Problem",
-                        "body": "NostrMag started the argument this week: does Nostr want to stay pure, or get big?",
+                        "body": "First, the argument of the week, via NostrMag: does Nostr want to stay pure, or get big?",
                         "bullets": [
                             "The op-ed's claim: shunning bots, brands and celebrities caps Nostr at roughly 500K technical purists. Its blunt version: without corporations no ad revenue, without celebrities no mainstream pull",
                             "The proposed middle path: automation that declares itself (NIP-85), client-side filtering instead of relay censorship, and corporate npubs carrying their own trust scores",
@@ -318,6 +318,19 @@ window.INLINE_WEEKS = {
                         ],
                         "link": "https://nostrmag.com/article/w36nostr03",
                         "linkLabel": "NostrMag's Week in Nostr"
+                    },
+                    {
+                        "heading": "Compass #39: The Ship List",
+                        "body": "Nostr Compass #39 landed this afternoon — while the philosophers argue, here's what shipped.",
+                        "bullets": [
+                            "Git on Nostr grew up: GitWorkshop v3 and ngit put signed Git workflows on relays — now with PRIVATE repos, and ngit-ci 0.1: self-hosted CI whose results are themselves signed Nostr events. A whole forge, no GitHub",
+                            "Shosho bridges your own Owncast stream to Nostr — discovery and chat ride the relays, the video stays on YOUR server. Self-hosted Twitch, purple-pilled",
+                            "Plektos made gatherings fully private: guest list, RSVPs and threads encrypted together, invites that expire 30 days after the event. Meetup organizers, take note",
+                            "cal.emre.xyz runs appointment scheduling on nothing but Nostr events (NIP-52) — availability and bookings live on relays, no database anywhere",
+                            "And a security wave: Amber tightens signing-request attribution, ZapStore validates event ids and flags side-loaded packages, and LibreNostr's Orbot mode routes everything through Tor — and stops cold if Tor isn't there"
+                        ],
+                        "link": "https://nostrcompass.org/en/newsletters/2026-09-09-newsletter/",
+                        "linkLabel": "Nostr Compass #39"
                     }
                 ]
             },
