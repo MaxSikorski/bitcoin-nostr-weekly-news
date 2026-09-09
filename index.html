@@ -3,12 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Bitcoin Meetup — Weekly Presentations</title>
-    <meta name="description" content="Weekly Bitcoin and Nostr news and discussion topics for our meetup group.">
+    <title></title>
+    <meta name="description" content="">
+    <script src="config.js"></script>
+    <script>
+        // Pre-paint branding from config.js: title, description, favicons.
+        (function (cfg) {
+            if (!cfg) return;
+            var page = /week\.html$/.test(location.pathname) ? 'week' : 'index';
+            document.title = cfg.pageTitles[page];
+            var meta = document.querySelector('meta[name="description"]');
+            if (meta) meta.content = cfg.metaDescription[page];
+            (cfg.favicons || []).forEach(function (icon) {
+                var link = document.createElement('link');
+                Object.keys(icon).forEach(function (k) { link.setAttribute(k, icon[k]); });
+                document.head.appendChild(link);
+            });
+        })(window.SITE_CONFIG);
+    </script>
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>₿</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -16,8 +31,14 @@
 
     <!-- Navigation -->
     <nav class="header-nav">
-        <a href="index.html" class="logo" id="logo-refresh">Bitcoin Meetup</a>
+        <a href="index.html" class="logo" id="logo-refresh"></a>
         <div class="nav-right">
+            <span id="nav-links"></span>
+            <button id="search-toggle" class="theme-toggle search-toggle" aria-label="Search all presentations" title="Search (/)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path>
+                </svg>
+            </button>
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
                 <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -32,8 +53,8 @@
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-content">
-            <h1 class="hero-title">Bitcoin &amp; Nostr<br>Weekly</h1>
-            <p class="hero-subtitle">News, policy, and discussion topics curated for our weekly meetup.</p>
+            <h1 class="hero-title"></h1>
+            <p class="hero-subtitle"></p>
             <a href="#current-section" class="scroll-cue" aria-label="Scroll to presentations">
                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 5v14M19 12l-7 7-7-7"/>
@@ -60,87 +81,14 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
-        Bitcoin Meetup
-    </footer>
+    <footer class="footer" id="site-footer"></footer>
 
     <script src="gsap.min.js"></script>
     <script src="script.js"></script>
+    <script src="data.js"></script>
     <script>
         (function () {
             'use strict';
-
-            // Inline fallback data (used when opening via file:// protocol)
-            // Keep this in sync with weeks/index.json
-            const INLINE_DATA = {
-                "weeks": [
-                    {
-                        "id": "2026-W36",
-                        "date": "2026-09-02",
-                        "title": "Dashjr's Exit, the CLN Embargo & the Dead-Cat Question"
-                    },
-                    {
-                        "id": "2026-W35",
-                        "date": "2026-08-26",
-                        "title": "Squeeze to $80K & a Million Sats in Guadalajara"
-                    },
-                    {
-                        "id": "2026-W34",
-                        "date": "2026-08-19",
-                        "title": "Roll Your Own Entropy & the Mildest Bear on Record"
-                    },
-                    {
-                        "id": "2026-W33",
-                        "date": "2026-08-12",
-                        "title": "BIP-110 Is Dead & the Rise of the Bitcoin Red Team"
-                    },
-                    {
-                        "id": "2026-W32",
-                        "date": "2026-08-05",
-                        "title": "The Coldcard Seed Heist & BIP-110's Flag Day"
-                    },
-                    {
-                        "id": "2026-W31",
-                        "date": "2026-07-29",
-                        "title": "BIP-110's Math Runs Out, Dorsey Puts Agents on Nostr & Clarity Misses Its Window"
-                    },
-                    {
-                        "id": "2026-W30",
-                        "date": "2026-07-22",
-                        "title": "Voltage Pulls the Plug on Hobby Nodes, the Streak Turns & the Two August 7ths"
-                    },
-                    {
-                        "id": "2026-W29",
-                        "date": "2026-07-15",
-                        "title": "Back and Saylor Reject BIP-110, Core 31.1's Privacy Fix & the ETF Whipsaw"
-                    },
-                    {
-                        "id": "2026-W28",
-                        "date": "2026-07-08",
-                        "title": "Strategy Sells $216M, Trump's $1.4B Crypto Year & Getting Started on Nostr"
-                    },
-                    {
-                        "id": "2026-W27",
-                        "date": "2026-07-01",
-                        "title": "Worst Month Since 2022, Strategy's 'Never Sell' Ends & a Nostr-Native Internet"
-                    },
-                    {
-                        "id": "2026-W26",
-                        "date": "2026-06-24",
-                        "title": "Two August Forks, Bitcoin Mortgages & Illinois's Crypto Tax"
-                    },
-                    {
-                        "id": "2026-W25",
-                        "date": "2026-06-17",
-                        "title": "BIP-110's Fork Fight, the Rebound & a Record Difficulty Drop"
-                    },
-                    {
-                        "id": "2026-W24",
-                        "date": "2026-06-10",
-                        "title": "ETF Exodus, Strategy's Dip Buy & the Reserve Bill"
-                    }
-                ]
-            };
 
             const archiveList = document.getElementById('archive-list');
             const currentList = document.getElementById('current-list');
@@ -172,9 +120,9 @@
                 `;
 
                 // Breathing glow on the featured card — a soft halo swells in and melts
-                // away (1s in, 1s out), then 2s fully dark; orange pulse, purple pulse,
-                // forever (Max's sanctioned color exception, 2026-08-12).
-                if (featured) {
+                // away (1s in, 1s out), then 2s fully dark, forever.
+                const haloColors = (window.SITE_CONFIG && window.SITE_CONFIG.halo) || [];
+                if (featured && haloColors.length > 0) {
                     const halo = document.createElement('div');
                     halo.className = 'glow-halo';
                     halo.setAttribute('aria-hidden', 'true');
@@ -189,8 +137,7 @@
                             tl.to(halo, { opacity: 0, duration: 1, ease: 'sine.inOut' });
                             tl.to({}, { duration: 2 });
                         };
-                        addPulse('#f7931a'); // bitcoin orange
-                        addPulse('#a06af9'); // nostr purple
+                        haloColors.forEach(color => addPulse(color));
                     }
                 }
                 return card;
@@ -213,7 +160,107 @@
                 if (past.length === 0) {
                     pastSection.style.display = 'none';
                 } else {
-                    past.forEach((week, index) => archiveList.appendChild(buildCard(week, index, false)));
+                    const monthGroups = new Map();
+                    past.forEach(week => {
+                        const dateObj = new Date(week.date + 'T12:00:00');
+                        const monthKey = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}`;
+                        if (!monthGroups.has(monthKey)) {
+                            monthGroups.set(monthKey, { date: dateObj, weeks: [] });
+                        }
+                        monthGroups.get(monthKey).weeks.push(week);
+                    });
+
+                    const months = Array.from(monthGroups.entries()).sort(([a], [b]) => b.localeCompare(a));
+                    const openMonths = (window.SITE_CONFIG && window.SITE_CONFIG.archive && window.SITE_CONFIG.archive.openMonths) ?? 2;
+                    const archiveYears = new Map();
+
+                    months.forEach(([monthKey]) => {
+                        const year = monthKey.slice(0, 4);
+                        if (!archiveYears.has(year)) archiveYears.set(year, monthKey);
+                    });
+
+                    if (archiveYears.size > 1) {
+                        const yearRail = document.createElement('nav');
+                        yearRail.className = 'archive-years';
+                        yearRail.setAttribute('aria-label', 'Jump to year');
+                        archiveYears.forEach((monthKey, year) => {
+                            const yearLink = document.createElement('a');
+                            yearLink.href = `#month-${monthKey}`;
+                            yearLink.textContent = year;
+                            yearRail.appendChild(yearLink);
+                        });
+                        archiveList.prepend(yearRail);
+                    }
+
+                    months.forEach(([monthKey, month], monthIndex) => {
+                        const isOpen = monthIndex < openMonths;
+                        const monthSection = document.createElement('section');
+                        monthSection.className = 'archive-month';
+                        monthSection.dataset.month = monthKey;
+
+                        const monthToggle = document.createElement('button');
+                        monthToggle.type = 'button';
+                        monthToggle.className = 'archive-month-toggle';
+                        monthToggle.setAttribute('aria-expanded', String(isOpen));
+                        monthToggle.setAttribute('aria-controls', `month-${monthKey}`);
+
+                        const monthName = document.createElement('span');
+                        monthName.className = 'archive-month-name';
+                        monthName.textContent = month.date.toLocaleDateString('en-US', {
+                            month: 'long',
+                            year: 'numeric'
+                        });
+
+                        const monthCount = document.createElement('span');
+                        monthCount.className = 'archive-month-count';
+                        monthCount.textContent = `${month.weeks.length} ${month.weeks.length === 1 ? 'deck' : 'decks'}`;
+
+                        const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                        chevron.setAttribute('class', 'archive-month-chevron');
+                        chevron.setAttribute('width', '16');
+                        chevron.setAttribute('height', '16');
+                        chevron.setAttribute('viewBox', '0 0 24 24');
+                        chevron.setAttribute('fill', 'none');
+                        chevron.setAttribute('stroke', 'currentColor');
+                        chevron.setAttribute('stroke-width', '1.5');
+                        chevron.setAttribute('stroke-linecap', 'round');
+                        chevron.setAttribute('stroke-linejoin', 'round');
+                        chevron.setAttribute('aria-hidden', 'true');
+                        const chevronPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        chevronPath.setAttribute('d', 'M6 9l6 6 6-6');
+                        chevron.appendChild(chevronPath);
+
+                        const monthCards = document.createElement('div');
+                        monthCards.className = 'archive-month-cards';
+                        monthCards.id = `month-${monthKey}`;
+                        monthCards.hidden = !isOpen;
+                        month.weeks.forEach((week, i) => monthCards.appendChild(buildCard(week, i, false)));
+
+                        monthToggle.appendChild(monthName);
+                        monthToggle.appendChild(monthCount);
+                        monthToggle.appendChild(chevron);
+                        monthSection.appendChild(monthToggle);
+                        monthSection.appendChild(monthCards);
+                        archiveList.appendChild(monthSection);
+
+                        monthToggle.addEventListener('click', () => {
+                            const expanded = monthToggle.getAttribute('aria-expanded') === 'true';
+                            monthToggle.setAttribute('aria-expanded', String(!expanded));
+                            monthCards.hidden = expanded;
+
+                            if (!expanded && typeof gsap !== 'undefined') {
+                                monthCards.querySelectorAll('.archive-card').forEach(card => {
+                                    gsap.to(card, {
+                                        opacity: 1,
+                                        y: 0,
+                                        duration: 0.8,
+                                        ease: 'power4.out',
+                                        delay: parseFloat(card.dataset.delay) || 0
+                                    });
+                                });
+                            }
+                        });
+                    });
                 }
 
                 // Trigger scroll reveals for dynamically added cards
@@ -246,10 +293,16 @@
                     if (!res.ok) throw new Error('HTTP error');
                     return res.json();
                 })
-                .then(data => renderArchive(data))
+                .then(data => {
+                    renderArchive(data);
+                    const initialQuery = new URLSearchParams(window.location.search).get('q') || '';
+                    if (initialQuery) window.DeckSearch.openPalette({ initialQuery });
+                })
                 .catch(() => {
                     console.log('Using inline data (file:// mode)');
-                    renderArchive(INLINE_DATA);
+                    renderArchive(window.INLINE_DATA || { weeks: [] });
+                    const initialQuery = new URLSearchParams(window.location.search).get('q') || '';
+                    if (initialQuery) window.DeckSearch.openPalette({ initialQuery });
                 });
         })();
     </script>

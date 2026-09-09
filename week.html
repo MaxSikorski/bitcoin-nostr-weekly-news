@@ -3,12 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Bitcoin Meetup — Presentation</title>
-    <meta name="description" content="Weekly Bitcoin and Nostr presentation.">
+    <title></title>
+    <meta name="description" content="">
+    <script src="config.js"></script>
+    <script>
+        // Pre-paint branding from config.js: title, description, favicons.
+        (function (cfg) {
+            if (!cfg) return;
+            var page = /week\.html$/.test(location.pathname) ? 'week' : 'index';
+            document.title = cfg.pageTitles[page];
+            var meta = document.querySelector('meta[name="description"]');
+            if (meta) meta.content = cfg.metaDescription[page];
+            (cfg.favicons || []).forEach(function (icon) {
+                var link = document.createElement('link');
+                Object.keys(icon).forEach(function (k) { link.setAttribute(k, icon[k]); });
+                document.head.appendChild(link);
+            });
+        })(window.SITE_CONFIG);
+    </script>
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>₿</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -16,8 +31,14 @@
 
     <!-- Navigation -->
     <nav class="header-nav">
-        <a href="index.html" class="logo">Bitcoin Meetup</a>
+        <a href="index.html" class="logo"></a>
         <div class="nav-right">
+            <span id="nav-links"></span>
+            <button id="search-toggle" class="theme-toggle search-toggle" aria-label="Search all presentations" title="Search (/)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path>
+                </svg>
+            </button>
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
                 <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -58,6 +79,20 @@
     <div class="qr-overlay" id="qr-overlay">
         <canvas id="qr-canvas"></canvas>
         <p class="qr-label" id="qr-label">Scan to open</p>
+    </div>
+
+    <!-- Slide credit: byline + per-topic contact (Max Sikorski) -->
+    <div class="slide-credit" id="slide-credit">
+        <span class="slide-credit-byline">Hosted by <strong id="slide-credit-host"></strong></span>
+        <span class="slide-credit-sep">·</span>
+        <a class="slide-credit-contact" id="slide-credit-contact" href="#" aria-label="Contact Max about this topic" title="Contact Max about this topic">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <span>Contact&nbsp;Max</span>
+        </a>
     </div>
 
     <!-- Presenter Controls -->
@@ -103,10 +138,13 @@
         <span class="key-hint"><kbd>Esc</kbd> Overview</span>
         <span class="key-hint"><kbd>T</kbd> Topics</span>
         <span class="key-hint"><kbd>Q</kbd> QR Code</span>
+        <span class="key-hint"><kbd>S</kbd> Share</span>
+        <span class="key-hint"><kbd>F</kbd> Find</span>
     </div>
 
     <script src="gsap.min.js"></script>
     <script src="script.js"></script>
+    <script src="data.js"></script>
     <script src="presenter.js"></script>
 </body>
 </html>

@@ -36,21 +36,23 @@
     const qrToggleBtn = document.getElementById('qr-toggle-btn');
     const presenterControls = document.getElementById('presenter-controls');
     const keyboardHints = document.getElementById('keyboard-hints');
+    const slideCreditContact = document.getElementById('slide-credit-contact');
 
-    // === Branding / contact (Max Sikorski) ===
-    // Email is assembled at runtime so plain-text scrapers don't harvest it off the page.
-    const CONTACT_EMAIL = ['bitcoinmax.7l388b', 'bumpmail.io'].join('@');
-    const LINKS = {
-        youtube: 'https://www.youtube.com/@maxwellsikorski4926',
-        github: 'https://github.com/MaxSikorski',
-        buzz: 'https://buzz.xyz/',
-        cal: 'https://cal.com/maxsikorski'
-    };
-    const WORK_WITH_MAILTO = (() => {
-        const subject = 'Bitcoin & Nostr Weekly — Work With You';
-        const body = "Hi Max,\n\nI'd like to talk about working together — wallet security / self-custody / Nostr / a project.\n\n";
+    // === Branding / contact — every site-specific value comes from config.js ===
+    const CFG = window.SITE_CONFIG || {};
+    const CONTACT_EMAIL = (CFG.contactEmail || []).join('@');   // assembled at runtime so scrapers don't harvest it
+    const MAIL = CFG.mail || {};
+    const CONNECT = CFG.connect || { links: [] };
+    function mailtoFor(subject, body) {
         return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    })();
+    }
+    const WORK_WITH_MAILTO = mailtoFor(MAIL.workWithSubject || '', MAIL.workWithBody || '');
+    function contactMailto(topicTitle) {
+        const fill = (s) => (s || '').replace('{topic}', topicTitle || '');
+        return topicTitle
+            ? mailtoFor(fill(MAIL.topicSubject), fill(MAIL.topicBody))
+            : mailtoFor(MAIL.generalSubject || '', MAIL.generalBody || '');
+    }
 
     // === Utility: Extract YouTube embed URL ===
     function getYouTubeEmbedUrl(url) {
@@ -427,7 +429,7 @@
             <div class="slide-content" style="text-align: center;">
                 <p class="slide-topic-badge">${formattedDate}</p>
                 <h1 class="slide-heading" style="font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 16px;">${data.title}</h1>
-                <p class="slide-body" style="max-width: 480px; margin: 0 auto 40px;">${data.subtitle || 'Weekly Bitcoin & Nostr news and discussion'}</p>
+                <p class="slide-body" style="max-width: 480px; margin: 0 auto 40px;">${data.subtitle || CFG.deckSubtitle || ''}</p>
                 <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
                     <button class="btn primary-btn" id="start-btn">Start Presentation</button>
                     <span class="btn secondary-btn" style="cursor: default; opacity: 0.5; pointer-events: none;">${data.topics.length} Topics</span>
@@ -545,7 +547,8 @@
                         slideHTML += `
                             <div class="video-container">
                                 <iframe 
-                                    src="${embedUrl}" 
+                                    src="${embedUrl}"
+                                    data-embed="${embedUrl}"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                                     allowfullscreen
                                     loading="lazy"
@@ -610,6 +613,53 @@
                     slideHTML += `</div>`;
                 }
 
+                // Affiliate buttons (per-topic) + shop link — data from recommendations.js
+                const affIds = slideData.products || (slideData.product ? [slideData.product] : []);
+                let affHTML = '';
+                if (affIds.length && Array.isArray(window.PRODUCTS)) {
+                    affIds.forEach(pid => {
+                        const p = window.PRODUCTS.find(x => x.id === pid);
+                        if (p && p.amazonUrl) {
+                            affHTML += `
+                                <a href="${p.amazonUrl}" target="_blank" rel="noopener noreferrer sponsored" class="slide-affiliate">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                                    </svg>
+                                    Buy on Amazon${p.name ? ' — ' + p.name : ''}
+                                </a>`;
+                        }
+                    });
+                }
+                if (slideData.shop) {
+                    const shopCat = (typeof slideData.shop === 'string') ? slideData.shop : '';
+                    const shopHref = 'recommendations.html' + (shopCat ? ('#' + encodeURIComponent(shopCat)) : '');
+                    affHTML += `
+                        <a href="${shopHref}" class="slide-affiliate slide-affiliate-shop">
+                            Shop my picks
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M13 6l6 6-6 6"/>
+                            </svg>
+                        </a>`;
+                }
+                if (affHTML) {
+                    slideHTML += `<div class="slide-affiliate-group">${affHTML}<span class="affiliate-note">${window.AFFILIATE_DISCLOSURE || 'Some links may be affiliate links.'}</span></div>`;
+                }
+
+                // Share (engine-level, 2026-08-13 — community request, GitHub issue #6):
+                // every topic's FIRST slide carries a quiet share affordance; S opens the sheet.
+                if (slideIndex === 0) {
+                    slideHTML += `
+                        <button type="button" class="slide-share-btn" data-topic-id="${topic.id}" aria-label="Share this topic" title="Share this topic (S)">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                                <line x1="8.59" y1="10.49" x2="15.42" y2="6.51"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                            </svg>
+                            <span>Share</span>
+                        </button>
+                    `;
+                }
+
                 slideHTML += '</div>';
                 slide.innerHTML = slideHTML;
 
@@ -629,6 +679,8 @@
                     el: slide,
                     topicId: topic.id,
                     topicIndex: topicIndex,
+                    slideIndex: slideIndex,
+                    topicTitle: topic.title,
                     url: qrUrl,
                     accent: topic.accent || null
                 });
@@ -640,19 +692,16 @@
         connectSlide.innerHTML = `
             <div class="slide-content" style="text-align: center;">
                 <p class="slide-topic-badge">Connect</p>
-                <h2 class="slide-heading">Connect with Max Sikorski</h2>
-                <p class="slide-body" style="max-width: 580px; margin: 0 auto 32px;">Bitcoin &amp; Nostr Weekly — self-custody help · wallet security checkups · Nostr onboarding. Subscribe, say hi, or grab time with me below.</p>
+                <h2 class="slide-heading">Connect with ${CFG.hostName || ''}</h2>
+                <p class="slide-body" style="max-width: 580px; margin: 0 auto 32px;">${CONNECT.blurbHtml || ''}</p>
                 <div class="connect-links">
-                    <a class="connect-link" href="${LINKS.youtube}" target="_blank" rel="noopener noreferrer">YouTube</a>
-                    <a class="connect-link" href="${LINKS.github}" target="_blank" rel="noopener noreferrer">GitHub</a>
-                    <a class="connect-link" href="${LINKS.buzz}" target="_blank" rel="noopener noreferrer">Buzz</a>
-                    <a class="connect-link" href="${LINKS.cal}" target="_blank" rel="noopener noreferrer">Schedule a Chat</a>
-                    <a class="connect-link" href="${WORK_WITH_MAILTO}">Work With Me</a>
+                    ${(CONNECT.links || []).map(l => `<a class="connect-link" href="${l.href}" target="_blank" rel="noopener noreferrer">${l.label}</a>`).join('')}
+                    <a class="connect-link" href="${WORK_WITH_MAILTO}">${CONNECT.workWithLabel || 'Work With Me'}</a>
                 </div>
             </div>
         `;
         container.appendChild(connectSlide);
-        slides.push({ type: 'connect', el: connectSlide, topicId: null, url: LINKS.cal, accent: null });
+        slides.push({ type: 'connect', el: connectSlide, topicId: null, topicIndex: null, topicTitle: null, url: CONNECT.qrHref || null, accent: null });
 
         return slides;
     }
@@ -664,11 +713,27 @@
         return slide;
     }
 
+    // === Video control: halt playback when leaving a slide ===
+    function stopSlideVideos(slideEl) {
+        if (!slideEl) return;
+        slideEl.querySelectorAll('iframe[data-embed]').forEach(f => {
+            f.src = 'about:blank'; // blanking the source stops audio/video immediately
+        });
+    }
+
+    function restoreSlideVideos(slideEl) {
+        if (!slideEl) return;
+        slideEl.querySelectorAll('iframe[data-embed]').forEach(f => {
+            if (f.src.indexOf(f.dataset.embed) === -1) {
+                f.src = f.dataset.embed; // reload the player so it's ready to play again
+            }
+        });
+    }
+
     // === Curtain Reveal — opt-in per slide via a "reveal" key (true | {kicker, label, confetti}) ===
     // A one-shot theatrical unveil: the slide hides behind a glass curtain with a single
     // button; clicking parts the curtain and staggers the content in. Reloading re-arms it.
-    // Mirrored 2026-07-16 from the 3DP site (their W29 Curve Cut spotlight); dormant here
-    // until a slide opts in.
+    // Shared opt-in feature; dormant unless a slide opts in.
     function revealCurtainHTML(reveal) {
         const cfg = (typeof reveal === 'object' && reveal !== null) ? reveal : {};
         const kicker = cfg.kicker || 'Builder Spotlight';
@@ -789,6 +854,10 @@
         const nextSlideEl = slides[index].el;
         const dir = direction || (index > currentSlide ? 1 : -1);
 
+        // Stop any video on the slide we're leaving; ready the one we're entering
+        stopSlideVideos(prevSlideEl);
+        restoreSlideVideos(nextSlideEl);
+
         // Start timer on first navigation away from hero
         if (!timerStarted && currentSlide === 0 && index > 0) {
             startTimer();
@@ -819,7 +888,7 @@
         });
 
         // Animate inner elements stagger
-        const innerElements = nextSlideEl.querySelectorAll('.slide-topic-badge, .slide-heading, .slide-body, .slide-bullets li, .slide-link, .video-container, .topic-card');
+        const innerElements = nextSlideEl.querySelectorAll('.slide-topic-badge, .slide-heading, .slide-body, .slide-bullets li, .slide-link, .video-container, .topic-card, .connect-links, .slide-share-btn');
         if (innerElements.length > 0) {
             gsap.set(innerElements, { opacity: 0, y: 15 });
             gsap.to(innerElements, {
@@ -838,12 +907,16 @@
             nextSlideEl.querySelectorAll('.slide-bullets li').forEach(el => {
                 gsap.to(el, { opacity: 0.85, duration: 0.6, ease: 'power4.out', delay: 0.3 });
             });
+            nextSlideEl.querySelectorAll('.slide-share-btn').forEach(el => {
+                gsap.to(el, { opacity: 0.35, duration: 0.6, ease: 'power4.out', delay: 0.3 });
+            });
         }
 
         currentSlide = index;
         updateControls();
         updateQR();
         updateTOCHighlight();
+        updateSlideCredit();
     }
 
     function nextSlide() {
@@ -882,10 +955,18 @@
         const progress = slides.length > 1 ? (currentSlide / (slides.length - 1)) * 100 : 0;
         progressBar.style.width = `${progress}%`;
 
-        // Topic accent (bitcoin = orange, nostr = purple, otherwise monochrome)
+        // Topic accent — colors come from config.js; no key = monochrome
         const accent = slides[currentSlide].accent;
-        progressBar.classList.toggle('accent-bitcoin', accent === 'bitcoin');
-        progressBar.classList.toggle('accent-nostr', accent === 'nostr');
+        const accentColor = (CFG.accents || {})[accent];
+        progressBar.style.background = accentColor || '';
+        progressBar.style.opacity = accentColor ? '0.9' : '';
+    }
+
+    // === Slide credit: per-topic contact link (byline is static in week.html) ===
+    function updateSlideCredit() {
+        if (!slideCreditContact) return;
+        const s = slides[currentSlide];
+        slideCreditContact.href = contactMailto(s && s.topicTitle ? s.topicTitle : null);
     }
 
     // === Timer ===
@@ -952,6 +1033,165 @@
             qrOverlay.classList.remove('visible');
         }
     }
+
+    // === Share (engine-level) — per-topic deep links + share sheet (S) ===
+    // Added 2026-08-13 (community request — GitHub issue #6). Links are built from
+    // window.location, so they follow the site wherever it lives: GitHub Pages today,
+    // the Vercel mirror, or a future custom domain — no hardcoded host anywhere.
+    let shareOpen = false;
+    let shareSheet = null, shareOverlay = null;
+
+    function shareUrlFor(topicId) {
+        const params = new URLSearchParams(window.location.search);
+        const week = params.get('week') || (weekData && weekData.week) || '';
+        let url = `${window.location.origin}${window.location.pathname}?week=${encodeURIComponent(week)}`;
+        if (topicId) url += `&topic=${encodeURIComponent(topicId)}`;
+        return url;
+    }
+
+    function buildShareSheet() {
+        shareOverlay = document.createElement('div');
+        shareOverlay.className = 'share-overlay';
+        shareSheet = document.createElement('div');
+        shareSheet.className = 'share-sheet';
+        shareSheet.setAttribute('role', 'dialog');
+        shareSheet.setAttribute('aria-label', 'Share');
+        shareSheet.innerHTML = `
+            <button type="button" class="share-close" aria-label="Close share">&times;</button>
+            <p class="share-title">Share</p>
+            <p class="share-topic-title"></p>
+            <div class="share-main">
+                <div class="share-qr">
+                    <canvas></canvas>
+                    <p class="share-qr-label">Scan to open</p>
+                </div>
+                <div class="share-right">
+                    <div class="share-link-row">
+                        <span class="share-link-text"></span>
+                        <button type="button" class="share-copy-btn">Copy Link</button>
+                    </div>
+                    <div class="share-targets"></div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(shareOverlay);
+        document.body.appendChild(shareSheet);
+        shareOverlay.addEventListener('click', closeShare);
+        shareSheet.querySelector('.share-close').addEventListener('click', closeShare);
+        shareSheet.querySelector('.share-copy-btn').addEventListener('click', (e) => {
+            copyShareLink(e.currentTarget.dataset.url || '', e.currentTarget);
+        });
+    }
+
+    function copyShareLink(url, btn) {
+        const done = () => {
+            btn.textContent = 'Copied ✓';
+            setTimeout(() => { btn.textContent = 'Copy Link'; }, 1600);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(done).catch(() => fallbackCopy(url, done));
+        } else {
+            fallbackCopy(url, done);
+        }
+    }
+
+    function fallbackCopy(text, done) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* best effort */ }
+        ta.remove();
+        done();
+    }
+
+    function buildShareTargets(container, url, title) {
+        const eUrl = encodeURIComponent(url);
+        const eTitle = encodeURIComponent(title);
+        let html = '';
+        if (navigator.share) {
+            html += `<button type="button" class="share-target" data-native="true">Share…</button>`;
+        }
+        html += `
+            <a class="share-target" href="mailto:?subject=${eTitle}&body=${eTitle}%0A%0A${eUrl}">Email</a>
+            <a class="share-target" href="https://twitter.com/intent/tweet?text=${eTitle}&url=${eUrl}" target="_blank" rel="noopener noreferrer">X</a>
+            <a class="share-target" href="https://www.facebook.com/sharer/sharer.php?u=${eUrl}" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a class="share-target" href="https://www.linkedin.com/sharing/share-offsite/?url=${eUrl}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="share-target" href="https://www.reddit.com/submit?url=${eUrl}&title=${eTitle}" target="_blank" rel="noopener noreferrer">Reddit</a>
+            <a class="share-target" href="https://wa.me/?text=${eTitle}%20${eUrl}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        `;
+        container.innerHTML = html;
+        const nativeBtn = container.querySelector('[data-native]');
+        if (nativeBtn) {
+            nativeBtn.addEventListener('click', () => {
+                navigator.share({ title: title, url: url }).catch(() => { /* user closed the native sheet */ });
+            });
+        }
+    }
+
+    function openShare(topicId) {
+        if (!shareSheet) buildShareSheet();
+        // No explicit topic → share the current slide's topic; on title/overview/finale, the week
+        if (topicId === undefined || topicId === null || topicId === '') {
+            topicId = slides[currentSlide] ? slides[currentSlide].topicId : null;
+        }
+        const slideMeta = topicId ? slides.find(s => s.topicId === topicId) : null;
+        const topicTitle = slideMeta ? slideMeta.topicTitle : null;
+        const url = shareUrlFor(topicId);
+        const shareTitle = topicTitle ? `${topicTitle} — ${CFG.weeklyName || ''}` : `${weekData ? weekData.title : CFG.weeklyName || ''}`;
+
+        shareSheet.querySelector('.share-topic-title').textContent = topicTitle || (weekData ? weekData.title : '');
+        shareSheet.querySelector('.share-link-text').textContent = url.replace(/^https?:\/\//, '');
+        shareSheet.querySelector('.share-copy-btn').dataset.url = url;
+        generateQR(url, shareSheet.querySelector('.share-qr canvas'), 132);
+        buildShareTargets(shareSheet.querySelector('.share-targets'), url, shareTitle);
+
+        shareOpen = true;
+        shareOverlay.classList.add('open');
+        shareSheet.classList.add('open');
+    }
+
+    function closeShare() {
+        if (!shareOpen) return;
+        shareOpen = false;
+        shareOverlay.classList.remove('open');
+        shareSheet.classList.remove('open');
+    }
+
+    function toggleShare() {
+        if (shareOpen) closeShare();
+        else openShare();
+    }
+
+    // === Search palette selection (presenter, F) ===
+    function selectSearchResult(entry) {
+        if (!weekData || entry.week !== weekData.week) return false;
+        const index = slides.findIndex(slide => slide.topicId === entry.topicId && slide.slideIndex === entry.slideIndex);
+        if (index < 0) return false;
+        goToSlide(index);
+        return true;
+    }
+
+    function toggleSearch() {
+        if (!window.DeckSearch) return;
+        if (!window.DeckSearch.isOpen()) {
+            if (shareOpen) closeShare();
+            if (tocOpen) closeTOC();
+            if (qrVisible) {
+                qrVisible = false;
+                qrToggleBtn.classList.remove('active');
+                qrOverlay.classList.remove('visible');
+            }
+        }
+        window.DeckSearch.togglePalette({ onSelect: selectSearchResult });
+    }
+
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.slide-share-btn');
+        if (btn) openShare(btn.dataset.topicId);
+    });
 
     // === TOC ===
     function buildTOC(data) {
@@ -1028,6 +1268,12 @@
         // Ignore when typing in inputs
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
+        // Search palette open but focus left its field: a shortcut closes the palette first, then acts
+        if (window.DeckSearch && window.DeckSearch.isOpen()) {
+            if (e.key === 'Escape') return; // the palette handles its own Escape
+            window.DeckSearch.closePalette();
+        }
+
         switch (e.key) {
             case 'ArrowRight':
             case 'ArrowDown':
@@ -1042,7 +1288,11 @@
                 break;
             case 'Escape':
                 e.preventDefault();
-                if (tocOpen) {
+                if (window.DeckSearch && window.DeckSearch.isOpen()) {
+                    window.DeckSearch.closePalette();
+                } else if (shareOpen) {
+                    closeShare();
+                } else if (tocOpen) {
                     closeTOC();
                 } else {
                     goToOverview();
@@ -1058,6 +1308,16 @@
                 e.preventDefault();
                 toggleQR();
                 break;
+            case 's':
+            case 'S':
+                e.preventDefault();
+                toggleShare();
+                break;
+            case 'f':
+            case 'F':
+                e.preventDefault();
+                toggleSearch();
+                break;
             case 'r':
             case 'R':
                 e.preventDefault();
@@ -1072,6 +1332,31 @@
             goToTopic(num - 1);
         }
     });
+
+    // === Touch / Swipe Navigation (tablets & phones) ===
+    let touchStartX = 0, touchStartY = 0, touchTracking = false;
+    const SWIPE_THRESHOLD = 50; // minimum horizontal travel in px
+
+    presentation.addEventListener('touchstart', (e) => {
+        // Single-finger only, and not while an overlay is open
+        if (e.touches.length !== 1 || tocOpen || qrVisible || shareOpen || (window.DeckSearch && window.DeckSearch.isOpen())) { touchTracking = false; return; }
+        touchTracking = true;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    presentation.addEventListener('touchend', (e) => {
+        if (!touchTracking) return;
+        touchTracking = false;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - touchStartX;
+        const dy = t.clientY - touchStartY;
+        // Only treat clearly-horizontal swipes as navigation (ignore vertical scrolls)
+        if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy) * 1.5) {
+            if (dx < 0) nextSlide();   // swipe left → next slide
+            else prevSlide();          // swipe right → previous slide
+        }
+    }, { passive: true });
 
     // === Click Handlers ===
     prevBtn.addEventListener('click', prevSlide);
@@ -1174,4144 +1459,11 @@
         setInterval(refresh, 20000);
     }
 
-    // === Inline fallback data for file:// protocol ===
-    // Keep in sync with weeks/2026-W24.json
-    const INLINE_WEEKS = {
-        "2026-W36": {
-            "week": "2026-W36",
-            "date": "2026-09-02",
-            "title": "Dashjr's Exit, the CLN Embargo & the Dead-Cat Question",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market",
-                    "title": "Live Dashboard & Market",
-                    "description": "Where Bitcoin sits live — and whether last week's squeeze was a floor or a bounce",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Live Dashboard",
-                            "body": "Where Bitcoin sits right now. The full dashboards:",
-                            "widget": "live-price",
-                            "links": [
-                                {
-                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
-                                    "label": "Clark Moody Dashboard"
-                                },
-                                {
-                                    "url": "https://mempool.space",
-                                    "label": "mempool.space"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "Dead Cat or Real Floor?",
-                            "body": "Last week we covered the squeeze. This week: the hangover. The rally topped out above $81K and has been leaking since.",
-                            "bullets": [
-                                "August was the ETFs' best month of 2026: $3.52B in, assets up 31% to $99.6B, Bitcoin up 25% — its best month since November 2024",
-                                "Then September opened with $236M OUT on day one — $201M of it from BlackRock's IBIT alone",
-                                "The pattern worth knowing: twelve $3B+ ETF months since launch, and Bitcoin fell the month after seven of them. Average follow-up month: +0.13%",
-                                "The bull's rebuttal: August erased two-thirds of the ETFs' 2026 deficit, and the bounce off $63K happened AGAINST outflows",
-                                "Same rule as the bear slides three weeks ago: it's data, not destiny. A bounce becomes a floor only if it holds"
-                            ],
-                            "link": "https://coinpaper.com/35157/bitcoin-etfs-just-had-their-best-month-of-2026-but-september-starts-with-a-warning",
-                            "linkLabel": "The September Warning"
-                        }
-                    ]
-                },
-                {
-                    "id": "dashjr-ocean",
-                    "title": "Dashjr Exits OCEAN",
-                    "description": "The pool's co-founder walks after the fork fight — equity bought back, a mystery venture named CONVOY",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Dashjr Exits OCEAN: The Divorce",
-                            "body": "August 29, a joint statement: Luke Dashjr is out of OCEAN — the pool he helped Jack Dorsey's money launch in 2023.",
-                            "bullets": [
-                                "He resigned all three hats: chairman, CTO, and director. Parent company Mummolin bought back his entire equity stake — price undisclosed, no successor named",
-                                "Both sides call it mutual, citing 'different visions following recent protocol developments.' Nobody says BIP-110 out loud. Everybody means it",
-                                "The trail: July, OCEAN added BIP-110 signaling endpoints. August 9, it quietly moved its default back to the non-fork chain. Three weeks later, the founder's gone",
-                                "Scale check: OCEAN mines about 2.5–2.9% of blocks, roughly 25 EH/s. Small pool, outsized story — it was the flagship for transparent, non-custodial mining"
-                            ],
-                            "link": "https://cryptoslate.com/veteran-bitcoin-developer-luke-dashjr-exits-ocean-pool-will-hash-power-follow-him-to-new-pool/",
-                            "linkLabel": "The Exit, Reported"
-                        },
-                        {
-                            "heading": "CONVOY: The Next Act Nobody Can Verify",
-                            "body": "Dashjr says he's building a new venture called CONVOY, aimed at mining decentralization. That's roughly everything anyone knows.",
-                            "bullets": [
-                                "Published so far: no endpoint, no code, no participating miners, no fee structure, no infrastructure. A name and a mission statement",
-                                "His track record says don't dismiss it: he co-founded Eligius, one of the earliest pools, and has been shipping mining software since 2011",
-                                "The open question for OCEAN: how much of its hashrate was there FOR Luke? Watch whether miners follow him out",
-                                "The bigger read: the BIP-110 war keeps claiming casualties after its own death — first the fork froze, now the org chart"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/tuesday-sep01",
-                            "linkLabel": "Tangents on the Split"
-                        }
-                    ]
-                },
-                {
-                    "id": "security-desk",
-                    "title": "Security Desk",
-                    "description": "Lightning patches under embargo, AI on both sides of the war, and Jade cleared of Coldcard's sin",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Security Desk: The 14-Day Embargo",
-                            "body": "Core Lightning shipped an emergency release this week — and did something Bitcoin projects almost never do: binaries first, source code later.",
-                            "bullets": [
-                                "CLN v26.06.7 fixes a vulnerability that surfaced after ten days of AI-generated CVE reports flooding the team",
-                                "The twist: signed binaries shipped within 48 hours, but the source stays sealed until September 11 — so attackers can't reverse-engineer the patch while nodes upgrade",
-                                "No known active exploit, per Christian Decker. Can't stomach running an unaudited binary? Restart with the --offline flag and wait out the embargo",
-                                "Community response: orangesurf audited the trust chain instead — Decker's signing key dates to 2015, with 31 third-party certifications backing it",
-                                "That's the trade on the table: for two weeks, Lightning operators are trusting signatures, not source. New disclosure playbook for the AI era"
-                            ],
-                            "link": "https://bitcoinops.org/en/newsletters/2026/08/28/",
-                            "linkLabel": "Optech #420"
-                        },
-                        {
-                            "heading": "The Cleanup: Sparrow Hardens, Jade Walks Free",
-                            "body": "The rest of the security week reads like aftermath — of Coldcard, and of AI joining both teams.",
-                            "bullets": [
-                                "Sparrow 2.5.4: security hardening after an AI-assisted code review. It now verifies what Electrum servers tell it, validates the proofs, and stopped writing your Core credentials into debug logs",
-                                "Blockstream's Jade: formally CLEARED of the Coldcard-style seed flaw. Its randomness mixes chip noise, timing jitter, and camera noise through SHA512 — independent analyses agree. Firmware 1.0.41 hardens it anyway",
-                                "Notice the shape of the week: AI-generated junk CVEs forced CLN's embargo, while an AI-assisted review hardened Sparrow. Same weapon, both hands",
-                                "Homework unchanged: Sparrow 2.5.4, Jade 1.0.41, and if you run CLN — upgrade or go offline"
-                            ],
-                            "link": "https://github.com/sparrowwallet/sparrow/releases",
-                            "linkLabel": "Sparrow Releases"
-                        }
-                    ]
-                },
-                {
-                    "id": "freedom-tech",
-                    "title": "Freedom Tech",
-                    "description": "Switzerland comes for Peach's no-KYC model, and Afghanistan proves the self-custody point",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Freedom Tech: Peach at a Crossroads",
-                            "body": "Peach Bitcoin — the Swiss peer-to-peer exchange that's run KYC-free since 2022 — hit a wall this week, and the wall was its own regulator.",
-                            "bullets": [
-                                "Swiss regulators requalified the framework Peach operated under. The old read: its escrow was a 'purely technical, non-custodial mechanism.' The new read: not good enough",
-                                "As of September 1, the KYC-free model is paused — selling is restricted to KYC'd users and whitelisted sellers",
-                                "Founder Steph Wetzel is contesting the reversal, and floating a pivot to fully self-custodial services if it stands",
-                                "Why it stings: Peach was the working example that compliant AND private could coexist in Europe. That example just got narrower"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/wednesday-sep02",
-                            "linkLabel": "Peach's Statement, Covered"
-                        },
-                        {
-                            "heading": "Herat: What a Raid Can and Can't Seize",
-                            "body": "Same week, the other end of the enforcement spectrum — Afghanistan's Taliban moved on Bitcoin the old-fashioned way.",
-                            "bullets": [
-                                "20+ bitcoin shops shut down in Herat, at least 13 traders arrested",
-                                "Measured monthly flows collapsed from $150M to under $80,000 — a 99.9% wipeout of the visible market",
-                                "The distinction that survives: a raid closes storefronts and arrests the people running them. It cannot seize a private key it never located",
-                                "Read next to Peach: pressure everywhere lands on the INTERMEDIARIES. Self-custody is the part no requalification or raid reaches"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/monday-aug31",
-                            "linkLabel": "The Herat Story"
-                        }
-                    ]
-                },
-                {
-                    "id": "bitgo-nydig",
-                    "title": "Money & Power",
-                    "description": "BitGo swallows NYDIG's trading desk — and NYDIG goes all-in on gigawatts",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Money & Power: BitGo Buys NYDIG's Trading Arm",
-                            "body": "The institutional plumbing consolidated this week: BitGo completed its purchase of NYDIG's trading business.",
-                            "bullets": [
-                                "What moved: about 30 employees and 250 institutional client relationships — derivatives, structured products, financing, capital markets",
-                                "The play: custody, trading, and financing under ONE regulated roof. Fewer counterparties, more concentration — pick which word worries you",
-                                "The other half of the story: NYDIG is now free to focus on mining and compute — 3+ gigawatts in the development pipeline, over 1 GW deliverable by 2028",
-                                "Translation: one of Wall Street's Bitcoin pioneers just chose energy infrastructure over the trading desk"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/sunday-aug30",
-                            "linkLabel": "The Deal"
-                        }
-                    ]
-                },
-                {
-                    "id": "quantum-corner",
-                    "title": "Quantum Corner",
-                    "description": "New research says quantum computers may hit a wall — right where Bitcoin stops caring",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quantum Corner: A Ceiling on the Threat?",
-                            "body": "The post-quantum debate got its most interesting twist in months — physics pushing back on the panic.",
-                            "bullets": [
-                                "The research: quantum computers may face a fundamental ceiling around 1,000 qubits — far below what's needed to break Bitcoin's secp256k1 curve",
-                                "If the ceiling is real, the whole 'quantum steals Satoshi's coins' scenario dies at the hardware layer",
-                                "The grown-up take, via Allen Farrington: implement the post-quantum BIP anyway, so the chain CAN move — then watch the qubit experiments that would falsify the ceiling",
-                                "Insurance you hope never pays out is still worth writing. That's the whole position in one line"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/saturday-aug29",
-                            "linkLabel": "The Qubit-Ceiling Case"
-                        }
-                    ]
-                },
-                {
-                    "id": "optech-corner",
-                    "title": "Optech Corner",
-                    "description": "A faithful tool retires, and the ecosystem armors up for the next fork fight",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Optech Corner: HWI Rides Into the Sunset",
-                            "body": "From newsletter #420 — a retirement that's actually a success story.",
-                            "bullets": [
-                                "Ava Chow is winding down HWI, the tool that connects hardware wallets to Bitcoin Core. Mission accomplished: the support it pioneered is now everywhere",
-                                "The honest reason too: mostly one maintainer, and the builds can't be made reproducible. It gets MuSig2 support, a final release, then maintenance-only",
-                                "Also in the issue: a proposal for hierarchical block-range filters — light clients could download 70–80% less filter data",
-                                "The lesson in the retirement: in open source, the goal is to make yourself unnecessary. HWI did"
-                            ],
-                            "link": "https://bitcoinops.org/en/newsletters/2026/08/28/",
-                            "linkLabel": "Optech #420"
-                        },
-                        {
-                            "heading": "Fork Armor, Built in Peacetime",
-                            "body": "BIP-110 is dead, but look what the survivors are building — protections nobody had during the fight.",
-                            "bullets": [
-                                "Replay protection, opt-in: moonsettler proposed committing to a recent block hash via the taproot annex, so your transaction is only valid on YOUR chain. AJ Towns countered with a 6-byte version",
-                                "Why now: during an actual split, a transaction on one chain can be replayed on the other. This summer got close enough to make that real",
-                                "Meanwhile mempool.space now shows BIP-54 (Consensus Cleanup) readiness — which pools mine compatible blocks, as a public metric",
-                                "The theme: turning fork-readiness from a Twitter argument into visible infrastructure. Peacetime is when you build this"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/thursday-aug27",
-                            "linkLabel": "BIP-54 Goes Visible"
-                        }
-                    ]
-                },
-                {
-                    "id": "fips-watch",
-                    "title": "FIPS Watch",
-                    "description": "v0.5.0 five days after v0.4.2 — the mesh lands on Android and your router",
-                    "type": "discussion",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "FIPS Watch: v0.5.0 — The Mesh Gets Legs",
-                            "body": "Last week: the armor release. Five days later, Johnathan Corgan shipped v0.5.0 — the expansion release. Refresher: FIPS is the mesh network where your Nostr key IS your network address.",
-                            "bullets": [
-                                "New platforms: Android and FreeBSD. The mesh now fits in your pocket",
-                                "The big one: OpenWrt support with 802.11s mesh backhaul and an open '!FIPS' access SSID — that's router firmware. Flash your neighbor's router, grow the neighborhood mesh",
-                                "Native datagram API: apps can now speak to the mesh directly instead of pretending it's IPv6",
-                                "Plus fipsctl probe/address commands and a proper NixOS module. Two releases in seven days — the project is sprinting",
-                                "Still pre-audit, as always. But the trajectory: July was hardening, this week is reach"
-                            ],
-                            "link": "https://github.com/jmcorgan/fips/releases",
-                            "linkLabel": "The v0.5.0 Notes",
-                            "links": [
-                                {
-                                    "url": "https://fips.network",
-                                    "label": "fips.network"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "nostr-week",
-                    "title": "Nostr This Week",
-                    "description": "Compass #38 — Nostr goes offline-first, and relays learn to guard the mailbox",
-                    "type": "discussion",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "Nostr This Week: Offline-First",
-                            "body": "Nostr Compass #38 dropped this morning. The through-line: Nostr working where the internet isn't.",
-                            "bullets": [
-                                "Voca 1.0: an offline Android reader for long-form Nostr — subscribes to writers, verifies the notes, and reads articles ALOUD. Nostr as a podcast of its own essays",
-                                "Amethyst shipped portable highlights; Napstr is publishing audio catalogues with seeder heartbeats — media distribution, Nostr-native",
-                                "On the relay side: Conduit now protects gift-wrap inboxes by default, and Nostream added relay-side job routing with authenticated operation",
-                                "Divine Mobile made wrapped-message deletion deterministic — private DMs that delete the same way every time",
-                                "Put it next to FIPS: the whole purple stack is optimizing for the disconnected case. That's not an accident"
-                            ],
-                            "link": "https://nostrcompass.org/en/newsletters/2026-09-02-newsletter/",
-                            "linkLabel": "Nostr Compass #38"
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "Last week's homework, delivered: where to find your next Bitcoin meetup",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: The Meetup Map",
-                            "body": "Last week's tip was 'show up in person.' This week: the map that makes it easy.",
-                            "bullets": [
-                                "bitcoinonly.events keeps a running directory of Bitcoin-only meetups worldwide — filter by country, date, or event type",
-                                "September alone lists gatherings from Munich to Miami to Vancouver — odds are something's within driving distance",
-                                "Bitcoin-ONLY is the filter that matters: no altcoin pitches, just the people you actually want in the room",
-                                "Scan the QR, find your city, put one on the calendar. That's the whole tip"
-                            ],
-                            "link": "https://bitcoinonly.events/meetups/",
-                            "linkLabel": "Find a Meetup"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W35": {
-            "week": "2026-W35",
-            "date": "2026-08-26",
-            "title": "Squeeze to $80K & a Million Sats in Guadalajara",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market",
-                    "title": "Live Dashboard & Market",
-                    "description": "Where Bitcoin sits live — and the tape that flipped again, the other way",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Live Dashboard",
-                            "body": "Where Bitcoin sits right now. The full dashboards:",
-                            "widget": "live-price",
-                            "links": [
-                                {
-                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
-                                    "label": "Clark Moody Dashboard"
-                                },
-                                {
-                                    "url": "https://mempool.space",
-                                    "label": "mempool.space"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "The Tape Flipped Back",
-                            "body": "Last week: $390M out, Hashdex winding down. This week ran the tape backwards — again.",
-                            "bullets": [
-                                "Spot ETFs took in $1.1B across Wednesday and Thursday alone",
-                                "NYDIG's read on the turn: 'exhausted marginal sellers' and 'crowded short positioning' — the sellers simply ran out",
-                                "Two weeks, two opposite tapes. The flows follow price; they don't lead it",
-                                "What actually moved price is the next topic"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/sunday-aug23",
-                            "linkLabel": "The Recovery Tape"
-                        }
-                    ]
-                },
-                {
-                    "id": "squeeze",
-                    "title": "The Squeeze",
-                    "description": "$65K to $80K in a week — anatomy of the snap-back, and what the money men said",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "The Squeeze: $65K to $80K in a Week",
-                            "body": "Last Wednesday we presented the mildest bear on record. By the weekend it was fighting for its life.",
-                            "bullets": [
-                                "Bitcoin ran from about $65K to nearly $80K — 12% of it in two days",
-                                "$3.1B in short liquidations over those two days, the largest forced unwind since 2021",
-                                "Two sparks, same week: the White House Clarity Act push (next topic) and the Treasury doubling its bond buybacks to $4B+ per operation",
-                                "Last week's map said watch the 200-day moving average — price went and punched through it. A bounce becomes a trend only if it holds",
-                                "Same rule as always: the bear slides were data, this move is data. No victory laps at week one"
-                            ],
-                            "link": "https://www.cnbc.com/2026/08/20/bitcoin-surges-as-trump-crypto-execs-lead-final-push-for-clarity-act.html",
-                            "linkLabel": "The Two-Day Surge"
-                        },
-                        {
-                            "heading": "What the Money Men Said",
-                            "body": "The interesting part: the biggest names framed the rally as a symptom, not a celebration.",
-                            "bullets": [
-                                "Ray Dalio: put 10–15% into gold and 'a bit of Bitcoin' — his trigger is $10T of US refinancing carrying $1T a year in interest",
-                                "Druckenmiller, on the Treasury propping the bond market: 'governments defending prices against market fundamentals always lose'",
-                                "Jack Mallers' comparison: the US buyback playbook is Japan's playbook, and Japan sits at 200%+ debt-to-GDP",
-                                "Read it together: the fiscal stress IS the bull case these men are buying. Cheap money lifted Bitcoin; distrust of the printer keeps it"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/wednesday-aug26",
-                            "linkLabel": "Today's Tangents"
-                        }
-                    ]
-                },
-                {
-                    "id": "clarity-act",
-                    "title": "The Clarity Act",
-                    "description": "Trump summons the industry to the White House — and the bill's fate comes down to six votes",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Clarity Act: Crypto Goes to the White House",
-                            "body": "Wednesday, August 19 — the industry's CEOs sat down at the White House and the president made the ask.",
-                            "bullets": [
-                                "Trump: 'Now we need Congress to take the next step by passing the Clarity Act, a fair version of the Clarity Act… keep us ahead of China'",
-                                "In the room: Coinbase's Armstrong, Ripple's Garlinghouse, Robinhood's Tenev, the Winklevoss twins — plus SEC Chair Atkins and CFTC Chair Selig",
-                                "Bitcoin jumped 12% in the two days around the meeting — the spark for the squeeze we just covered",
-                                "Worth naming: this is a crypto market-structure bill. We care about the Bitcoin edges — custody, exchanges, and which regulator owns what"
-                            ],
-                            "link": "https://finance.yahoo.com/markets/crypto/articles/trump-calls-congress-pass-fair-195645644.html",
-                            "linkLabel": "The White House Meeting"
-                        },
-                        {
-                            "heading": "What the Bill Does, and the Math It Faces",
-                            "body": "H.R. 3633 passed the House back in July 2025. It's been sitting in the Senate ever since.",
-                            "bullets": [
-                                "The core: CFTC gets 'digital commodities' and their exchanges; the SEC keeps a slice of primary-market sales. One question — who regulates what — finally answered",
-                                "What stalled it: ethics provisions. The fight is over how to enforce a ban on government officials running crypto businesses — with a president who owns one",
-                                "The math: back on the Senate floor in September, and Republicans need roughly six Democratic votes to reach 60",
-                                "No procedural vote happened before recess. September is the whole game"
-                            ],
-                            "link": "https://www.govtrack.us/congress/bills/119/hr3633",
-                            "linkLabel": "H.R. 3633, Tracked"
-                        }
-                    ]
-                },
-                {
-                    "id": "security-desk",
-                    "title": "Security Desk",
-                    "description": "Coldcard's patch and NVK's silence, an 86-minute supply-chain attack, and the defense filing reports",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Security Desk: Coldcard, Week Four",
-                            "body": "You asked where NVK went. Short answer: the patches shipped; the man went quiet.",
-                            "bullets": [
-                                "The fix finally landed August 20 — firmware 4.2.0 for Mk3, 5.6.0 for Mk4/Mk5, 6.6.0X for Edge. Upgrade, roll a NEW seed with dice mixed in, move the coins",
-                                "NVK's pinned apology still stands — 'I'm sorry and I'm devastated' — but he hasn't posted on Nostr since June 2, and he's been deleting old X posts. Peter Todd archived some before they vanished",
-                                "The stolen coins are barely moving: one 64.9 BTC Wasabi deposit and 200 ETH into Tornado Cash. The rest sits there, watched",
-                                "The trackers still disagree on the total — roughly 1,600 to 2,000 BTC. Coinkite has never published its own count. Law enforcement is on it"
-                            ],
-                            "link": "https://blog.coinkite.com/coldcard-mk3-seed-generation-warning/",
-                            "linkLabel": "Coinkite's Advisory",
-                            "links": [
-                                {
-                                    "url": "https://wizardsardine.com/blog/coldcard-vuln-deep-dive/",
-                                    "label": "The Technical Autopsy"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "86 Minutes of Poisoned Rust",
-                            "body": "The scariest story of the week didn't touch a wallet. It touched the toolchain that builds them.",
-                            "bullets": [
-                                "Attackers republished the Rust crate arrayref with malicious dependencies — a build script that downloads payloads the moment you compile",
-                                "It lived on crates.io for 86 minutes. Related crates internment and append-only-vec were hit too",
-                                "One confirmed casualty: a Frostsnap wallet engineer's laptop, compromised through blake3. The attackers are aiming at the people who write signing code",
-                                "Same week, BTCPay Server announced a feature freeze — Nicolas Dorier says future releases may REMOVE features to shrink attack surface",
-                                "The thread from Coldcard to this: your wallet is only as honest as the least-audited dependency in its build"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/saturday-aug22",
-                            "linkLabel": "The Supply-Chain Story"
-                        },
-                        {
-                            "heading": "The Defense Files Its Reports",
-                            "body": "Last week we covered the defense getting tooling. This week the tooling produced paper.",
-                            "bullets": [
-                                "The 256 Foundation's ASIC red team has logged 41 security findings, each with a reproducible proof — on firmware ~90% of miners run and nobody audits",
-                                "The volunteer Bitcoin Red Team from early August is open-sourcing the AI harness behind its 4,962-finding sprint — the method becomes everyone's",
-                                "Trezor closed the books on its breach: 13,689 customers exposed via a hacked shipping partner, 11,742 with full name-phone-home-address records",
-                                "Trezor's answer is structural: an Anonymous Delivery option, EU in September, US by year-end. The right fix — data they never have can't leak"
-                            ],
-                            "link": "https://trezor.io/blog/news/recent-customer-data-exposed-in-shipping-provider-incident",
-                            "linkLabel": "Trezor's Disclosure",
-                            "links": [
-                                {
-                                    "url": "https://www.256foundation.org/",
-                                    "label": "256 Foundation"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "lightning-corner",
-                    "title": "Lightning Corner",
-                    "description": "A reorg vuln outlives its patch quietly, threshold custody without asking permission, and news from the field",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Lightning Corner: The Vuln That Waited for a Reorg",
-                            "body": "Optech #419 led with a disclosure: for years, LND trusted a single confirmation more than it should have.",
-                            "bullets": [
-                                "The bug: after a cooperative channel close, LND forgot the channel after ONE confirmation",
-                                "The attack: reorg that one block away, publish an old revoked state — and the node that forgot the channel can't fire its penalty. Funds gone",
-                                "Bastien Teinturier disclosed it; fixed since LND 0.20.0 (February), which now waits six confirmations. No known thefts",
-                                "If you run LND and haven't crossed 0.20.0 yet, that's tonight's homework"
-                            ],
-                            "link": "https://bitcoinops.org/en/newsletters/2026/08/21/",
-                            "linkLabel": "Optech #419"
-                        },
-                        {
-                            "heading": "Iceberg: Boardroom Keys on a Hot Network",
-                            "body": "Lightning's oldest institutional objection: the channel needs one hot key, always online. A new paper removes it.",
-                            "bullets": [
-                                "Iceberg nests a t-of-n threshold group INSIDE one side of a standard MuSig2 channel — the counterparty sees a normal peer and can't tell",
-                                "No protocol changes, no permission needed — deployable on today's network, unilaterally",
-                                "The cost of splitting the key across a committee: it still sustains 93%+ of normal payment throughput",
-                                "Why it matters: a desk can run Lightning with real key ceremonies instead of one server holding everything. The single-hot-key era didn't have to be permanent"
-                            ],
-                            "link": "https://eprint.iacr.org/2026/1757",
-                            "linkLabel": "The Iceberg Paper"
-                        },
-                        {
-                            "heading": "From the Field: BOLT12, Zeus, Glow",
-                            "body": "The plumbing above is theory becoming practice. This is practice.",
-                            "bullets": [
-                                "First documented real-world BOLT12 donations: a Ukrainian front-line supply charity takes reusable Lightning offers and publishes itemized purchases — Peter Todd wrote it up",
-                                "Zeus v13.2.0 shipped Friday: 24-word LDK seeds, embedded LND 0.21.2, a Cashu upgrade that speaks Minibits, and your own choice of mempool server",
-                                "Under Zeus's hood, the Cashu CDK itself is sprinting — v0.17.6 released today, 0.18 release candidates rolling. Ecash is becoming a standard wallet feature, quietly",
-                                "And Breez launched Glow: an open-source nodeless-Lightning wallet plus the toolkit to build your own"
-                            ],
-                            "link": "https://github.com/ZeusLN/zeus/releases",
-                            "linkLabel": "Zeus v13.2.0",
-                            "links": [
-                                {
-                                    "url": "https://tangentsdaily.substack.com/p/friday-aug21",
-                                    "label": "The BOLT12 Story"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "freedom-tech",
-                    "title": "Freedom Tech",
-                    "description": "HRF grants half a billion sats the same week the Kremlin outlaws them",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Freedom Tech: Funded and Outlawed, Same Week",
-                            "body": "Two headlines about the same organization, five days apart. Read them together.",
-                            "bullets": [
-                                "The Human Rights Foundation granted 500M+ sats (~$397K) to 16 projects across Africa, Asia and Latin America",
-                                "Among them: Bitspenda, bridging Lightning to mobile money in Nigeria and Kenya — and Project Island Resilience, offline payments over Bluetooth, NFC and ecash for protests and internet shutdowns",
-                                "Five days earlier, Russia's Prosecutor General declared HRF 'undesirable' — working with them inside Russia is now a crime",
-                                "That's the week's cleanest signal: one government criminalizes the org while it funds payment rails no government can switch off"
-                            ],
-                            "link": "https://hrf.org/latest/hrf-bitcoin-development-fund-grants-500-million-satoshis-to-projects-worldwide/",
-                            "linkLabel": "The Grant List",
-                            "links": [
-                                {
-                                    "url": "https://bitcoinmagazine.com/news/human-rights-foundation-issues-more-grants",
-                                    "label": "The Coverage"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "fips-watch",
-                    "title": "FIPS Watch",
-                    "description": "v0.4.2 lands — the mesh gets its armor on",
-                    "type": "discussion",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "FIPS Watch: v0.4.2",
-                            "body": "First release since July — and the biggest maintenance drop the project has had. Quick refresher: FIPS is Johnathan Corgan's mesh network where your Nostr key IS your network address.",
-                            "bullets": [
-                                "144 commits since v0.4.1, and the theme is armor: six ways an unauthenticated packet could change a node's session state — all closed",
-                                "NAT traversal fixed, plus real performance work: about 35ms per tick recovered at 240 peers",
-                                "New optional controls: rate limiting and admission control — the knobs you need before strangers join your mesh",
-                                "Still pre-audit, as always. But this is what pre-audit hardening is supposed to look like"
-                            ],
-                            "link": "https://github.com/jmcorgan/fips/releases",
-                            "linkLabel": "The Release Notes",
-                            "links": [
-                                {
-                                    "url": "https://fips.network",
-                                    "label": "fips.network"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "nostr-week",
-                    "title": "Nostr This Week",
-                    "description": "Clients pull keys out of the browser, and the protocol keeps moving — Compass #37",
-                    "type": "discussion",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "Nostr This Week: Keys Leave the Browser",
-                            "body": "Nostr Compass #37 dropped this morning. The theme rhymes with Bitcoin's month: defense.",
-                            "bullets": [
-                                "Shopstr pulled remote-signer and wallet-connect secrets out of browser localStorage — they now live in runtime memory and die with the tab",
-                                "nostr-tools closed a private-DM spoofing gap: a gift-wrapped message's inner author must now match the seal that carries it",
-                                "Postr v1.0.0, a new Android composer, trusts nothing: it only counts a post as sent after reading the signed event back and re-checking the signature",
-                                "Same instinct everywhere this week — assume the layer under you lies, and verify"
-                            ],
-                            "link": "https://nostrcompass.org/en/newsletters/2026-08-26-newsletter/",
-                            "linkLabel": "Nostr Compass #37"
-                        },
-                        {
-                            "heading": "Protocol Motion",
-                            "body": "The standards work that decides what Nostr looks like next year:",
-                            "bullets": [
-                                "NIP-22 comments are winning: Snort and Ditto now publish replies as kind 1111 by default — threaded conversation is becoming the norm",
-                                "A NIP-47 draft adds a max_fee ceiling to wallet-connect payments — your Nostr client finally gets to say what a Lightning payment may cost",
-                                "Haven, the personal relay, grew a real admin console — standard NIP-86 management with NIP-98 auth",
-                                "And the ambitious one: Heterodyne, a draft spec family for portable personas — Nostr events, Radicle storage, Marmot messaging and KERI key logs under one identity"
-                            ],
-                            "link": "https://nostrcompass.org/en/newsletters/2026-08-26-newsletter/",
-                            "linkLabel": "The Full Issue",
-                            "links": [
-                                {
-                                    "url": "https://github.com/nostr-protocol/nips",
-                                    "label": "The NIPs Repo"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "builder-spotlight",
-                    "title": "Builder Spotlight",
-                    "description": "PlebLab takes the accelerator to Mexico — Hackalajara 2.0 and a coordinatorless coinjoin workshop",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Builder Spotlight: Hackalajara 2.0",
-                            "body": "Mexico's first Bitcoin hackathon came back for round two last Thursday — and PlebLab brought Startup Day with it.",
-                            "bullets": [
-                                "August 20, Stacker Space, Guadalajara: a full build day around Bitcoin, Lightning and local adoption — Startup Day demos followed Friday",
-                                "1,000,000 sats across five prizes: Fulgur Ventures' 300K grand prize, ShockNet's 500K for CLINK integration, plus payments, design and community awards",
-                                "Judges: PlebLab's Car Gonzalez, Lightning dev Chris Guida, and White Paper House's Daniel",
-                                "Car's pitch for Guadalajara: 'really hardcore Bitcoiners' already building — the talent just isn't on English-language Bitcoin's radar yet",
-                                "Winners hadn't been posted as of tonight — Super Testnet is making the announcements. When he does, so will we"
-                            ],
-                            "link": "https://hackalajara.pleblab.com/",
-                            "linkLabel": "Hackalajara 2.0"
-                        },
-                        {
-                            "heading": "The Workshop: Coinjoins Without a Coordinator",
-                            "body": "One workshop deserves its own slide — Super Testnet taught Hackalajara his Emessbee protocol, remotely from Puerto Rico.",
-                            "bullets": [
-                                "The problem: every big coinjoin tool needed a coordinator — a server to subpoena, seize, or fee-farm. Ask Samourai's founders how that ends",
-                                "Emessbee runs the join in three rounds with nobody in charge: prove you own your inputs, register equal outputs behind ring signatures, then everyone signs",
-                                "Honest caveat, straight from the README: no kickout protocol yet, so trolls can still flood a round and stall it",
-                                "The repo has the slides, a demo video, and the full workshop recording — you can take the class he taught in Guadalajara tonight"
-                            ],
-                            "link": "https://github.com/supertestnet/coinjoin-workshop",
-                            "linkLabel": "Take the Workshop"
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "The highest-yield Bitcoin tool this week was a room full of people",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Show Up in Person",
-                            "body": "Everything in tonight's Spotlight happened because people got in a room. That tool is available to you.",
-                            "bullets": [
-                                "Find a local meetup and actually go. BitDevs chapters run free socratic seminars in dozens of cities — the reading lists alone are worth it",
-                                "You don't need to present anything. Listening in the back row of the right room beats a month of headlines",
-                                "The people you meet become your sources — most of what hits these decks starts as 'someone at a meetup mentioned…'",
-                                "Next week I'm bringing a list of local meetups worth your calendar. Until then: you already found one. You're in it"
-                            ],
-                            "link": "https://bitdevs.org/",
-                            "linkLabel": "Find a BitDevs"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W34": {
-            "week": "2026-W34",
-            "date": "2026-08-19",
-            "title": "Roll Your Own Entropy & the Mildest Bear on Record",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market",
-                    "title": "Live Dashboard & Market",
-                    "description": "Where Bitcoin sits live — and the ETF tape that flipped right back",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Live Dashboard",
-                            "body": "Where Bitcoin sits right now. The full dashboards:",
-                            "widget": "live-price",
-                            "links": [
-                                {
-                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
-                                    "label": "Clark Moody Dashboard"
-                                },
-                                {
-                                    "url": "https://mempool.space",
-                                    "label": "mempool.space"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "The Buyers Left Again",
-                            "body": "Last week: a $853M inflow streak. This week ran the tape backwards.",
-                            "bullets": [
-                                "Aug 10–14: about $390M out of the spot ETFs — the biggest weekly outflow since June",
-                                "Red every day. Monday −$145M was the worst; Friday, IBIT alone was 99% of the bleed",
-                                "Hashdex closed its Bitcoin ETF outright — delisted Monday, selling the coins Tuesday. First of the 2024 class to wind down",
-                                "Under the tape: wallets holding 10,000+ BTC hit a multi-month high while retail went quiet. Someone is buying what the funds sell",
-                                "Fed minutes drop today — that's the week's excuse, whichever way it breaks"
-                            ],
-                            "link": "https://www.cryptotimes.io/2026/08/15/bitcoin-etfs-lose-390m-as-solana-funds-buck-broader-crypto-outflows/",
-                            "linkLabel": "The Weekly Flows"
-                        }
-                    ]
-                },
-                {
-                    "id": "bear-market",
-                    "title": "The Bear, and What's On the Other Side",
-                    "description": "Ten body blows, half the damage — where this cycle sits and where it goes",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "The Bear Market: Where We Actually Are",
-                            "body": "A rough ten months — but put it against the record and the story changes.",
-                            "bullets": [
-                                "Top was $126K last October. We're around half that — a ~50% drawdown, roughly 290 days in",
-                                "Every previous bear cut 75–84%: 2014 −82% · 2018 −84% · COVID −74% · 2022 −77%",
-                                "That makes this the mildest bear market Bitcoin has ever had",
-                                "Why it's shallower: deeper liquidity, ETFs as a standing bid, and long-term holders who didn't flinch"
-                            ],
-                            "link": "https://www.coingecko.com/research/publications/how-long-do-bitcoin-bear-markets-last",
-                            "linkLabel": "Every Bear, Measured"
-                        },
-                        {
-                            "heading": "Ten Body Blows in One Year",
-                            "body": "The case for being impressed instead of depressed — count what 2026 threw at it.",
-                            "bullets": [
-                                "War risk since February: US–Iran, Hormuz shipping attacks, the oil and inflation spike behind them",
-                                "Strategy flipped from buyer to seller. Eight straight weeks of ETF redemptions — $8B+ out",
-                                "BIP-110 threatened a chain split all summer. Miners liquidated treasuries. Quantum panic made the rounds",
-                                "Coldcard, Boltz, BTCPay, Zeus, Trezor — the worst security stretch the ecosystem has had",
-                                "Ten hits like that used to mean −80%. It gave up half and still defends $60K. That's the headline"
-                            ],
-                            "link": "https://news.bitcoin.com/featured/bitcoin-takes-10-bearish-blows-in-2026-yet-faces-its-mildest-bear-market/",
-                            "linkLabel": "The Ten Blows"
-                        },
-                        {
-                            "heading": "My Take: The Road to 2028",
-                            "body": "The two slides behind me are data. This one is my opinion — no price targets, just the map I'm using.",
-                            "bullets": [
-                                "Past bears ran 321–385 days; we're near 290. The back half of a bear is where accumulation happens",
-                                "Watch the 200-day moving average (~$76K in June) — reclaiming it is what turns a bounce into a trend",
-                                "Near term, respect seasonality: August is the only month with a negative median return in Bitcoin's history",
-                                "The halving: block 1,050,000, around April 19, 2028 — new supply cut in half, no vote, just math",
-                                "My shape: 2026 finishes the bottom, 2027 recovers, 2028 brings the supply cut to a market that already turned. Argue with me — that's what tonight is for"
-                            ],
-                            "link": "https://bitbo.io/halving/",
-                            "linkLabel": "Halving Countdown"
-                        }
-                    ]
-                },
-                {
-                    "id": "entropy",
-                    "title": "Roll Your Own Entropy",
-                    "description": "The Coldcard lesson, the dice math, and building a signer for the price of dinner",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Roll Your Own Entropy: The Coldcard Lesson",
-                            "body": "Three weeks of theft coverage boils down to one sentence: the device picked your key, and you couldn't check its work.",
-                            "bullets": [
-                                "Your seed is one random number — 128 or 256 bits. The words, the passphrase, the multisig all sit on top of it",
-                                "Coldcard's broken path seeded it from keypresses, a timestamp and the device ID — reasonable-looking, and guessable enough to drain thousands of wallets",
-                                "Super's question still stands: what was the good path seeded with? Nobody outside the firmware can answer",
-                                "If you can't verify where the number came from, you're trusting a chip you can't open. The fix: generate it yourself"
-                            ],
-                            "link": "https://bitcoinsecurity.org/learn/entropy/",
-                            "linkLabel": "What Entropy Is"
-                        },
-                        {
-                            "heading": "The Dice Math",
-                            "body": "A six-sided die is a random number generator you can audit by looking at it.",
-                            "bullets": [
-                                "One fair d6 = 2.585 bits. About 50 rolls ≈ 128 bits (12 words); Coinkite recommends 99+ for the full 256 (24 words)",
-                                "The rolls get hashed with SHA-256 into the seed. Rolling dice and hand-picking words off the list is NOT this",
-                                "Every serious signer takes dice input: Coldcard, Krux, SeedSigner, Specter, and the ESP32 build on the next slide",
-                                "Honest downside: 99 hand-entered rolls is tedious, and one wrong digit is a completely different wallet",
-                                "Best practice: mix your dice with the device's own RNG — then neither has to be perfect"
-                            ],
-                            "link": "https://www.gncrypto.news/news/dice-generate-offline-bitcoin-seeds-few-will-use/",
-                            "linkLabel": "Dice, Honestly Assessed"
-                        },
-                        {
-                            "heading": "Build the Signer Yourself: ESP32",
-                            "body": "LNbits maintains an open hardware wallet that runs on $10–30 hobby microcontrollers.",
-                            "bullets": [
-                                "Boards supported today: LILYGO T-Display, ESP32-3248S035C touchscreen, Waveshare ESP32-C6 — two more coming",
-                                "Both entropy paths built in: the ESP32's hardware RNG with live health checks, or 100 dice rolls hashed to a seed",
-                                "Runs air-gapped off a microSD card, or over USB WebSerial — flash it from the web installer",
-                                "Perfect timing: Aug 13, the Specter DIY, SeedSigner and Krux teams met in São Paulo for the first time, and embit's creator handed all three co-maintainership of the shared library",
-                                "Build one as the second key in a multisig and no single vendor's bug can take your coins"
-                            ],
-                            "link": "https://github.com/lnbits/hardware-wallet",
-                            "linkLabel": "Build One",
-                            "links": [
-                                {
-                                    "url": "https://insider.btcpp.dev/p/the-diy-signing-device-revolution",
-                                    "label": "The DIY Summit"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "hardware-wallets",
-                    "title": "Hardware Wallet Week Three",
-                    "description": "BitBox patches, Trezor leaks addresses — and 233,000 BTC votes with its feet",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Hardware Wallets: BitBox Patches, Trezor Leaks",
-                            "body": "Two more vendors this week. Neither is Coldcard-scale; both need something from you tonight.",
-                            "bullets": [
-                                "BitBox firmware 9.26.5: a memory-corruption bug let a malicious host run code on a not-yet-configured BitBox02 Multi or Nova. Bitcoin-only editions unaffected",
-                                "Second bug: Silent Payments could lock coins to the wrong address — not theft, but ransom-able. No losses; found in their own AI-assisted review",
-                                "Trezor's shipping partner was breached: 11,742 customers fully exposed — name, email, phone, home address",
-                                "No keys touched — but that's a list of known bitcoiners with home addresses. Phishing and physical risk, for years",
-                                "Coldcard, week three: 1,719 BTC confirmed, TRM says ~1,816, Galaxy sees $130M+. The trackers still don't agree"
-                            ],
-                            "link": "https://blog.bitbox.swiss/en/bitbox-08-2026-dixence-update/",
-                            "linkLabel": "BitBox's Own Advisory",
-                            "links": [
-                                {
-                                    "url": "https://cointelegraph.com/news/bitbox-patches-severe-wallet-firmware-flaws",
-                                    "label": "The Coverage"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "233,000 BTC Voted",
-                            "body": "Casa's Nick Neuman found the number that makes this month make sense.",
-                            "bullets": [
-                                "About 2,100 BTC were stolen in the Coldcard attacks — and roughly 233,000 BTC then left long-term-holder wallets",
-                                "That's 10x–100x the stolen amount relocating to safety, mostly single-key holders rotating into multisig, unprompted",
-                                "No custodian could coordinate a migration that size. It took days, because every key had an owner who could act",
-                                "That's self-custody surviving its own worst month — and if you're still single-key on a real balance, you're the part that hasn't moved yet"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/thursday-aug13",
-                            "linkLabel": "The Casa Analysis"
-                        }
-                    ]
-                },
-                {
-                    "id": "ai-security",
-                    "title": "The AI Security War, Both Barrels",
-                    "description": "Free scanners for maintainers, a red team for ASICs — and Boltz's founders walk away",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "AI Security War: The Defense Gets Tooling",
-                            "body": "Last week's spotlight was one volunteer sprint. This week it became infrastructure.",
-                            "bullets": [
-                                "Block's Spiral released Loupe: a free AI vulnerability scanner for open-source Bitcoin projects",
-                                "The smart design choice: it only reports a finding it can back with a working test case — no AI noise dumped on maintainers",
-                                "Already testing: Bitcoin Core, BDK, LDK, rust-bitcoin, Cashu, Jade, bitcoinj, SRI. Block funds the scans, then hands over the controls",
-                                "Calle's verdict from the Red Team sprint: Lightning has more holes than average — and unmaintained projects should be assumed compromised"
-                            ],
-                            "link": "https://spiralbtc.substack.com/p/meet-loupe-ai-powered-vulnerability",
-                            "linkLabel": "Meet Loupe"
-                        },
-                        {
-                            "heading": "The Miners Are Next — and Boltz Is Gone",
-                            "body": "Two more from the same fight: a door nobody has looked behind, and one closing for good.",
-                            "bullets": [
-                                "The 256 Foundation launched an ASIC firmware red team — about 90% of ASICs run one vendor's closed firmware that has never been audited",
-                                "Owned hardware, isolated lab, coordinated disclosure. Bitcoin's most concentrated unexamined attack surface finally gets eyes",
-                                "And Boltz: founders Kilian, Michael and Karl resigned and handed the company to new owners — a bootstrapped five-person startup can't withstand this level of attack",
-                                "A good non-custodial team, attacked out of existence in under a month. The hole they left got filled inside a week — next topic"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/friday-aug14",
-                            "linkLabel": "The Friday Roundup"
-                        }
-                    ]
-                },
-                {
-                    "id": "lightning-plumbing",
-                    "title": "Lightning Plumbing: Swaps and Jamming",
-                    "description": "Blockstream fills the Boltz hole — and Riard proposes making jamming expensive",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Lightning Plumbing: Blockstream Fills the Boltz Hole",
-                            "body": "Boltz suspended swaps August 3. Blockstream announced the replacement August 10 — one week, door to door.",
-                            "bullets": [
-                                "Trustless atomic swaps across mainchain, Lightning and Liquid — both sides complete or neither does. Nobody custodies your coins mid-swap",
-                                "The payoff: hold plain BTC or L-BTC and pay Lightning invoices anyway. No node, no channels, no inbound liquidity",
-                                "It even reaches Lightning from cold storage — pay an invoice from a Jade in a drawer, keys never leaving it",
-                                "Same construction Boltz used: Taproot with MuSig2-aggregated keys, so the cooperative case settles as an ordinary key-path spend",
-                                "In beta with selected participants — provided by a company with a security budget now. Notice the shape this is taking"
-                            ],
-                            "link": "https://blog.blockstream.com/announcing-blockstream-swaps/",
-                            "linkLabel": "The Announcement"
-                        },
-                        {
-                            "heading": "Riard: Make Jamming Cost Money",
-                            "body": "Lightning's oldest free attack: route a payment through your channel, then just don't finish it. Your liquidity freezes — it costs the attacker nothing.",
-                            "bullets": [
-                                "Antoine Riard's new contract on Delving Bitcoin proves WHEN a payment secret was handed over — not just whether",
-                                "An adaptor point for each moment in a time window; tapscript with success, challenge and failure paths",
-                                "The result: a withhold fee that grows with holding time. Hold for a second, pay pennies; hold for hours, pay real money",
-                                "A free attack becomes a priced one — the only kind of fix that lasts on an open network. Early days, and Optech #418 led with it"
-                            ],
-                            "link": "https://bitcoinops.org/en/newsletters/2026/08/14/",
-                            "linkLabel": "Optech #418"
-                        }
-                    ]
-                },
-                {
-                    "id": "mining",
-                    "title": "The Mining Squeeze",
-                    "description": "Difficulty falls year over year for only the second time ever",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Mining Squeeze: Difficulty Went Backwards",
-                            "body": "Bitcoin's difficulty is lower than it was a year ago — the second time in seventeen years.",
-                            "bullets": [
-                                "Two downward adjustments already, including −11.16% to 125.86T. Hashprice: $27.67 per PH/day, near record lows",
-                                "What's pulling rigs off: bad economics, Texas curtailments, Iran disruptions, and campuses converting to AI — see Riot last week",
-                                "The self-healing part: fewer machines, lower difficulty, survivors earn more per block. Nobody decides it — it just happens",
-                                "Bright spot: RY3T's Nova is the first commercial miner on Mujina, the 256 Foundation's GPLv3 open firmware — chases surplus solar in seconds, no licensing deal with anybody"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/monday-aug17",
-                            "linkLabel": "The Difficulty Story"
-                        }
-                    ]
-                },
-                {
-                    "id": "nostr-week",
-                    "title": "Nostr This Week",
-                    "description": "Post-quantum npubs, hardened private messaging, and ecash escrow on the P2P exchange",
-                    "type": "discussion",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "Nostr This Week: Quantum-Proofing the Npub",
-                            "body": "Bitcoin argues about quantum. Nostr just quietly shipped an experiment.",
-                            "bullets": [
-                                "nostr-wot-extension 0.4.0: the same 24-word seed now also derives post-quantum keys — ML-KEM-1024 for encryption, ML-DSA-87 for signing",
-                                "A new attestation event (kind 10203) binds your existing npub to the post-quantum keys — identity carries over, nothing breaks",
-                                "Opt-in post-quantum DMs blend the quantum-safe secret into NIP-44's existing encryption. Belt and suspenders",
-                                "And it's heading upstream: an open NIP PR proposes post-quantum identity keys for the protocol itself",
-                                "Same week Super's meetup discusses Dropkick, Bitcoin's quantum-emergency protocol. The quantum-prep era started — quietly, on both networks"
-                            ],
-                            "link": "https://nostrcompass.org/en/newsletters/2026-08-12-newsletter/",
-                            "linkLabel": "Nostr Compass #35"
-                        },
-                        {
-                            "heading": "Private Messaging Grows Up",
-                            "body": "The unglamorous security work, all landing in the same week.",
-                            "bullets": [
-                                "MDK 0.9.11 hardens Marmot — encrypted group chat over Nostr: atomic recovery, secure deletion of pruned keys, resumable imports",
-                                "The double-ratchet DM library now requires an invite to prove it owns the session key — and forward-secret conversations are an open NIP",
-                                "Amber 6.4.0, the Android signer, redesigned approvals: explicit Approve/Deny on every single request — no more blanket taps",
-                                "Divine, the short-video client, fixed cross-account leaks and now rejects unsigned seals in private messages",
-                                "None of this demos well. All of it is the difference between 'encrypted' and 'secure' — Nostr learned from Bitcoin's month"
-                            ],
-                            "link": "https://nostrcompass.org/en/newsletters/2026-08-12-newsletter/",
-                            "linkLabel": "The Full Roundup"
-                        },
-                        {
-                            "heading": "Ecash Escrow Comes to the P2P Exchange",
-                            "body": "Bitcoin rails and Nostr identity keep merging. This week's exhibits:",
-                            "bullets": [
-                                "Mostro — the no-KYC P2P exchange that runs entirely over Nostr — laid the backend foundation for Cashu escrow: ecash holding the trade instead of Lightning hold invoices",
-                                "Core Lightning's NWC plugin added hold-invoice methods — the exact primitive Mostro-style escrow runs on",
-                                "LaWallet's wallet-connect update publishes real zap receipts and pushes wallet activity as Nostr events",
-                                "Every one of these is Bitcoin plumbing with a Nostr address on it. The two halves of this meetup are one project"
-                            ],
-                            "link": "https://mostro.network/",
-                            "linkLabel": "Mostro",
-                            "links": [
-                                {
-                                    "url": "https://github.com/MostroP2P/mostro",
-                                    "label": "Mostro on GitHub"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "new-resources",
-                    "title": "Resources Worth Your Week",
-                    "description": "Three places to stay current between our Wednesdays",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Resources Worth Your Week",
-                            "body": "Three places to stay current between our Wednesdays — all free, all linked below.",
-                            "bullets": [
-                                "Tangents Daily — Bitcoin Park's weekday newsletter. Five minutes each morning, sources attached",
-                                "Bitcoin Optech — the weekly technical newsletter, written by the developers themselves",
-                                "San Juan BitDevs — Super Testnet's Puerto Rico socratic seminar. Session 28 is tonight; next one Sept 23. Steal from the reading list like I do"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/archive",
-                            "linkLabel": "Tangents Daily",
-                            "links": [
-                                {
-                                    "url": "https://bitcoinops.org/en/newsletters/",
-                                    "label": "Bitcoin Optech"
-                                },
-                                {
-                                    "url": "https://sanjuanbitdevs.org/2026-08-19-socratic-seminar-28",
-                                    "label": "San Juan BitDevs"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "Patch night — and the phishing wave that follows a leaked address list",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Patch Night, Then Watch Your Inbox",
-                            "body": "Two chores tonight — one takes ten minutes, the other lasts the rest of the year.",
-                            "bullets": [
-                                "Update everything that touches your coins: BitBox 9.26.5, BTCPay 2.4.3, RoninDojo v3. Verified downloads only",
-                                "If you bought a Trezor, assume your name and home address are on a list — and every hardware-wallet buyer's eventually will be",
-                                "Nobody legitimate will EVER contact you about your seed. Not support, not a recall, not a security team. That's always the attack",
-                                "Never type seed words into a website or a phone — if it isn't your own signing device asking, walk away",
-                                "Want a second set of eyes on your setup? Book time with me — the 15-minute intro is free, one on one"
-                            ],
-                            "link": "https://cal.com/maxsikorski",
-                            "linkLabel": "Book Time With Max"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W33": {
-            "week": "2026-W33",
-            "date": "2026-08-12",
-            "title": "BIP-110 Is Dead & the Rise of the Bitcoin Red Team",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market",
-                    "title": "Live Dashboard & Market",
-                    "description": "Where Bitcoin sits live — the week the fork died and the ETFs came back",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Live Dashboard",
-                            "body": "Where Bitcoin sits right now. The full dashboards:",
-                            "widget": "live-price",
-                            "links": [
-                                {
-                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
-                                    "label": "Clark Moody Dashboard"
-                                },
-                                {
-                                    "url": "https://mempool.space",
-                                    "label": "mempool.space"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "The Buyers Came Back — Mostly",
-                            "body": "Last week ended with a $265M outflow day. This week flipped the tape.",
-                            "bullets": [
-                                "Five straight days of ETF inflows, Aug 3–7 — about $853M net. The fear from the Coldcard week faded fast",
-                                "Price rode it: from the mid-$63Ks up through $65K by Sunday, the strongest stretch in a month",
-                                "Monday broke the streak — about $145M out, IBIT and GBTC splitting the selling almost evenly",
-                                "Worth saying out loud: the fork died Saturday morning and the market never blinked. The board behind me is the same board"
-                            ],
-                            "link": "https://crypto.news/bitcoin-etfs-draw-853-5m-in-five-day-inflow-streak/",
-                            "linkLabel": "The Inflow Streak"
-                        }
-                    ]
-                },
-                {
-                    "id": "bip110-dead",
-                    "title": "BIP-110 Is Dead",
-                    "description": "The fork mined two blocks, the math buried it — and the sequel is an altcoin",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "BIP-110 Is Dead: Two Blocks, Then Silence",
-                            "body": "Saturday morning, block 961,632. Exactly what we walked through last week — except quieter.",
-                            "bullets": [
-                                "The flag day fired: BIP-110 nodes rejected block 961,632 for not signaling, and split onto their own chain",
-                                "That chain mined its first block at 961,633, then one more — two blocks in eight hours. Then nothing",
-                                "Roughly 99.85% of hashpower stayed on the main chain, which never broke stride — dozens of blocks ahead by dinner",
-                                "No pool defected, no exchange listed a fork ticker, no replay chaos. The split everyone gamed out for months lasted a morning"
-                            ],
-                            "link": "https://crypto.news/bip-110-bitcoin-fork-failed-governance-2026/",
-                            "linkLabel": "The Obituary"
-                        },
-                        {
-                            "heading": "The Math That Buried It",
-                            "body": "Nobody attacked the fork chain. It just inherited a bill it couldn't pay.",
-                            "bullets": [
-                                "Final signaling: 2.53% — 51 blocks of 2,016 — against the 55% bar BIP-110 set for itself",
-                                "The fork chain kept mainnet's full difficulty with a sliver of its hashpower. Next difficulty adjustment at that pace: roughly 350 days away",
-                                "So it isn't 'defeated' so much as frozen — a chain that can't make blocks can't retarget, and a chain that can't retarget can't make blocks",
-                                "The monitor we watched all summer, as of this afternoon: one unified chain, tip past 962,100, and zero signaling blocks in the new period. Zero",
-                                "Our advice last week was pause transfers through the window. Right call, easy week — short reorgs never came"
-                            ],
-                            "link": "https://bip110monitor.com/",
-                            "linkLabel": "The Board, Final Score"
-                        },
-                        {
-                            "heading": "The Post-Mortem",
-                            "body": "Everyone's drawing lessons. Here are the ones I buy.",
-                            "bullets": [
-                                "Saylor, at the end of his 110-point case against it: 'Bitcoin is working as designed.' For once, most camps agree with him",
-                                "Giacomo Zucco, Plan B Network's director, says the failure proves Bitcoin would be 'almost impossible to reproduce' — changing it needs consensus nobody can buy or force",
-                                "Super called the ending a week early: fork off in 1,018 blocks, 'come back with a better proposal.' That ask still stands — the data debate is real even though this vehicle is dead",
-                                "His parting jab, Saturday on Nostr: even BIP-110's own miners were paying their bills with coins from the chain they rejected. An economy of two blocks was never going to feed anyone",
-                                "The spam fight isn't over — and the BIP-110 camp has a sequel planned. That's the next slide",
-                                "And with that — the BIP-110 Watch, a segment of this meetup since spring, retires tonight. The board comes down"
-                            ],
-                            "link": "https://www.theblock.co/news/ecosystems/2026-08-12-bip-110-failure-bitcoin-impossible-reproduce-plan-b-network-director-411596",
-                            "linkLabel": "The Governance Take",
-                            "links": [
-                                {
-                                    "url": "https://x.com/saylor/status/2086057411056447861",
-                                    "label": "Saylor's Verdict"
-                                },
-                                {
-                                    "url": "https://primal.net/p/nprofile1qqszrqlfgavys8g0zf8mmy79dn92ghn723wwawx49py0nqjn7jtmjagg0r085",
-                                    "label": "Super on Nostr"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "The Sequel: 'Fire the Miners'",
-                            "body": "The BIP-110 camp isn't burying their chain. They're planning a transplant — and think about what that math means.",
-                            "bullets": [
-                                "The author, Dathon Ohm, announced work on a proof-of-work change for the frozen chain — his phrase: 'fire the miners.' Luke Dashjr, who helped draft BIP-110, backs it, and Chris Guida has already rebased Luke's 2017 PoW-fork code onto Knots",
-                                "Why they have no choice: the chain carries Bitcoin's full difficulty with nobody mining it. At fork-day pace the retarget was 'a year away' — at the actual trickle since, my napkin says about five years. At today's rate: never. Sit with that — all that difficulty, and no one there to work it",
-                                "A new mining algorithm means every existing rig is worthless on that chain — which makes it, literally, a new altcoin. Fork the chain, change the PoW, keep the brand: that's the 2017 playbook, beat for beat",
-                                "The drama followed the code: on August 10, Luke was removed from the BIP editor team for prematurely assigning BIP-110 its number. The governance fight outlived the fork",
-                                "Watch it unfold live: 'BIP110 proof-of-work change preparation' is on San Juan BitDevs' agenda next Wednesday"
-                            ],
-                            "link": "https://cryptoslate.com/bitcoins-bip-110-fork-is-back-but-its-backers-want-to-replace-the-miners/",
-                            "linkLabel": "The PoW-Reset Plan",
-                            "links": [
-                                {
-                                    "url": "https://crypto.news/bitcoin-bip-editor-seeks-luke-dashjrs-removal/",
-                                    "label": "The Editor Fight"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "coldcard-update",
-                    "title": "Coldcard, Week Two",
-                    "description": "The tally nobody agrees on — and the homework that hasn't changed",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Coldcard: The Tally Nobody Agrees On",
-                            "body": "Last week we said ~1,367 BTC. Every tracker now has a bigger number — and they don't match.",
-                            "bullets": [
-                                "CryptoQuant: 1,432 BTC confirmed. Galaxy: at least 1,730. TRM Labs: about 1,816 BTC across 5,200+ addresses — $116M to $130M depending on who's counting",
-                                "Why the spread? Self-custody theft has no registry. Without victims self-reporting, nobody can draw the line between stolen and moved",
-                                "Four distinct attack waves since July 30. It's now the third-largest crypto theft of 2026 — and still creeping",
-                                "Super's question on Nostr cuts deepest: the 'bad' RNG was seeded with keypresses, the timestamp and the device ID — 'it's probably how I would seed it.' So: 'What was the \"good\" one seeded with?' The scary part isn't that the fallback was crazy. It's that it was reasonable",
-                                "The homework from last week hasn't changed: patched firmware is NOT enough. Affected seed → new seed on fixed firmware → migrate. Full playbook is in last week's deck, and my offer to walk anyone through it still stands"
-                            ],
-                            "link": "https://thehackernews.com/2026/08/coldcard-hardware-wallet-flaw-linked-to.html",
-                            "linkLabel": "The Technical Recap",
-                            "links": [
-                                {
-                                    "url": "https://primal.net/e/nevent1qvzqqqqqqypzqgvra9r4sjqapufyl0vnc4kv4fz70e29em4c655y37vz206f0wt4qqsdsz3huvfckws8avdvxyejl8klmkh68ynx4lknxaztwxd4659ug0cspj2ca",
-                                    "label": "Super's Question"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "btcpay-exploit",
-                    "title": "BTCPay's Turn",
-                    "description": "Merchant servers leaked their Lightning keys — and the response was pure Bitcoin",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "BTCPay Exploit: The Macaroon Leak",
-                            "body": "Third domino in three weeks: Boltz, Coldcard, now the merchant stack.",
-                            "bullets": [
-                                "BTCPay Server before 2.4.2: a remote attacker, no login needed, could read the admin credential for a connected LND node — then control it and drain the Lightning wallet",
-                                "Disclosed August 7, already being exploited. Foundation and Citadel21 both reported drained nodes; on-chain BTCPay wallets were never at risk",
-                                "If you run a server: upgrade to 2.4.2 tonight or take it offline. There is no middle option",
-                                "The response is the good part: a recovery bounty of 10% of returned funds up to 3 BTC — about $190K — plus 0.21 BTC each to the researchers who found it: Craig Raw of Sparrow, and the Bitcoin Red Team fund. Hold that name for the spotlight"
-                            ],
-                            "link": "https://www.coindesk.com/markets/2026/08/11/btcpay-offers-usd190-000-bounty-after-bitcoin-payment-servers-drained-in-exploit",
-                            "linkLabel": "The Bounty Story"
-                        }
-                    ]
-                },
-                {
-                    "id": "boltz-canary",
-                    "title": "Lightning's Rough Stretch: Boltz & Zeus",
-                    "description": "The Boltz deep-dive I promised, a canary scare — and Zeus's five-day comeback",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Boltz: The Canary Went Quiet",
-                            "body": "Quick primer: a warrant canary is a signed statement — 'no government has secretly demanded our data.' You prove the negative by repeating it on schedule. Miss the schedule, and readers must assume the worst. Boltz's own canary says exactly that.",
-                            "bullets": [
-                                "Boltz's last canary was dated May 31 and promised a refresh within 60 days — due July 30",
-                                "July 30 passed in silence. August 3, all swaps suspended 'until further notice.' Still no canary",
-                                "So the internet did the math: silence plus shutdown equals seizure? Protos ran the question straight: did Boltz just signal a government takeover?",
-                                "For two days, that read was completely defensible — by the canary's own rules"
-                            ],
-                            "link": "https://protos.com/did-bitcoin-bridge-boltz-silently-warn-of-a-government-takeover/",
-                            "linkLabel": "The Scare, As Reported"
-                        },
-                        {
-                            "heading": "The All-Clear — and the Lesson",
-                            "body": "August 5: a fresh canary, valid PGP signature, unambiguous text.",
-                            "bullets": [
-                                "The new canary states no third party — no government included — has requested user information. The signature checks out",
-                                "So the boring truth: a small team drowning in an AI-attack crisis let a compliance deadline slip. Sloppy, human, and not sinister",
-                                "But the lesson is real: a canary only works if it's boringly punctual. Miss it once in a crisis and you manufacture a second crisis for free",
-                                "Meanwhile the swaps are still down, no restart date — ZEUS, Aqua and Bull Bitcoin are still rerouting around the hole Boltz left",
-                                "Keep watching their Nostr. If the harness in tonight's spotlight had existed six months ago, Boltz might still be running"
-                            ],
-                            "link": "https://www.tftc.io/boltz-bitcoin-swaps-suspended-ai-attacks",
-                            "linkLabel": "The Full Timeline"
-                        },
-                        {
-                            "heading": "Zeus Took a Hit Too — and Got Back Up",
-                            "body": "Two days after Boltz went dark, Zeus got attacked. Different story, different ending.",
-                            "bullets": [
-                                "August 5: a cyberattack on ZEUS infrastructure — the third Lightning outage in a week. They mitigated it, then took everything offline themselves for a full audit. No customer funds lost or at risk",
-                                "Some Olympus LSP customers saw channels force-closed. The attack hit Zeus's servers, not the Lightning software — your self-custodied node was never the problem",
-                                "The comeback, day by day: Lightning addresses back Aug 6 · the Olympus node Aug 8 · LSP channels Aug 10 · replacement channels for affected users processing by Aug 11",
-                                "Evan's ask on Nostr while bootstrapping back: big nodes, open an inbound channel to Olympus. That's Lightning's immune system — recovery is a community act",
-                                "Put the two side by side: Zeus absorbed the hit and restored in five days; Boltz looked at the same attacker economics and closed the doors. Same storm, different boats — and both were honest about it"
-                            ],
-                            "link": "https://zeusln.com/blog/security-update-2026-08-05/",
-                            "linkLabel": "Zeus's Security Update",
-                            "links": [
-                                {
-                                    "url": "https://primal.net/e/nevent1qqsgqdn9nqn5qy6nkwz8wjv09secl977ewyulaezq9f5dwj2qa0fnlshcu44d",
-                                    "label": "Evan's Note"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "riot-anthropic",
-                    "title": "The Miner Becomes the Landlord",
-                    "description": "Riot signs $9.1B with Anthropic — the hashrate-to-AI pivot goes structural",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Riot × Anthropic: $9.1 Billion",
-                            "body": "The biggest miner story of the year isn't about mining.",
-                            "bullets": [
-                                "Riot signed a 20-year deal supplying 191 megawatts at its Rockdale, Texas campus to Anthropic — $9.1B over the term, up to $16.1B with extensions",
-                                "Staged buildout: 96 MW by December 2027, the full 191 by mid-2028, with $573M from Morgan Stanley bridging construction",
-                                "Riot is selling bitcoin holdings to fund it — trading BTC on the balance sheet for rent from an AI lab. The stock jumped ~20% on the name",
-                                "The pattern to watch: mining built the power infrastructure, AI is outbidding mining for it. Every exhausted miner with a substation is now a data-center landlord in waiting",
-                                "Same week AI attacks shut down Boltz, AI demand is writing miners nine-figure checks. Both edges of the same blade — hold that thought for the quick tip"
-                            ],
-                            "link": "https://www.cnbc.com/2026/08/11/riot-platforms-signs-anthropic-deal-as-miners-shift-to-ai-infrastructure-.html",
-                            "linkLabel": "The Deal"
-                        }
-                    ]
-                },
-                {
-                    "id": "new-resources",
-                    "title": "Resources Worth Your Week",
-                    "description": "Two daily reads and a sister meetup — plus the watch desk signs off",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Two Daily Reads",
-                            "body": "Between our Wednesdays, these two keep you current — both free, both in your inbox by morning.",
-                            "bullets": [
-                                "Tangents Daily — Bitcoin Park's newsletter, every weekday. Short and sharp: today's issue alone covered the BTCPay response, the Riot–Anthropic deal, and the Coldcard tally mess — half our deck before coffee",
-                                "TFTC's Bitcoin Brief — Marty Bent's crew at Truth for the Commoner. More editorial voice, strong on mining, energy and the macro picture — the other half of tonight's sourcing",
-                                "Between them you get the daily pulse; this meetup is where we argue about what it means. Subscribe to both and skim"
-                            ],
-                            "link": "https://tangentsdaily.substack.com/p/wednesday-aug12",
-                            "linkLabel": "Tangents Daily",
-                            "links": [
-                                {
-                                    "url": "https://www.tftc.io/bitcoin-brief",
-                                    "label": "TFTC Bitcoin Brief"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "San Juan BitDevs — Socratic Seminar 28",
-                            "body": "Super Testnet's meetup in Puerto Rico. Next session: Wednesday, August 19 — yes, same night as us.",
-                            "bullets": [
-                                "Their agenda reads like our deck with a week's head start: Coldcard, the Boltz canary, BIP-110's chain-split autopsy — plus a whole Bitcoin-and-AI block",
-                                "Deeper cuts on deck there: Lightning Labs' third Ark implementation, SuperScalar channel factories, Bolt12 payment proofs landing in the spec",
-                                "Socratic format — no slides, everyone argues. If you want the technical layer under what we do here, this is the room",
-                                "The topic list alone is worth the click. Steal from it like I do"
-                            ],
-                            "link": "https://sanjuanbitdevs.org/2026-08-19-socratic-seminar-28",
-                            "linkLabel": "The Full Agenda"
-                        },
-                        {
-                            "heading": "The Watch Desk Signs Off",
-                            "body": "Housekeeping on our two standing trackers.",
-                            "bullets": [
-                                "BIP-110 Watch: retired as of tonight. It ran every single week from the first signaling period to the two-block fork. Whatever the spam debate does next, it starts a new segment",
-                                "FIPS Watch: quiet in the best way. Nothing new since v0.4.1 on July 19 — a maintenance release, still wire-compatible, still pre-audit. Corgan's building, not posting",
-                                "When FIPS has real news — an audit, a public mesh milestone — it gets its slide back. Watch the repo with me"
-                            ],
-                            "link": "https://github.com/jmcorgan/fips/releases",
-                            "linkLabel": "FIPS Releases"
-                        }
-                    ]
-                },
-                {
-                    "id": "builder-spotlight",
-                    "title": "Builder Spotlight: The Bitcoin Red Team",
-                    "description": "16 volunteers, 27.5 hours, 4,962 findings — the defense finally picked up AI",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Builder Spotlight: The Bitcoin Red Team",
-                            "body": "All month we've watched AI empower attackers — Boltz, the probing waves, five years of missed review. This is the other side finally showing up.",
-                            "bullets": [
-                                "August 4–5: a 16-person volunteer 'Bitcoin Red Team' audited 390 open-source Bitcoin projects in one 27.5-hour sprint",
-                                "The haul: 4,962 findings — 85 critical, 635 high-severity. Numbers no human-only review team could touch in a month",
-                                "Led by Calle — the Cashu creator — and Rob Hamilton, CEO of AnchorWatch. OpenSats funded it; roughly $40K went straight into AI tokens",
-                                "The trigger was Coldcard: one five-year-old bug proved the ecosystem's review capacity wasn't keeping up. Their answer: scan everything, now"
-                            ],
-                            "link": "https://bitcoinmagazine.com/business/bitcoin-red-team-finds-85-critical-flaws-across-390-open-source-repos-after-coldcard-exploit",
-                            "linkLabel": "The Full Story"
-                        },
-                        {
-                            "heading": "How It Works — and What's Next",
-                            "body": "Not a scanner spraying alerts. A harness with discipline.",
-                            "bullets": [
-                                "The pipeline: AI models flag suspect code, the team reproduces each bug locally, then discloses privately to maintainers — findings, not noise",
-                                "The fleet: Kimi K3 quarterbacking, with GPT Sol, Claude's Fable and Opus, and GLM 5.2 cross-checking each other",
-                                "Mid-sprint plot twist: OpenAI blocked Rob's account over the security workload — so the team leaned harder on the open Chinese models. Permissionless tools for permissionless money",
-                                "BTCPay just seeded their fund with 0.21 BTC, and the team plans to open-source the whole harness so any Bitcoin company can run it against private code",
-                                "Follow Rob's running updates for the disclosures as they land — this is the story of the next six months"
-                            ],
-                            "link": "https://bitcoinmagazine.com/business/bitcoin-red-team-finds-85-critical-flaws-across-390-open-source-repos-after-coldcard-exploit",
-                            "linkLabel": "The Full Story",
-                            "links": [
-                                {
-                                    "url": "https://x.com/Rob1Ham/status/2084140242915782743",
-                                    "label": "Rob's Thread"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "Raise your floor — the probing era is here",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Raise Your Floor",
-                            "body": "Count the month: Boltz, Coldcard, BTCPay, Zeus. AI made probing cheap, and Bitcoin targets pay out instantly — the bar for 'secure enough' just moved for everyone. Including you.",
-                            "bullets": [
-                                "Tonight: update everything that touches your coins — wallet, node, server, firmware. Verified downloads only",
-                                "Add a passphrase to your seed — the 25th word. It's what saved the safe Coldcard users",
-                                "Real balances get multisig across different vendors — one company's bug should cost you one key, never a quorum",
-                                "Run a restore test. A backup you've never restored is a hope, not a backup",
-                                "Want a second set of eyes on your setup? Book time with me — the 15-minute intro is free, one on one, and we'll go as deep as your stack needs"
-                            ],
-                            "link": "https://cal.com/maxsikorski",
-                            "linkLabel": "Book Time With Max"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W32": {
-            "week": "2026-W32",
-            "date": "2026-08-05",
-            "title": "The Coldcard Seed Heist & BIP-110's Flag Day",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market",
-                    "title": "Live Dashboard & Market",
-                    "description": "Where Bitcoin sits live — and the week self-custody got scared",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Live Dashboard",
-                            "body": "Where Bitcoin sits right now. The full dashboards:",
-                            "widget": "live-price",
-                            "links": [
-                                {
-                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
-                                    "label": "Clark Moody Dashboard"
-                                },
-                                {
-                                    "url": "https://mempool.space",
-                                    "label": "mempool.space"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "The Green Streak Is Gone",
-                            "body": "Last week the three green weeks \"barely counted.\" One day erased them.",
-                            "bullets": [
-                                "July 31: $265M net out of the spot ETFs in a single day, IBIT leading. The three-week green run is over",
-                                "August opened heavy — roughly 7,300 BTC of net selling in the first days — then steadied near $64,000 Monday",
-                                "Two names on the fear: the Coldcard heist hit self-custody confidence, and Warsh declined to signal a September rate cut",
-                                "And the calendar looms — BIP-110's flag day and Sztorc's eCash fork both land within three weeks. Tonight is prep night"
-                            ],
-                            "link": "https://crypto.news/bitcoin-price-tests-63k-as-etf-outflows-hit-265m/",
-                            "linkLabel": "The Outflow Day"
-                        }
-                    ]
-                },
-                {
-                    "id": "coldcard-heist",
-                    "title": "The Coldcard Seed Heist",
-                    "description": "A five-year-old firmware bug, 1,300+ BTC gone — and the full recovery playbook",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "41 Minutes",
-                            "body": "The largest Bitcoin theft of 2026, and nobody's device was ever touched.",
-                            "bullets": [
-                                "July 30: 1,082.65 BTC — about $70M — drained from 1,196 addresses in 41 minutes. Galaxy Research mapped the sweep",
-                                "It kept going: three waves, ~1,367 BTC across 4,585 addresses. Elliptic's running estimate passed $130M by Tuesday, at least a dozen attackers",
-                                "No malware, no phishing, no seizure. The attackers regenerated victims' seeds offline and swept them",
-                                "One victim, Jonathan Goodman, lost $1.6M: \"I did everything right… My devices never touched the internet… None of it mattered\""
-                            ],
-                            "link": "https://techcrunch.com/2026/08/04/hackers-steal-over-130-million-by-exploiting-bug-in-offline-hardware-wallets/",
-                            "linkLabel": "The Running Tally"
-                        },
-                        {
-                            "heading": "One Wrong #ifndef",
-                            "body": "The bug is five years old and two characters wide. Worth two minutes of your night.",
-                            "bullets": [
-                                "March 2021: Coldcard's build config defines the hardware-RNG flag as zero. The crypto library checks whether the flag exists — not whether it's on",
-                                "Result: seed generation silently used Yasmarang, a software PRNG seeded from the chip's ID and timers. Never the hardware RNG",
-                                "Effective entropy: ~40 bits on Mk2/Mk3 against the 128 a 12-word seed promises. Mk4, Mk5 and Q got ~72 bits",
-                                "40 bits is brute-forceable. That's how you drain a thousand air-gapped wallets without touching one",
-                                "Block's team traced the root cause within a day of the first loss reports. Coinkite notes AI review tools missed it for five years too",
-                                "The lesson isn't \"Coldcard bad.\" It's that seed generation is the one moment your wallet has to be perfect — and you can't see it fail"
-                            ],
-                            "link": "https://engineering.block.xyz/blog/predictable-rng-fallback-and-32-bit-reseed-in-coldcard-firmware",
-                            "linkLabel": "Block's Full Autopsy"
-                        },
-                        {
-                            "heading": "Are You Affected?",
-                            "body": "The advisory in plain words. If this is you, the next two slides are your homework tonight.",
-                            "bullets": [
-                                "At risk: seeds generated on Mk2/Mk3 firmware 4.0.0–4.1.9, Mk4/Mk5 before 5.6.0, Q before 1.5.0Q, Edge before 6.6.0X/QX",
-                                "Not at risk from this bug alone: seeds built with 50+ real dice rolls, or wallets behind a strong, unique BIP-39 passphrase",
-                                "Restoring your old seed onto new firmware keeps the weak seed. The seed is the problem, not the device",
-                                "Multisig only helps if a quorum of your keys came from unaffected devices",
-                                "Coinkite halted shipments and destroyed remaining stock with the old firmware. Emergency release 4.2.0 shipped July 31"
-                            ],
-                            "link": "https://blog.coinkite.com/coldcard-mk3-seed-generation-warning/",
-                            "linkLabel": "The Official Advisory",
-                            "links": [
-                                {
-                                    "url": "https://blog.coinkite.com/adding-to-public-record/",
-                                    "label": "Coinkite: Adding to the Public Record"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "The Migration, Step by Step",
-                            "body": "My recommendation: spin up a fresh wallet in software you can verify — Sparrow on desktop, BlueWallet on mobile — and walk, don't run.",
-                            "bullets": [
-                                "Step 1: on a machine you trust, download Sparrow or BlueWallet and verify the download signature before installing",
-                                "Step 2: create a NEW wallet so it generates a NEW seed. Never type your old seed into anything — that's recovery, not migration",
-                                "Step 3: write the seed on paper or steel. No screenshots, no cloud notes, no password manager",
-                                "Step 4: send a small test amount. Wait for a confirmation. Restore-test your backup before the big move",
-                                "Step 5: move the rest, then keep the old wallet around until every balance is confirmed at the new one",
-                                "Still want hardware in the loop? Fine — update the firmware FIRST, then generate the fresh seed on the patched device. Same steps otherwise",
-                                "And if any of this feels over your head: book time with me and we'll do it together, one on one, completely free. Grab the 15-minute slot from the link in this week's email — we'll take as long as we need"
-                            ],
-                            "link": "https://sparrowwallet.com/download/",
-                            "linkLabel": "Get Sparrow",
-                            "links": [
-                                {
-                                    "url": "https://bluewallet.io/",
-                                    "label": "BlueWallet"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "Harden It While You're In There",
-                            "body": "If you're touching your cold storage tonight anyway, upgrade the practices, not just the seed.",
-                            "bullets": [
-                                "Add a BIP-39 passphrase — the 25th word. It's what separated the safe Coldcard users from the swept ones this week",
-                                "Making a seed yourself? Use dice: 50+ real rolls, alone, no cameras. Trust your own entropy over anyone's chip",
-                                "Split the backup with Shamir's secret sharing — 2-of-3 shares in separate places beats one paper in one drawer",
-                                "Bigger balances: multisig across different vendors and different software, so no single bug is fatal — this week's exact failure mode",
-                                "And schedule a restore test. A backup you've never restored is a hope, not a backup"
-                            ],
-                            "link": "https://blog.coinkite.com/coldcard-mk3-seed-generation-warning/",
-                            "linkLabel": "Check the Advisory"
-                        },
-                        {
-                            "heading": "My Take: The Hardware Wallet Question",
-                            "body": "Where I've landed after this week — my opinion, and I'm happy to argue about it.",
-                            "bullets": [
-                                "Hardware wallets sell you an offline box, but Bitcoin lives online, on nodes. Every spend has to cross that gap and broadcast anyway",
-                                "So the 'air gap' is marketing more than architecture. This week proved the box can fail invisibly at the one job it claims to own",
-                                "Secure elements are closed silicon. No hardware wallet is 100% open source — you're trusting a chip you can't audit",
-                                "Multisig built from software wallets — Sparrow, BlueWallet and friends — is just as good, arguably better: auditable code, no vendor silicon in the trust path",
-                                "Push back on me here. But 'I bought the safest brand' died as a strategy on July 30"
-                            ],
-                            "link": "https://sparrowwallet.com/download/",
-                            "linkLabel": "Software-First Setup"
-                        },
-                        {
-                            "heading": "Lastly",
-                            "body": "We've covered the mitigations before. This week they stopped being theory.",
-                            "bullets": [
-                                "Rule one, above everything: never rely on one vendor. Distribute your attack vectors",
-                                "In multisig that means a mixture — not all Coldcards, not all BlueWallet. And never a majority of keys in any one party",
-                                "One vendor's five-year mistake should cost you one key, never a quorum. That's the whole design",
-                                "And my second takeaway: this week verified what HODLing and diamond hands really mean. It's your acumen in your setup, not just your conviction in Bitcoin",
-                                "Conviction survives price. Coins survive engineering. You need both"
-                            ],
-                            "link": "https://sparrowwallet.com/docs/",
-                            "linkLabel": "Sparrow Docs: Build It Right"
-                        }
-                    ]
-                },
-                {
-                    "id": "bip-110-watch",
-                    "title": "BIP-110 Watch: Flag Day",
-                    "description": "Standing tracker, final form — the live board, the fork playbook, the node question",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "BIP-110 Live Dashboard",
-                            "body": "One week only: the tracker gets its own live board. These numbers update as we talk.",
-                            "widget": "bip110-live",
-                            "links": [
-                                {
-                                    "url": "https://bip110monitor.com/",
-                                    "label": "BIP-110 Monitor"
-                                },
-                                {
-                                    "url": "https://bip110.org/ursf-monitor",
-                                    "label": "URSF Status"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "The Voluntary Path Is Dead",
-                            "body": "Last week I said lock-in needed 74% of every remaining block. The math finished the argument.",
-                            "bullets": [
-                                "Signaling this period: about 40 blocks of ~1,560 — 2.56%. The trend: 0.45% → 0.99% → 1.29% → 2.56%. Rising, and irrelevant",
-                                "Lock-in needs 1,109 blocks. With ~456 left in the period, the ceiling is about 496. Voluntary lock-in is now mathematically impossible",
-                                "Saylor, Monday: \"At 961,022, BIP-110 has 38 signals (2.70%). Its 55% voluntary threshold is impossible.\" His word to backers: stand down",
-                                "Super called it Friday, in one Nostr post: even if BIP-110 miners took every remaining block, they'd miss 55%. \"So they will fork off in 1018 blocks. Come back with a better proposal than bip110\"",
-                                "Ocean remains the only signaling pool. Foundry, AntPool, F2Pool, ViaBTC: still zero. That's over 70% of hashrate sitting it out"
-                            ],
-                            "link": "https://news.bitcoin.com/featured/strategys-saylor-tells-bip-110-backers-to-stand-down-before-fork/",
-                            "linkLabel": "Saylor's Stand-Down Call",
-                            "links": [
-                                {
-                                    "url": "https://primal.net/e/nevent1qqsrsnzpdye2zlt5xc54neym9paejazas2548ryclvjtdv9ejc0lrpg9hkja6",
-                                    "label": "Super's Post on Nostr"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "What Happens at Block 961,632",
-                            "body": "Roughly Friday. Here's the mechanical version, no drama added.",
-                            "bullets": [
-                                "From 961,632 through 963,647, enforcing nodes reject every block that doesn't signal bit 4. At under 3% hashrate, those nodes land on a minority chain",
-                                "Knots is ~22% of reachable nodes, but running Knots isn't the same as enforcing — most won't have the flag on",
-                                "No replay protection. BIP-110 wasn't designed to split, so if a split happens anyway, one transaction can be valid on both chains",
-                                "Jon Atack's advice, and ours: pause transfers around the flag block. Short reorgs are possible even if the whole thing fizzles",
-                                "Even Bitcoin Magazine's corporate desk published fork-window guidance Monday: exchanges should raise confirmation counts, watch both branches, and pause big settlements. When the suits get a checklist, it's real"
-                            ],
-                            "link": "https://www.tftc.io/bip-110-mandatory-signaling-window-miner-support-bitcoin-consensus",
-                            "linkLabel": "Flag-Day Mechanics, Explained",
-                            "links": [
-                                {
-                                    "url": "https://bitcoinmagazine.com/bitcoin-for-corporations/corp-bip-110-soft-fork",
-                                    "label": "The Corporate Playbook"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "If It Actually Forks: Your Coins, Both Chains",
-                            "body": "Super says they fork off. If a real minority chain survives, here's the holder's playbook.",
-                            "bullets": [
-                                "First: every coin you held before the fork exists on BOTH chains automatically. There is nothing to 'claim' and no deadline. Anyone who says otherwise is phishing you",
-                                "NEVER type your seed into a claiming site or 'fork wallet.' That's how forks steal more than the fork ever pays",
-                                "No replay protection means a spend on one chain can be replayed on the other. Splitting coins safely means waiting for tools that mix in post-fork coins — or waiting for exchanges to credit both sides",
-                                "The sober math: a chain with under 3% of hashrate makes a block every 5+ hours and can't retarget for a full 2,016-block period. It may simply never be worth splitting for",
-                                "So the playbook is patience: don't transact through the window, don't chase the new ticker on day one, and let the dust settle. Same advice for Sztorc's eCash fork two weeks later"
-                            ],
-                            "link": "https://bip110.org/",
-                            "linkLabel": "The BIP-110 Project Site"
-                        },
-                        {
-                            "heading": "The Node Question",
-                            "body": "People keep asking what to run if they agree with us — sound money, wrong vehicle. Here's my answer.",
-                            "bullets": [
-                                "Run stock Bitcoin Core, current release, and you're done. It follows the most-work valid chain and enforces no BIP-110 rules — exactly our position",
-                                "Nothing wrong with Knots as software — but its BIP-110 enforcement is the thing we're declining. If you run Knots, leave that flag off",
-                                "Either way, your node keeps working through the flag day and your coins don't move. The fork risk lives with enforcers and miners, not you",
-                                "Verify your download signature — this of all weeks — and if you're spinning up your first node, tonight's a fine night to start syncing",
-                                "And Super's real ask isn't about node software at all: \"Come back with a better proposal than bip110.\" The data debate deserves a better vehicle"
-                            ],
-                            "link": "https://bitcoincore.org/en/download/",
-                            "linkLabel": "Bitcoin Core Downloads"
-                        }
-                    ]
-                },
-                {
-                    "id": "boltz-shutdown",
-                    "title": "Boltz Shuts Its Doors",
-                    "description": "The swap service many of us used, gone indefinitely — and why",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Boltz Suspends Swaps Indefinitely",
-                            "body": "One more before homework, and it's a sad one. A tool many of us have actually used.",
-                            "bullets": [
-                                "Sunday, on Nostr: Boltz suspended all swaps — mainchain, Lightning, Liquid — \"until further notice.\" Their words: don't expect it back shortly",
-                                "The reason is the theme of this whole week: months of automated, AI-assisted probing, several exploits, and \"attackers now iterate faster than a team our size can find and patch\"",
-                                "Your funds were never at risk — non-custodial by design. The refund API is still up for pending swaps, unilateral refunds work without them, and the company ate the losses itself",
-                                "The blast radius is real: ZEUS, Aqua and Bull Bitcoin all leaned on Boltz for swaps",
-                                "Sit with the pattern: AI reviewers missed Coldcard's bug for five years, and AI attackers just out-iterated Boltz's defenders. The tooling cuts both ways, and this week it cut ours",
-                                "Genuinely sad to see. They did it right — non-custodial, honest disclosure, refunds live — and honest engineering still lost to economics. Raise a glass, and check your wallet's swap settings"
-                            ],
-                            "link": "https://boltz.exchange/",
-                            "linkLabel": "Boltz's Notice",
-                            "links": [
-                                {
-                                    "url": "https://primal.net/e/nevent1qqs8hp7s0n4u7cg0gdqc9qdey9tszkfgd5r0qt8qq2qjg7kxqqfvd3qz78kjs",
-                                    "label": "The Announcement on Nostr"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "Audit your seed's birth certificate",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Know Where Your Seed Was Born",
-                            "body": "Tonight's homework works even if you've never owned a Coldcard. Write down what you actually know about your seed: what device made it, what firmware era, whether dice were involved, whether a passphrase protects it. If you can't answer those questions, that's the finding. Coldcard owners — check your firmware against the advisory tonight, and if you're in the affected range without dice or a passphrase, make a new seed on patched firmware and migrate. Everyone else: your seed was born once, and it can't be re-born by an update. Know its story.",
-                            "link": "https://blog.coinkite.com/coldcard-mk3-seed-generation-warning/",
-                            "linkLabel": "Check the Advisory"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W31": {
-            "week": "2026-W31",
-            "date": "2026-07-29",
-            "title": "BIP-110's Math Runs Out, Dorsey Puts Agents on Nostr & Clarity Misses Its Window",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market",
-                    "title": "Live Dashboard & Market",
-                    "description": "Where Bitcoin sits live — and the streak died Thursday",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Live Dashboard",
-                            "body": "Where Bitcoin sits right now. The full dashboards:",
-                            "widget": "live-price",
-                            "links": [
-                                {
-                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
-                                    "label": "Clark Moody Dashboard"
-                                },
-                                {
-                                    "url": "https://mempool.space",
-                                    "label": "mempool.space"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "Third Green Week, and It Barely Counts",
-                            "body": "Last week I said \"fragile\" was the wrong word. Retracted. The streak died Thursday.",
-                            "bullets": [
-                                "Week ending July 24: $33.79M net in. Third green week, and a rounding error at this size",
-                                "Thursday: $225.2M out. Friday: $240.1M out. IBIT was nearly $415M of it",
-                                "Price above $66,500 Tuesday, under $64,000 by Friday",
-                                "The cause wasn't Bitcoin — profit-taking and a weak Nasdaq. Three green weeks after eight red ones still counts. Barely"
-                            ],
-                            "link": "https://www.coindesk.com/markets/2026/07/27/bitcoin-etfs-record-third-consecutive-weekly-inflows-despite-losses-of-usd465-million-to-end-week",
-                            "linkLabel": "The Week's ETF Ledger"
-                        }
-                    ]
-                },
-                {
-                    "id": "bip-110-watch",
-                    "title": "BIP-110 Watch: The Math Runs Out",
-                    "description": "Standing tracker — this week it stops being about votes",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "BIP-110 Watch: Ten Days and One Period Left",
-                            "body": "The clock sets tonight's running order. One number ends the suspense.",
-                            "bullets": [
-                                "Signaling: about 1.9% — 10 signaling blocks out of roughly 530 in period 476. Height around 960,150, flag day at 961,632, call it 1,480 blocks and ten days out",
-                                "Now the division: 961,632 ÷ 2,016 = exactly 477. Period 476 ends the instant the flag day begins. It's the last period lock-in is possible in",
-                                "Lock-in needs 1,109 blocks. It has 10, with about 1,480 left. That's roughly 74% of every remaining block, starting now",
-                                "And if it somehow got there: mandatory signaling at the flag day, lock-in near block 963,648 around August 23, activation near 965,664 around September 6",
-                                "Ocean turned signaling on by default — the whole reason it crossed 1%. Antpool, ViaBTC and F2Pool haven't moved. Foundry is polling its customers"
-                            ],
-                            "link": "https://bip110monitor.com/",
-                            "linkLabel": "Live Signaling Monitor"
-                        },
-                        {
-                            "heading": "The Target Already Routed Around It",
-                            "body": "Two developments this week. Both cut the same way.",
-                            "bullets": [
-                                "lifofifo shipped an Ordinals update and summed it up in four words: \"Ordinals are now BIP-110 ready.\" Files split into 256-byte fragments. Inscriptions survive — they just cost more",
-                                "Ocean's VP Jason Hughes, who says he is \"not pro BIP110, and I'm not anti-BIP110\": 0.6% of blocks over 60 days, and no new entrants",
-                                "His sharpest point — signaling through Ocean costs a miner nothing before the fork, so it's a weak proxy for conviction",
-                                "Node counts depend on the crawler: 7–15% per Hughes, 2–8% capable per others. Knots is ~22% of nodes and the only enforcer, but Knots share isn't endorsement",
-                                "Dashjr: \"Rejecting BIP110 is a contentious hardfork attempt.\" Alex Thorn: \"extremely disruptive & dangerous.\" We haven't moved — sound money, wrong vehicle",
-                                "And today, Saylor again: \"Bitcoin has won. Now it must survive victory. Its gravest threat is not an enemy at the gates, but corruption from within.\" He calls consensus the constitution, and says BIP-110 fixes no critical bug",
-                                "Samson Mow adds that restricting fee-paying transactions \"would turn Bitcoin into a fiat currency.\" BIP-110 advocate Fred Krueger's rebuttal was to call Saylor's argument AI-generated. That's where the debate is ten days out"
-                            ],
-                            "link": "https://bitcoinmagazine.com/bitcoin-mining/ocean-mining-vp-jason-hughes-bip-110-on-track-to-fail-as-miner-signaling-stays-below-1",
-                            "linkLabel": "Ocean's Own VP on the Numbers"
-                        }
-                    ]
-                },
-                {
-                    "id": "money-and-power",
-                    "title": "The Money Corner: Clarity Dies, Strategy Stops",
-                    "description": "Washington ran out of calendar. The biggest buyer went quiet",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "The Clarity Act Ran Out of Calendar",
-                            "body": "Last week I called August 7 a deadline with suspense in it. Leadership just answered.",
-                            "bullets": [
-                                "Thune, July 23: \"I would like to at least get Clarity started. We'll see where the votes are.\" That is not a man scheduling a vote",
-                                "The floor went to a Russia sanctions package and a nominations backlog. Clarity needs debate, amendments, and 60 votes for cloture",
-                                "Polymarket has 2026 passage near 28%, down from 82% in February. White House adviser Patrick Witt says he's \"slightly more optimistic\"",
-                                "Next window: three Senate weeks in September, then midterms swallow it. And the House still has to pass it"
-                            ],
-                            "link": "https://www.coindesk.com/policy/2026/07/23/clarity-act-expected-to-miss-its-window-before-congress-summer-break-leadership-says",
-                            "linkLabel": "Leadership Calls It"
-                        },
-                        {
-                            "heading": "Strategy Has Stopped Buying",
-                            "body": "The company that made \"corporations are buying\" a sentence hasn't bought a bitcoin in over a month.",
-                            "bullets": [
-                                "The position: 843,775 BTC at $75,476 average, $63.7B in. About 4% of the 21 million cap, roughly $9B underwater",
-                                "July 13–19: sold 2,732,318 MSTR shares for $263.5M, bought zero bitcoin. Proceeds went into a dollar reserve, about $3.2B",
-                                "Three weeks ago we covered the 3,588 BTC sold for $216M. This is the sequel — not selling, not buying, raising equity to hold cash",
-                                "Their stated pain threshold: bitcoin at $8,000–$10,000. Earnings tomorrow. Is this prudence, or the treasury model finding its limit?"
-                            ],
-                            "link": "https://www.theblock.co/post/408892/strategy-sells-263-5-million-in-mstr-shares-buys-no-bitcoin-as-usd-reserve-tops-3-2-billion",
-                            "linkLabel": "Shares Sold, No Bitcoin Bought"
-                        }
-                    ]
-                },
-                {
-                    "id": "buzz",
-                    "title": "Dorsey Puts AI Agents on Nostr",
-                    "description": "Block shipped Buzz — every agent gets its own keypair",
-                    "type": "tool",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "Buzz: One Event Log for Humans and Agents",
-                            "body": "Block shipped this July 21. The interesting part is that Nostr is just the plumbing.",
-                            "bullets": [
-                                "What it is: a self-hostable workspace where people and AI agents share the same channels. Chat, project management, code review, CI approvals, git",
-                                "How: a Nostr relay at the center — NIP-01, NIP-42 for auth, NIP-34 for git. Every message, approval and commit is one signed event in a hash-chained log",
-                                "Agents are members, not bots. Each gets its own keypair and permissions. Block's claim: identity is the unsolved problem in multi-agent work",
-                                "Rust relay, React web and desktop, Flutter mobile, Apache 2.0. Works with Claude Code, Codex or Block's own goose. Workflows and git hosting still being built"
-                            ],
-                            "link": "https://github.com/block/buzz",
-                            "linkLabel": "block/buzz on GitHub"
-                        },
-                        {
-                            "heading": "Why This Is a Nostr Story, Not an AI Story",
-                            "body": "The easy version of this slide is \"Dorsey likes Nostr.\" The real story is what he picked it for.",
-                            "bullets": [
-                                "An agent's identity and history live in a keypair, so they travel. Fire the vendor, keep the record",
-                                "First time a company this size treated Nostr as boring infrastructure instead of a Twitter alternative",
-                                "The skeptic's seat: \"self-hostable\" and \"self-hosted\" are different words. An audit trail is only as honest as whoever runs the relay",
-                                "Would you give an agent its own npub — and sign anything on its behalf?"
-                            ],
-                            "link": "https://buzz.xyz/",
-                            "linkLabel": "Try the Early Build"
-                        }
-                    ]
-                },
-                {
-                    "id": "ecash-hardfork",
-                    "title": "The Other August Fork",
-                    "description": "Sztorc's hard fork is three weeks out, Satoshi's coins included",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "August's Other Fork",
-                            "body": "On Super's agenda tonight, and we covered it in June. August has two forks. This is the loud one.",
-                            "bullets": [
-                                "On or around August 22, at block 963,648. It activates drivechains — BIP 300 and 301 — as opt-in sidechains, without touching main-chain rules",
-                                "Every BTC holder gets a 1:1 balance on the forked chain. Ordinary fork mechanics. Nothing for you to do",
-                                "The part that isn't ordinary: it reassigns Satoshi-era coins. That's why coverage since April keeps using the word theft",
-                                "It also shares a name with the XEC \"eCash\" altcoin, apparently on purpose. That coin stays out of this room. Sztorc's is a Bitcoin fork, so it's ours"
-                            ],
-                            "link": "https://ecash.com/",
-                            "linkLabel": "The Fork's Own Page"
-                        }
-                    ]
-                },
-                {
-                    "id": "seminar-privacy",
-                    "title": "Super's Room I: The Privacy Stack",
-                    "description": "From Seminar 27 — silent payments went from spec to shipped",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Silent Payments Quietly Became Real",
-                            "body": "Super's San Juan BitDevs runs Seminar 27 tonight and we're walking his whole agenda. Fair warning — it's a roundup since the last seminar, not a week of news.",
-                            "bullets": [
-                                "Sparrow 2.5.0 added silent-payments receiving on May 21, airgapped signers included. 2.5.2 followed with dust detection",
-                                "libsecp256k1 merged an optional silent-payments module last week. Once the primitive is in the reference library, everyone else's job gets easier",
-                                "Also listed: Hal Wallet — silent payments, Ark and Lightning in one app, per the agenda. I couldn't verify it, so treat it as a lead",
-                                "Coinjoin isn't dead either. Joinstr is working on sybil resistance. Joinmarket-NG 0.32.0 added mempool support so takers can verify maker broadcasts"
-                            ],
-                            "link": "https://sanjuanbitdevs.org/2026-07-29-socratic-seminar-27",
-                            "linkLabel": "The Full Seminar 27 Agenda"
-                        }
-                    ]
-                },
-                {
-                    "id": "seminar-data",
-                    "title": "Super's Room II: The Data Fight",
-                    "description": "A prunable data region, and an argument about process",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "SegData, and an Argument About Process",
-                            "body": "Same war we've covered all summer, moved off the activation battlefield and onto design and process.",
-                            "bullets": [
-                                "SegData is a new BIP draft: a prunable, script-isolated block region for data. If data is coming anyway, give it a place nodes can throw away",
-                                "The top reply in the thread is the whole objection: \"Why would bitcoin noderunners want to store nonmonetary data for free?\"",
-                                "Also on the agenda: Ocean's stratum v1 opt-in for BIP-110, the mechanism behind the signaling bump we opened with",
-                                "The culture item is \"The Merge,\" hodlonaut's June essay. It argues Core's OP_RETURN reversal was engineered procedurally, and it names living developers",
-                                "It's an argument, not a finding. The PRs it cites are public and numbered. Read it, read those, decide yourself — including when it argues for our side"
-                            ],
-                            "link": "https://delvingbitcoin.org/t/bip-draft-segregated-data-a-prunable-script-isolated-block-region-for-data-carriage/2641/4",
-                            "linkLabel": "The SegData BIP Draft"
-                        }
-                    ]
-                },
-                {
-                    "id": "seminar-toys",
-                    "title": "Super's Room III: New Toys, Exits & Mining",
-                    "description": "Offline Lightning receiving, exits, and the first Stratum V2 block",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Lightning That Works While Your Phone Is Asleep",
-                            "body": "The new-toys section has one badly underrated item. It fixes a problem every mobile wallet user has hit.",
-                            "bullets": [
-                                "LDK shipped async payments — receiving while offline — on June 26",
-                                "Your LSP holds a static, hash-less invoice. The sender locks funds with their own LSP. An onion message waits. You come online and release the secret",
-                                "Why it matters: phones won't let an app run after a push notification without VoIP privileges. That one OS rule made mobile tips awkward for years",
-                                "Still beta, LDK-to-LDK only. Also in the section: a BTCPay Ark prototype and Lightning Labs' Wavelength alpha on signet",
-                                "And the exits — Spark, Bark, BitVM garbled circuits. Both Ark and Spark rest on unilateral exit. Watching people actually use it is how you learn whether it holds"
-                            ],
-                            "link": "https://lightningdevkit.org/blog/async-payments-receiving-while-offline",
-                            "linkLabel": "How Async Payments Work"
-                        },
-                        {
-                            "heading": "A Miner Built Its Own Block",
-                            "body": "The mining section closes out the agenda, and this milestone deserved more noise than it got.",
-                            "bullets": [
-                                "DMND Pool mined the first fully-compliant Stratum V2 block — 955,318, late June, for GoMining",
-                                "First real use of Job Declaration: the miner assembles its own template, the pool validates it, and the miner's version ships",
-                                "Template construction is where pool centralization actually bites. This hands it back. DMND is also standing up the first dedicated SV2 pool",
-                                "Also listed: Testnet 5's draft BIP, output descriptors, BIP157 from guggero. And LND's BOLT 12 work began — PR #10789 merged June 16"
-                            ],
-                            "link": "https://github.com/lightningnetwork/lnd/pull/10789",
-                            "linkLabel": "LND's First BOLT 12 Merge"
-                        }
-                    ]
-                },
-                {
-                    "id": "optech-415",
-                    "title": "One Signature for the Whole Block",
-                    "description": "Optech #415: full Schnorr aggregation — plus a Lightning goodbye",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "BIP-459: Full Aggregation of Schnorr Signatures",
-                            "body": "From this week's Optech. Simple idea, enormous consequences.",
-                            "bullets": [
-                                "Fabian Jahr proposed BIP-459: full aggregation of Schnorr signatures into a single 64-byte signature. Two signers or two thousand, same 64 bytes",
-                                "Two interactive rounds — nonces through an untrusted coordinator, then partial signatures. The coordinator needs no trust, which is what makes it usable",
-                                "Jahr names cross-input signature aggregation as an application while keeping that consensus change out of scope. Sensible, given the year we're having",
-                                "Also in #415: Wasabi 2.8.0 fetches block filters peer-to-peer with no backend, Inquisition 29.4 activated OP_TEMPLATEHASH, and Core turned on BIP-324 by default for DNS seeds"
-                            ],
-                            "link": "https://bitcoinops.org/en/newsletters/2026/07/24/",
-                            "linkLabel": "Optech Newsletter #415"
-                        },
-                        {
-                            "heading": "Rusty Russell Steps Away After Eleven Years",
-                            "body": "Rusty Russell has left Blockstream after eleven years of Lightning work, timed to Core Lightning 26.06 in June.",
-                            "bullets": [
-                                "9,762 commits. 53.9% of Core Lightning's entire history. More than half an implementation, written by one person",
-                                "18 reverts across nearly ten thousand commits. Anyone who ships production software knows how absurd that ratio is",
-                                "He led the BOLT spec process, wrote lnprototest so implementations could prove they conform, and championed BOLT 12 — the first new BOLT since 2017",
-                                "He hasn't said what's next. LND merged its first BOLT 12 PR in June, so his spec is being picked up by the last holdout. Decent send-off"
-                            ],
-                            "link": "https://blog.blockstream.com/rusty-russell-eleven-years-of-lightning-at-blockstream/",
-                            "linkLabel": "Eleven Years of Lightning"
-                        }
-                    ]
-                },
-                {
-                    "id": "fips-watch",
-                    "title": "FIPS Watch: Holding at v0.4.1",
-                    "description": "Standing tracker — nothing shipped, which is its own update",
-                    "type": "discussion",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "FIPS Watch: A Quiet Week",
-                            "body": "Standing tracker, short entry. Nothing has shipped since v0.4.1 on July 19 — I checked the releases page tonight.",
-                            "bullets": [
-                                "v0.4.1 is still the head: convergence and path-MTU fixes, plus a bloom-filter cap the notes admit \"buys headroom, it does not fix anything\"",
-                                "The premise, for anyone new: Nostr keypairs as node identities. Your npub is your address. No DNS, no IP allocation, no routing authority",
-                                "Four weeks on this tracker and the pattern holds — small releases, tested, honest notes. A quiet week after a point release is health, not a warning",
-                                "Still pre-audit. Run it, don't trust it with anything that matters yet"
-                            ],
-                            "link": "https://github.com/jmcorgan/fips/releases",
-                            "linkLabel": "FIPS Releases"
-                        }
-                    ]
-                },
-                {
-                    "id": "builder-spotlight",
-                    "title": "Builder Spotlight: Car Gonzalez's PlebWatch",
-                    "description": "The Clark Moody dashboard, shrunk down and strapped to your wrist",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Builder Spotlight: PlebWatch",
-                            "body": "Tonight's spotlight is Car Gonzalez's PlebWatch. We open every meetup on the Clark Moody dashboard. Car shrunk it down to something you wear.",
-                            "bullets": [
-                                "Who Car is, briefly: co-founder and CEO of PlebLab, the Austin Bitcoin hackerspace and accelerator. PlebWatch is his own build",
-                                "An M5StickC Plus2 — thumb-sized ESP32 with a screen. That exact model, because the firmware needs its HOLD pin. Analog watch face over the artwork",
-                                "On it: BTC/USD, sats-per-dollar, mempool fees across four tiers, difficulty, hashrate, halving countdown, Lightning capacity and node count. Plus random Satoshi quotes",
-                                "The part I respect is the power budget — one to three days untethered, using deep sleep, five-minute display windows and hourly refreshes",
-                                "C++ on PlatformIO, MIT, no tagged releases. Clone it, flash over USB-C. Under an hour, and then you're wearing the mempool. Who's building one before next Wednesday?"
-                            ],
-                            "link": "https://github.com/thrillerxx/plebwatch",
-                            "linkLabel": "Build Your Own PlebWatch",
-                            "links": [
-                                {
-                                    "url": "https://pleblab.dev/",
-                                    "label": "PlebLab"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "Set up one silent-payments receiving address",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Get Yourself a Reusable Address",
-                            "body": "Tonight's homework comes from Super's privacy list, and it's been ready for two months. Silent payments give you one address to post publicly and reuse forever, receiving to a fresh output every time. No address reuse, no xpub handed to a third party. Update Sparrow to 2.5.2, make a silent-payments receiving wallet, and give the address to one person who pays you regularly. Airgapped signers work too. Then go look at what your current public address has been telling the world all along.",
-                            "link": "https://github.com/sparrowwallet/sparrow/releases",
-                            "linkLabel": "Get Sparrow 2.5.2"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W30": {
-            "week": "2026-W30",
-            "date": "2026-07-22",
-            "title": "Voltage Pulls the Plug on Hobby Nodes, the Streak Turns & the Two August 7ths",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market",
-                    "title": "Live Dashboard & Market",
-                    "description": "Where Bitcoin sits live — and six green days that answered last week's question",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Live Dashboard",
-                            "body": "Before the headlines — here's where Bitcoin sits right now. Open the full dashboards below:",
-                            "widget": "live-price",
-                            "links": [
-                                {
-                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
-                                    "label": "Clark Moody Dashboard"
-                                },
-                                {
-                                    "url": "https://mempool.space",
-                                    "label": "mempool.space"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "The Streak Turned",
-                            "body": "Last week we called the bounce 'a fragile rebound, not a confirmed recovery' and asked whether one green day meant anything. Six green days later, we have an answer.",
-                            "bullets": [
-                                "US spot Bitcoin ETFs have now posted six consecutive sessions of net inflows — roughly $727M over the five days through July 20, plus another $203M on July 21. Longest streak since early May",
-                                "July 20 alone brought in $227M, the strongest single day since July 6 — and total ETF assets climbed back above $80 billion",
-                                "Price followed: a five-week high, more than 15% off the June lows. The live number is on the dashboard behind us",
-                                "The honest caveat from the coverage: this could be sellers getting tired rather than institutions coming back. But 'fragile' is no longer the right word"
-                            ],
-                            "link": "https://www.coindesk.com/business/2026/07/21/live-markets-bitcoin-etfs-post-a-fifth-straight-day-of-inflows-in-a-first-since-april",
-                            "linkLabel": "The Five-Day Streak"
-                        }
-                    ]
-                },
-                {
-                    "id": "voltage-sunset",
-                    "title": "Voltage Sunsets Self-Serve Nodes",
-                    "description": "The hosted hobby node is going away — if yours lives on Voltage, August 31 is your deadline",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Voltage Pulls the Plug on Self-Serve",
-                            "body": "The week's biggest practical story: Voltage — the cloud host where a lot of hobbyists run their Lightning nodes — is shutting down its entire self-serve tier to go enterprise-only.",
-                            "bullets": [
-                                "The dates: new self-serve provisioning was already disabled July 13. On August 31, the self-serve infrastructure — LND nodes, LNbits, BTCPay instances — goes away entirely",
-                                "Enterprise customers are unaffected; that side grew ~1,000% in 18 months serving exchanges, neobanks, wallets and gaming platforms. That's the business now",
-                                "Their stated logic: one enterprise integration reaches more Lightning users than a thousand hobby nodes. Cold, but probably true",
-                                "What the post does NOT include: any automatic migration of your node or funds. Closing channels and moving sats is on you — and channel closes take time. Don't discover this on August 30"
-                            ],
-                            "link": "https://voltage.cloud/blog/sunsetting-self-serve",
-                            "linkLabel": "The Sunset Announcement"
-                        },
-                        {
-                            "heading": "The End of the Hosted Hobby Node",
-                            "bullets": [
-                                "The bigger pattern: 'your node, our hardware' was always a halfway house — your keys, someone else's uptime, and a monthly bill that never quite covered what hobbyists cost to serve",
-                                "If you're affected, the realistic paths: bring the node home (Umbrel, Start9, RaspiBolt on your own box), or admit you wanted a wallet all along and pick a good one with eyes open",
-                                "Worth saying plainly: this is not a rug. Funds aren't at risk if you act — it's a shutdown with six weeks' notice. The lesson is about dependence, not danger",
-                                "Discussion for the room: who here runs a hosted node — and what would it take to run it at home instead?"
-                            ],
-                            "link": "https://umbrel.com",
-                            "linkLabel": "One Way to Bring It Home"
-                        }
-                    ]
-                },
-                {
-                    "id": "bip-110-watch",
-                    "title": "BIP-110 Watch: Two Weeks Out",
-                    "description": "Our standing tracker — signaling at 1%, and the quietest week yet is the story itself",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "BIP-110 Watch: The Numbers",
-                            "body": "A little over two weeks to the flag day, and the monitor tells the same story it's told all summer — just with less time left.",
-                            "bullets": [
-                                "Miner signaling: 1.07% — 17 of the 1,584 blocks so far in difficulty period 475. Ten more signaling blocks than last week's seven, but the share actually fell as the period filled out",
-                                "To activate it needs 55% of one difficulty period — 1,109 of 2,016 blocks. It has 17",
-                                "The countdown: block 959,183 tonight, flag day at 961,632 — about 2,449 blocks out, roughly seventeen days (~August 8). The current difficulty period closes in about three days; the next one is the last full period before the deadline",
-                                "Node support stays where it's been — low single digits, carried almost entirely by Knots, and Knots' share still isn't BIP-110 endorsement. Still zero major pools"
-                            ],
-                            "link": "https://bip110monitor.com/",
-                            "linkLabel": "Live Signaling Monitor"
-                        },
-                        {
-                            "heading": "What a Failed UASF Looks Like From the Inside",
-                            "body": "No new heavyweight statements this week — Back and Saylor said their piece last week and nobody answered. So the useful question now is: what actually happens on August 8 if nothing changes?",
-                            "bullets": [
-                                "For almost everyone: nothing. Core nodes keep following the most-work chain. You will not notice the flag day happened",
-                                "For the handful of nodes enforcing BIP-110: they start rejecting non-signaling blocks — which, at 1% signaling, means waiting on a chain almost nobody is mining. That's not a fork; it's a very quiet room",
-                                "The proponents' goal, stated fairly one more time: cap arbitrary non-financial data (34-byte scriptPubKeys, 83-byte OP_RETURN) for one year. The failure isn't the goal — it's trying to get there with a 55% UASF nobody joined",
-                                "Our position is unchanged and now looks like the consensus: sound money, wrong vehicle. We stand with Super and URSF-110 — which, at these numbers, will likely never need to run. Two more weeks on the watch"
-                            ],
-                            "link": "https://www.coindesk.com/tech/2026/07/12/bitcoin-s-bip-110-fork-deadline-nears-with-miner-support-at-zero",
-                            "linkLabel": "Miner Support at Zero"
-                        }
-                    ]
-                },
-                {
-                    "id": "clarity-act",
-                    "title": "The Other August 7th",
-                    "description": "The Clarity Act has three weeks, three disputes, and the same deadline as the flag day",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Two Deadlines, One Week of August",
-                            "body": "Here's a coincidence worth savoring: the Senate's last working day before August recess is August 7 — the same week Bitcoin's flag day lands. Washington's crypto deadline and Bitcoin's governance deadline, side by side. Only one of them has suspense left.",
-                            "bullets": [
-                                "The Clarity Act — the market-structure bill that would finally say which agency regulates what — cleared committee 15-9 back in May, then stalled. No floor vote, no cloture motion",
-                                "Three disputes are holding back the seven-to-nine Democratic votes it needs to beat the filibuster: DeFi regulation, stablecoin oversight, and AML reporting",
-                                "The window: the Senate came back July 13 and disperses for recess after August 7. Miss it, and 'crypto regulation 2026' likely becomes 'crypto regulation 2027'",
-                                "This is also what moved price this week — the coverage credits Clarity Act optimism for a chunk of the ETF streak. Markets are trading a bill that hasn't been scheduled"
-                            ],
-                            "link": "https://news.bitcoin.com/senate-republicans-push-clarity-act-with-15-days-left-as-bitcoin-struggles-near-66k/",
-                            "linkLabel": "The Senate Countdown"
-                        }
-                    ]
-                },
-                {
-                    "id": "fips-watch",
-                    "title": "FIPS Watch: v0.4.1 Ships",
-                    "description": "Our standing tracker — a maintenance release whose notes admit exactly what it doesn't fix",
-                    "type": "discussion",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "FIPS Watch: The Honest Point Release",
-                            "body": "Last week we watched Johnathan Corgan quietly rebuild the internals of his Nostr-native mesh. This week that discipline produced something: v0.4.1 landed July 19.",
-                            "bullets": [
-                                "It's a maintenance release, and the notes say so: wire-compatible with v0.4.0, rolling upgrades supported, no coordinated restart needed. No new features, no format changes",
-                                "Real fixes: nodes that re-parent no longer route through stale coordinates, and path-MTU values can't be overwritten by looser estimates anymore — both the kind of bug you only find by running a real mesh",
-                                "The refreshing part: the bloom-filter headroom bump comes with the developer's own caveat — it 'buys headroom, it does not fix anything.' The structural fix is deferred to the v2 filter work. When did you last read release notes that honest?",
-                                "Still pre-audit, as always — watch it, don't trust it with anything that matters yet. But three weeks on this tracker and the pattern holds: small, tested, honest steps"
-                            ],
-                            "link": "https://github.com/jmcorgan/fips/releases/tag/v0.4.1",
-                            "linkLabel": "The v0.4.1 Release Notes"
-                        }
-                    ]
-                },
-                {
-                    "id": "formal-verification",
-                    "title": "Proving Bitcoin Correct",
-                    "description": "From Optech: a project that wants to settle consensus arguments with mathematics",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "btc-verified: Proofs Instead of Arguments",
-                            "body": "From this week's Optech: a new project called btc-verified is using the Lean4 theorem prover to mathematically verify properties of Bitcoin's consensus rules. Given the year we're having, the timing is almost poetic.",
-                            "bullets": [
-                                "The idea: instead of arguing about whether a protocol change breaks something, prove it — machine-checked mathematics, the same approach used to verify aircraft software and cryptographic libraries",
-                                "Think about this week's other stories: BIP-110 is dying on a question of what a rule change might freeze or split. Formal verification is the long game for answering exactly that class of question with proofs",
-                                "Also in Optech #414: Core 30.3 and 29.4 maintenance releases backport the chainstate-compaction fix we covered in 31.1 — less disk churn for nodes on older versions too",
-                                "And a validation PR under review fetches transaction inputs in parallel, speeding initial block download 1.18x to 3x — the same 'make running a node cheaper' theme as last week's fountain codes"
-                            ],
-                            "link": "https://bitcoinops.org/en/newsletters/2026/07/17/",
-                            "linkLabel": "Optech Newsletter #414"
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "Know where your Lightning node actually lives",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Know Where Your Node Lives",
-                            "body": "Tonight's homework comes straight from the Voltage story, and it takes five minutes. Open your Lightning wallet and answer one question: whose node is it talking to? If it's your own hardware at home, you're done. If it's a hosted node — Voltage self-serve or anywhere else — write down two things: where it runs, and what the shutdown procedure is. How do you close channels? How long does that take? Where do the sats land? Voltage's customers just got six weeks' notice, which is actually generous — the next provider might offer less. A hosted node isn't a mistake, but not knowing your exit is. If tonight's check turns up an answer you don't like, the fix is a weekend project, not an emergency.",
-                            "link": "https://voltage.cloud/blog/sunsetting-self-serve",
-                            "linkLabel": "Why This Matters This Week"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W29": {
-            "week": "2026-W29",
-            "date": "2026-07-15",
-            "title": "Back and Saylor Reject BIP-110, Core 31.1's Privacy Fix & the ETF Whipsaw",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market",
-                    "title": "Live Dashboard & Market",
-                    "description": "Where Bitcoin sits live — a $425M flush, a $181M bounce, and a war premium",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Live Dashboard",
-                            "body": "Before the headlines — here's where Bitcoin sits right now. Open the full dashboards below:",
-                            "widget": "live-price",
-                            "links": [
-                                {
-                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
-                                    "label": "Clark Moody Dashboard"
-                                },
-                                {
-                                    "url": "https://mempool.space",
-                                    "label": "mempool.space"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "The Whipsaw",
-                            "body": "Two days told opposite stories this week, and the honest read is that neither one settles it.",
-                            "bullets": [
-                                "Monday: US spot Bitcoin ETFs bled -$424.7M — the biggest single-day outflow this month. Fidelity's FBTC took -$245.6M, BlackRock's IBIT -$185.5M",
-                                "Tuesday: +$181.1M back in — but BlackRock alone was +$138.9M of it, over three-quarters of the day. One issuer carried the rebound",
-                                "The macro overhang: resurgent US-Iran hostilities pulled price down even on the day demand showed up",
-                                "Discussion: a fragile rebound, not a confirmed recovery — does a one-day bounce on one issuer's flows mean anything?"
-                            ],
-                            "link": "https://cryptoslate.com/bitcoin-etfs-lose-over-424m-wiping-out-last-weeks-gains-as-recovery-fails-first-test/",
-                            "linkLabel": "The Flush and the Bounce"
-                        }
-                    ]
-                },
-                {
-                    "id": "bip-110-watch",
-                    "title": "BIP-110 Watch: Three Weeks Out",
-                    "description": "Our standing tracker — Back and Saylor both say no, and the signaling still hasn't found a pulse",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "BIP-110 Watch: The Numbers",
-                            "body": "Three weeks to the flag day. Signaling is at 1.19% — up from 0.86% last week, which sounds like movement until you count the blocks.",
-                            "bullets": [
-                                "Miner signaling: 1.19% — 7 of the 590 blocks so far in difficulty period 475. To lock in, it needs 55%: that's 1,109 of 2,016 blocks, roughly 110 a day. It has seven",
-                                "Node support stays in the low single digits, carried almost entirely by Bitcoin Knots — and Knots' node share still isn't BIP-110 endorsement",
-                                "The countdown: block 958,189 tonight, flag day at 961,632 — 3,443 blocks out, about 24 days (~August 8). Then BIP-110 nodes start rejecting non-signaling blocks",
-                                "Still zero major pools. The arithmetic hasn't changed since May; only the deadline has moved closer"
-                            ],
-                            "link": "https://bip110monitor.com/",
-                            "linkLabel": "Live Signaling Monitor"
-                        },
-                        {
-                            "heading": "Back and Saylor Both Say No",
-                            "body": "The story this week isn't the number — it's who lined up against it. Two of the loudest voices in Bitcoin came out swinging on the same day, from different directions.",
-                            "bullets": [
-                                "Michael Saylor: BIP-110 'turns a spam dispute into a consensus change that would invalidate some currently valid, fee-paying transactions.' His argument is the precedent, not the spam",
-                                "Adam Back: it tries to police transactions other people choose to send — 'Bitcoin respectfully says no to what you want.' His advice to proponents is to fork away, but 'bitcoin won't be joining it'",
-                                "Note they disagree with it for different reasons — Saylor on precedent, Back on permissionless design and minority-chain risk, Super Testnet on miniscript funds freezing via OP_IF in Taproot. Three separate objections, not one pile-on",
-                                "The proponents' case, fairly: cap arbitrary non-financial data (34-byte scriptPubKeys, 83-byte OP_RETURN) for one year. Our position is unchanged — sound money, wrong vehicle. We stand with Super and URSF-110"
-                            ],
-                            "link": "https://crypto.news/adam-back-and-michael-saylor-oppose-bip-110-as-fork-risk-grows/",
-                            "linkLabel": "Back and Saylor's Objections"
-                        }
-                    ]
-                },
-                {
-                    "id": "core-31-1",
-                    "title": "Core 31.1: The Privacy Feature That Leaked",
-                    "description": "An IP leak in -privatebroadcast, patched — plus less disk churn for the rest of us",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "When the Privacy Feature Leaks",
-                            "body": "Bitcoin Core 31.1 landed July 8, and the headline fix carries a certain irony: the feature built to hide where your transactions come from was leaking your IP address.",
-                            "bullets": [
-                                "In Core's own words: 'This release fixes an ip address leak when using the -privatebroadcast feature'",
-                                "Scope check, honestly: -privatebroadcast is opt-in. If you never turned it on, this particular bug never touched you — this is not an emergency",
-                                "But if you did turn it on, you turned it on precisely because you wanted that privacy. That's exactly who should update tonight",
-                                "The lesson worth keeping: privacy features are software, and software has bugs. Flipping a privacy flag is not the same as having privacy"
-                            ],
-                            "link": "https://bitcoincore.org/en/releases/31.1/",
-                            "linkLabel": "Core 31.1 Release Notes"
-                        },
-                        {
-                            "heading": "The Quiet Win: Less Disk Churn",
-                            "bullets": [
-                                "The fix more of us will actually feel: Core now compacts the chainstate database regularly, cutting excessive disk reads and writes",
-                                "If you've ever watched a node hammer an SSD, that's the one — node hardware lasting longer is part of how self-custody stays cheap",
-                                "Also in the release: better wallet input-size estimation, proxy handling on v2-to-v1 reconnects, and MuSig2 pubkey list validation",
-                                "Verdict: routine, not urgent — unless you run -privatebroadcast, in which case it's tonight's homework"
-                            ],
-                            "link": "https://bitcoincore.org/en/releases/",
-                            "linkLabel": "All Core Releases"
-                        }
-                    ]
-                },
-                {
-                    "id": "fountain-codes",
-                    "title": "Making Pruned Nodes Pull Their Weight",
-                    "description": "Research on letting pruned nodes help new nodes sync — without keeping the whole chain",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Fountain Codes for Initial Block Download",
-                            "body": "From this week's Optech: researcher Lucas Lima is exploring fountain codes to solve an old, unglamorous problem — pruned nodes can't help anyone else sync.",
-                            "bullets": [
-                                "The problem: a pruned node deletes old blocks to save disk, which also means it can't serve them. Every new node syncing the chain leans on the shrinking set of archival nodes",
-                                "The idea: chop the chain into fixed-length chunks and encode them, so a receiving node can reconstruct the data from pieces held by many pruned peers — verifying against block headers as it goes",
-                                "Why it matters: initial block download is the single biggest barrier to running your own node. Spreading that load makes the network harder to squeeze",
-                                "The honest caveats, per the discussion: slower IBD, a node-fingerprinting risk, and more DoS surface. This is research, not a release"
-                            ],
-                            "link": "https://bitcoinops.org/en/newsletters/2026/07/10/",
-                            "linkLabel": "Optech Newsletter #413"
-                        }
-                    ]
-                },
-                {
-                    "id": "lightning-updates",
-                    "title": "Lightning: Safer Payments, Friendlier Closes",
-                    "description": "LND tightens expiry validation and Core Lightning makes breakups less awkward",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Two Small Lightning Wins",
-                            "bullets": [
-                                "LND v0.20.2-beta adds stronger expiry validation on payments — a quiet class of bug where a badly-set expiry can cost you money",
-                                "Core Lightning shipped experimental support for 'simple close' — a friendlier way to shut a channel when the two sides disagree about fees",
-                                "Channel closes are one of Lightning's sharpest edges: historically, disagreeing on the fee at close time is how a routine exit turns into a force-close",
-                                "Neither is headline material on its own. Together they're the pattern that matters — Lightning getting less sharp, one release at a time"
-                            ],
-                            "link": "https://bitcoinops.org/en/newsletters/2026/07/10/",
-                            "linkLabel": "The Release Roundup"
-                        }
-                    ]
-                },
-                {
-                    "id": "fips-watch",
-                    "title": "FIPS Watch: Under the Hood",
-                    "description": "Our standing tracker — no new release, but the internals are being rebuilt",
-                    "type": "discussion",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "FIPS Watch: Quiet Week, Busy Repo",
-                            "body": "A short one tonight. Johnathan Corgan's Nostr-native mesh — npubs as network addresses instead of IPs — shipped nothing new this week, but the commit log is anything but idle.",
-                            "bullets": [
-                                "Still on v0.4.0 from June 27 — the release we covered when we picked this up two weeks ago. No new tag",
-                                "What's happening instead: a deep internals rebuild — per-peer connection handling and peer discovery are being pulled out into small, independently testable pieces, and the supervisor now reports Full / Degraded / Failed health states",
-                                "The pattern is the tell: build the new piece with tests, wire it in without changing behavior, then move on. That's maintenance discipline, not feature-chasing",
-                                "Still pre-audit — as always, interesting to watch, not something to trust with anything that matters yet"
-                            ],
-                            "link": "https://github.com/jmcorgan/fips",
-                            "linkLabel": "The FIPS Repo"
-                        }
-                    ]
-                },
-                {
-                    "id": "builder-spotlight",
-                    "title": "Builder Spotlight: URSF-110",
-                    "description": "Super Testnet's User Rejected Soft Fork — finished since March, and three weeks from mattering",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Builder Spotlight: URSF-110",
-                            "body": "With the flag day three weeks out, the spotlight goes to the tool built for exactly this moment — Super Testnet's URSF-110, the User Rejected Soft Fork.",
-                            "bullets": [
-                                "What it does: if BIP-110 ever activates, URSF-110 lets your node reject blocks that signal for it — using Core's own invalidateblock, no patched software required",
-                                "The name is the joke and the argument: BIP-110 is a User Activated Soft Fork, so this is the User Rejected Soft Fork. If 55% of miners can force a rule, users can decline it the same way",
-                                "Why Super opposes BIP-110 — and it's worth being precise: not because he likes inscriptions, but because OP_IF in Taproot means the rule can freeze miniscript funds, and a 55% UASF risks the chain split it claims to prevent",
-                                "Classic Super: it's a small script, it's public, and it's been finished since March. Nothing to update — it was done when he wrote it"
-                            ],
-                            "link": "https://github.com/supertestnet/URSF-110",
-                            "linkLabel": "URSF-110 on GitHub"
-                        },
-                        {
-                            "heading": "A Finished Tool Is Its Own Statement",
-                            "bullets": [
-                                "Nothing has been committed to URSF-110 since March 31 — and that's the point. It isn't abandoned; it's ready. The insurance policy doesn't need a changelog",
-                                "It's also a good lesson in how Bitcoin actually resolves disputes: not by winning an argument, but by making the alternative cheap and available to anyone",
-                                "Reality check: with signaling at 1.19% and no major pool on board, URSF-110 will probably never need to run. That's the best outcome for everyone, including Super",
-                                "Super's other work is where his attention is now — most recently hedgehog. Follow the repos; something new lands most weeks"
-                            ],
-                            "link": "https://github.com/supertestnet?tab=repositories",
-                            "linkLabel": "Super's Repositories"
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "Three weeks out, know what your own node will actually do",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Know What Your Node Does on August 7",
-                            "body": "Here's tonight's homework, and it takes about thirty seconds. If you run a node, find out what software it's actually running before the flag day — because that single fact decides what your node does on August 7. Run 'bitcoin-cli -netinfo' or check the About screen: it'll tell you whether you're on Core or Knots, and which version. If you're on Bitcoin Core, nothing happens — you keep following the chain with the most work, same as always. If you're on Knots with BIP-110 enforcement enabled, your node would begin rejecting blocks that don't signal, and with signaling near zero that means following a chain almost nobody is mining. Neither choice is wrong. Not knowing which one you've made is.",
-                            "link": "https://bip110.org/",
-                            "linkLabel": "Read the Proposal Yourself"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W28": {
-            "week": "2026-W28",
-            "date": "2026-07-08",
-            "title": "Strategy Sells $216M, Trump's $1.4B Crypto Year & Getting Started on Nostr",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market",
-                    "title": "Live Dashboard & Market",
-                    "description": "Where Bitcoin sits live — a six-day streak, a wobble, and the ETF bleeding finally stops",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Live Dashboard",
-                            "body": "Before the headlines — here's where Bitcoin sits right now. Open the full dashboards below:",
-                            "widget": "live-price",
-                            "links": [
-                                {
-                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
-                                    "label": "Clark Moody Dashboard"
-                                },
-                                {
-                                    "url": "https://mempool.space",
-                                    "label": "mempool.space"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "The Bounce, and the Wobble",
-                            "body": "After June's historic ugliness, July opened with Bitcoin's longest winning streak since March — six green days — before pulling back into tonight around the low $60Ks.",
-                            "bullets": [
-                                "The streak carried Bitcoin back toward $64K before Tuesday's reversal — the strongest start to a month since May",
-                                "The bigger signal: US spot Bitcoin ETFs snapped a 10-day outflow streak with +$221.7M — their largest daily haul in two months, right after the worst month on record",
-                                "The caution flag: the Coinbase Premium has now been negative for 50 straight days — US spot demand still hasn't shown up",
-                                "Discussion: after a -20% June, is this the turn — or a relief rally into weak hands?"
-                            ],
-                            "link": "https://www.coindesk.com/daybook-us/2026/07/07/bitcoin-s-july-gains-may-be-fleeting-as-u-s-demand-stays-weak",
-                            "linkLabel": "The Demand Picture"
-                        }
-                    ]
-                },
-                {
-                    "id": "strategy-sells",
-                    "title": "Strategy Sells 3,588 BTC",
-                    "description": "Last week the doctrine ended on paper — this week $216M of bitcoin actually left the stack",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "3,588 BTC, $216 Million",
-                            "body": "Last week we covered Strategy formally ending 'never sell.' This week the theory became practice: Monday's disclosure showed the company sold 3,588 BTC for $216 million — a dramatic escalation from May's 32-BTC test sale.",
-                            "bullets": [
-                                "CEO Phong Le: 'Strategy is evolving from one-way capital issuance to active capital management' — sales now fund dividends and obligations instead of fresh capital raises",
-                                "The context underneath: an $8.32 BILLION loss on digital assets in Q2 as Bitcoin traded from ~$68K down to ~$60K",
-                                "This is exactly the rules-based selling framework the board adopted June 29 — replenish the cash buffer, pay the 12% STRC dividend, fund buybacks",
-                                "From 32 BTC to 3,588 BTC in six weeks — the question is no longer whether Strategy sells, but on what schedule"
-                            ],
-                            "link": "https://www.coindesk.com/tech/2026/07/06/live-markets-bitcoin-pops-to-usd63-900-then-reverses-as-week-begins",
-                            "linkLabel": "The Disclosure Coverage"
-                        },
-                        {
-                            "heading": "The Inoculation Worked + Discussion",
-                            "bullets": [
-                                "Remember May: a 32-BTC sale helped panic the market from $74K to $60K. This time, 112x more bitcoin sold — and the price recovered above $63K the same day",
-                                "That was Saylor's stated plan: 'inoculate' the market by preparing it for sales until they stop being news",
-                                "The uncomfortable read: the largest corporate holder is now a rules-based seller sitting above the market — permanently",
-                                "Discussion: does a well-telegraphed seller change your thesis — or is a boring, orderly Strategy actually the bullish outcome?"
-                            ],
-                            "link": "https://www.coindesk.com/markets/2026/06/29/strategy-opens-the-door-to-selling-bitcoin-under-new-capital-plan-here-s-what-it-means",
-                            "linkLabel": "The Framework (Last Week)"
-                        }
-                    ]
-                },
-                {
-                    "id": "trump-crypto-income",
-                    "title": "Trump's $1.4B Crypto Year",
-                    "description": "The disclosure is out: crypto was the President's biggest income source — and his buyers' biggest loss",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "The $1.4 Billion Disclosure",
-                            "body": "The Office of Government Ethics released President Trump's 927-page financial disclosure for 2025 on Tuesday — and crypto was his single largest source of income, dwarfing real estate.",
-                            "bullets": [
-                                "Total income from crypto ventures: more than $1.4 BILLION for the year",
-                                "The $TRUMP meme coin licensing alone brought in $635M+ (via the 'Celebration Coins' agreement)",
-                                "World Liberty Financial token sales added $550M+ — the venture launched by his sons, with Trump as 'co-founder emeritus'",
-                                "For scale: the President of the United States earned more from token launches last year than most public Bitcoin miners are worth"
-                            ],
-                            "link": "https://www.nbcnews.com/politics/donald-trump/financial-disclosure-1-billion-cryptocurrency-earnings-meme-coins-rcna352497",
-                            "linkLabel": "The Disclosure Story"
-                        },
-                        {
-                            "heading": "The Other Side of the Trade",
-                            "body": "The same week the disclosure landed, the on-chain data on who funded those earnings came into focus — and it's brutal.",
-                            "bullets": [
-                                "Roughly 66% of the 1.48 million wallets that ever bought $TRUMP — 988,905 wallets — were underwater by end of June",
-                                "Their combined losses: $3.81 BILLION. The licensor profited regardless of price",
-                                "This is the meme-coin design working as intended: an issuer, a licensing deal, and a brand extract value; holders provide it",
-                                "The discussion writes itself: this is exactly what Bitcoin isn't — no issuer, no insider allocation, no license. When people say 'crypto,' make them say which one"
-                            ],
-                            "link": "https://fortune.com/2026/07/07/donald-trump-meme-coin-world-liberty-financial-finance-politics/",
-                            "linkLabel": "The Holder Data"
-                        }
-                    ]
-                },
-                {
-                    "id": "mining-stress",
-                    "title": "Mining: Capitulation Territory",
-                    "description": "Hashprice at 2020-crash levels, a pool shutting down, and the AI escape hatch widening",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Capitulation-Grade Numbers",
-                            "body": "The mining stress we've tracked for weeks is reaching the point where analysts start calling bottoms — because someone's about to get carried out.",
-                            "bullets": [
-                                "Hashprice sits near $29/PH/day — levels last seen after the 2020 COVID crash; JPMorgan says Bitcoin has traded below its ~$78K average production cost for five straight months, with ~20% of miners operating at a loss",
-                                "Public miners have sold 15,000+ BTC off their treasuries from peak levels — and MARA's latest 10-K authorizes sales from its ENTIRE 53,822 BTC reserve",
-                                "SBI Crypto is shutting its mining pool July 31 — about 20.9 EH/s, roughly 2.2% of the network, needs a new home",
-                                "The next difficulty adjustment lands in ~2-3 days (period 474 ends ~July 10-11) — watch whether June's exodus resumes"
-                            ],
-                            "link": "https://www.tftc.io/sbi-crypto-mining-pool-shutdown-july-2026",
-                            "linkLabel": "The SBI Shutdown"
-                        },
-                        {
-                            "heading": "The AI Escape Hatch",
-                            "body": "Last week we said the capacity leaving Bitcoin is defecting to AI. This week that thesis printed its biggest number yet.",
-                            "bullets": [
-                                "TeraWulf — a Bitcoin miner — jumped 17% in a day after announcing a reported $19B datacenter lease deal with AI lab Anthropic",
-                                "The playbook: miners hold the two things AI money can't conjure — powered land and grid interconnects",
-                                "The fork in the road for every stressed miner: sell bitcoin, sell hashrate... or sell your substation to AI",
-                                "Discussion: is the AI pivot saving Bitcoin miners — or hollowing out the network's security budget from the inside?"
-                            ],
-                            "link": "https://cryptoslate.com/bitcoin-miner-bottom-signal-now-depends-on-who-survives-weak-mining-profits/",
-                            "linkLabel": "Who Survives?"
-                        }
-                    ]
-                },
-                {
-                    "id": "sec-policy",
-                    "title": "The SEC Draws Its Lines",
-                    "description": "Clear guidance on mining and staking at last — while the Strategic Reserve idles in committee",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Securities Law Gets Its Lines",
-                            "body": "After more than a decade of regulation-by-enforcement, the SEC published formal guidance on how federal securities laws apply to crypto assets.",
-                            "bullets": [
-                                "Covered explicitly: airdrops, protocol mining, protocol staking, and wrapping of non-security assets",
-                                "Chairman Paul Atkins: 'This is what regulatory agencies are supposed to do: draw clear lines in clear terms'",
-                                "For this room, the mining clarity matters most — proof-of-work mining rewards treated clearly outside securities law removes a decade-old gray zone",
-                                "The pattern of 2026 policy: less drama, more paperwork — which is what maturing infrastructure looks like"
-                            ],
-                            "link": "https://www.sec.gov/newsroom/press-releases/2026-30-sec-clarifies-application-federal-securities-laws-crypto-assets",
-                            "linkLabel": "The SEC Release"
-                        },
-                        {
-                            "heading": "Meanwhile, the Reserve Sits in Limbo",
-                            "bullets": [
-                                "The US Strategic Bitcoin Reserve is still a work-in-progress: agencies are reportedly fighting over whether Treasury or Commerce should house it",
-                                "Congress still hasn't produced the enabling legislation the White House says the final structure needs",
-                                "A year after the executive order, the reserve remains an announcement, not an institution",
-                                "The contrast beat abroad: India's RBI is internally backing a lean toward a blanket crypto ban — the policy world is diverging, not converging"
-                            ],
-                            "link": "https://www.coindesk.com/policy/2026/07/06/bitcoin-s-u-s-reserve-still-a-work-in-progress-as-federal-agencies-hash-it-out",
-                            "linkLabel": "Reserve Status Report"
-                        }
-                    ]
-                },
-                {
-                    "id": "quantum-corner",
-                    "title": "Core's Quiet Quantum Exit",
-                    "description": "This week's Optech reads like a post-quantum design review — the escape plan is taking shape",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Designing Bitcoin's Quantum Exit",
-                            "body": "Bitcoin Optech #412 was wall-to-wall post-quantum engineering. Nobody's panicking — but the reference-client developers are methodically designing for the day secp256k1 breaks.",
-                            "bullets": [
-                                "Pieter Wuille is working through 'Bird of Prey 2' hybrid signatures — Schnorr and post-quantum signatures bound together so neither can be stripped or swapped",
-                                "STARK proof aggregation benchmarks: 512 hash-based signatures compress from 3.8 MiB raw to ~454 KiB — the math that could make quantum-safe blocks affordable",
-                                "Wuille also proposed two 'kill-switch' triggers for the old curve: a tripwire (someone provably cracks a NUMS point) and a miner lockdown (hashrate-majority activation)",
-                                "Also this week: Bitcoin Core 31.1rc1 fixes an IP-address leak affecting transaction-origin privacy — worth the upgrade when it ships"
-                            ],
-                            "link": "https://bitcoinops.org/en/newsletters/2026/07/03/",
-                            "linkLabel": "Optech #412"
-                        }
-                    ]
-                },
-                {
-                    "id": "zeus-cashu",
-                    "title": "Zeus Puts Ecash in Your Pocket",
-                    "description": "A friend of the meetup ships the first ecash integration in a major Lightning wallet",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Zeus + Cashu: Lightning Without the Channel",
-                            "body": "Zeus — built by Evan Kaloudis, a good friend of this meetup — shipped an alpha integration of Cashu ecash: the first time ecash has landed in a major Bitcoin Lightning wallet.",
-                            "bullets": [
-                                "The problem it solves: receiving your first sats on Lightning normally means opening a channel — thousands of sats of friction before your first zap",
-                                "With Cashu, Zeus can receive zaps and small payments with NO channel at all — then nudges you to upgrade to real self-custody as your balance grows",
-                                "The honest caveat, on the slide where it belongs: ecash means trusting the mint that issues it — it's a privacy and onboarding tool, not a vault",
-                                "This is the onboarding ramp Nostr zaps have been waiting for — hold that thought for two topics from now"
-                            ],
-                            "link": "https://bitcoinmagazine.com/business/how-zeus-is-redefining-bitcoin-with-cashu-ecash-integration",
-                            "linkLabel": "The Zeus Story"
-                        }
-                    ]
-                },
-                {
-                    "id": "nostr-getting-started",
-                    "title": "Getting Started on Nostr",
-                    "description": "The promised segment — keys, clients, signers, and the app universe, in ten minutes",
-                    "type": "tool",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "What Nostr Actually Is",
-                            "body": "We've been promising this segment for weeks — tonight's the night. Nostr is not another app. It's an open protocol, like email: your identity is a keypair you own, and no company can delete your account.",
-                            "bullets": [
-                                "Your PUBLIC key (npub) is your handle — share it everywhere. Your PRIVATE key (nsec) is your password forever — it never gets reset, so it never gets typed into websites",
-                                "Your posts travel over independent relays — take your keys to any client and your identity, follows, and posts come with you",
-                                "The ecosystem today: 320+ apps, 800+ relays, 140+ clients — one identity across all of them",
-                                "After the GitHub and Apple stories of past weeks, the point should land: own the identity layer and there is nothing to ban"
-                            ],
-                            "link": "https://nostr.how/en/get-started",
-                            "linkLabel": "The 10-Minute Guide"
-                        },
-                        {
-                            "heading": "Get On in 10 Minutes — Our Recommended Stack",
-                            "body": "This is the exact stack we've been recommending to members. Pick your lane and you're posting tonight — no email, no phone number.",
-                            "bullets": [
-                                "PHONE: Damus (iOS) or Primal (iOS/Android, built-in wallet). DESKTOP / power users: noStrudel, Coracle, or Primal on the web",
-                                "When your client generates keys: back up the nsec on PAPER. It is the one unrecoverable secret in this whole ecosystem",
-                                "Then protect it with a signer so apps never touch it: on desktop, the OG nos2x browser extension; on Android, Amber — one app holds your key and signs for every other app",
-                                "Amber shipped v6.2.3 this week (July 1) — actively maintained, open source, on F-Droid and the Zap Store"
-                            ],
-                            "link": "https://github.com/greenart7c3/Amber",
-                            "linkLabel": "Amber (Android Signer)"
-                        },
-                        {
-                            "heading": "Beyond Social: The App Universe + Zaps",
-                            "body": "The 'Twitter replacement' framing undersells it. One keypair unlocks a whole parallel app ecosystem — and the browsing catalog is nostrapps.com.",
-                            "bullets": [
-                                "On nostrapps.com right now: marketplaces (Shopstr, Plebeian Market), long-form blogging, music and video streaming, group chat, wikis, file sharing — filterable by platform",
-                                "Zaps are the native economy: Lightning micropayments attached to posts — value-for-value instead of ads and engagement farming",
-                                "And the Zeus news from two slides ago is the missing onramp: receive your first zaps with no channel, no setup, no friction",
-                                "Homework: create keys, back up the nsec, follow five people, and zap one post before next Wednesday — report back"
-                            ],
-                            "link": "https://nostrapps.com",
-                            "linkLabel": "Browse the App Universe"
-                        }
-                    ]
-                },
-                {
-                    "id": "fips-watch",
-                    "title": "FIPS Watch: Week 2",
-                    "description": "Our standing tracker — a quiet bugfix week as v0.5.0 development opens",
-                    "type": "discussion",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "FIPS Watch: Steady-State Week",
-                            "body": "Week two of our standing tracker on the Nostr-native mesh internet. No fireworks — which for infrastructure is what progress looks like.",
-                            "bullets": [
-                                "Latest commits (July 2): a routing-tree bugfix — invalidating stale coordinates when a parent node drops — plus maintenance merges; the v0.5.0 development cycle is open on master",
-                                "No new release since v0.4.0 (June 27, the Nym-transport release we covered at the debut); the public test mesh remains live",
-                                "The standing caveat stands: still PRE-AUDIT — experiment, join the mesh, but don't bet funds or safety on it",
-                                "Reminder of why we track it: Bitcoin separated money from the state; Nostr separated identity from the platform; FIPS wants to separate connectivity from the ISP"
-                            ],
-                            "link": "https://github.com/jmcorgan/fips",
-                            "linkLabel": "FIPS on GitHub"
-                        }
-                    ]
-                },
-                {
-                    "id": "bip-110-watch",
-                    "title": "BIP-110 Watch: Four Weeks Out",
-                    "description": "Our standing tracker — signaling ticks up to 0.86% as Adam Back predicts self-fork or failure",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "BIP-110 Watch: The Numbers",
-                            "body": "Four weeks to the flag day. The signaling needle moved this week — from 0.59% to 0.86% — which at this pace gets to 55% sometime around 2031.",
-                            "bullets": [
-                                "Miner signaling: 0.86% of blocks — 14 of the 1,634 tracked in difficulty period 474, which ends in ~2-3 days (~July 10-11)",
-                                "In hashrate terms: still roughly 5 EH/s of a ~940+ EH/s network — and still zero major pools signaling",
-                                "Node support remains disputed (estimates 2-8%) — and Knots' ~22% node share still doesn't equal BIP-110 endorsement",
-                                "The countdown: voluntary signaling ends at block 961,632 (~August 7), then the mandatory window begins — BIP-110 nodes would start rejecting non-signaling blocks"
-                            ],
-                            "link": "https://bip110monitor.com/",
-                            "linkLabel": "Live Signaling Monitor"
-                        },
-                        {
-                            "heading": "'Self-Fork or Fail' + a Spec Marked Complete",
-                            "bullets": [
-                                "Adam Back sharpened his warning this week: BIP-110 will either 'self-fork or fail to activate' by August 7 — and he called the proposal 'technically defective... it really doesn't work, breaks multiple things, doesn't have tech nor ecosystem consensus. Each is fatal'",
-                                "Lopp's standing charge remains: 'reckless' and 'doomed to fail' — chain-split risk, Taproot edge cases that could freeze funds, and burdens on pre-signed transactions",
-                                "The odd footnote: the BIPs repo formally advanced BIP-110's spec to 'Complete' status this week — the paperwork matured while the support flatlined; a complete spec is not consensus",
-                                "Our position is unchanged: we stand with Super Testnet and URSF-110 — sound money, wrong vehicle. Watch the new difficulty period starting ~July 10 for any sign of life"
-                            ],
-                            "link": "https://cryptobriefing.com/bip-110-fork-fail-activate-adam-back/",
-                            "linkLabel": "Back's Warning"
-                        }
-                    ]
-                },
-                {
-                    "id": "builder-spotlight",
-                    "title": "Builder Spotlight: Monero Privacy Leaks",
-                    "description": "Super Testnet catalogs how the 'untraceable' coin gets traced — with receipts",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Builder Spotlight: moneroleaks.xyz",
-                            "body": "The spotlight stays with Super Testnet — this time for moneroleaks.xyz, a plain-HTML catalog of every way Monero transactions leak identifying information, updated as recently as July 4.",
-                            "bullets": [
-                                "The core claim, with receipts: EVERY Monero transaction leaks something — organized into receiver leaks, sender leaks, and amount leaks",
-                                "Examples: at least one real input revealed per transaction, 16-key rings vulnerable to decoy elimination, and fee patterns that fingerprint which wallet you're using",
-                                "It documents six real prosecutions from 2024-25 where these exact techniques traced 'untraceable' money",
-                                "Classic Super: CC0 public domain, pure HTML, no server, no framework — the argument IS the website"
-                            ],
-                            "link": "https://supertestnet.github.io/monero-privacy-leaks/",
-                            "linkLabel": "Read the Catalog"
-                        },
-                        {
-                            "heading": "Why a Bitcoiner Built This + What We Learn",
-                            "bullets": [
-                                "This isn't a Monero hit piece — it's privacy realism from the 'Bitcoin is money' camp: know what your privacy tech actually promises before you rely on it",
-                                "The six attack methods — collusion, poisoned outputs, timing analysis, decoy elimination, spy nodes, seized-key history lookups — nearly all have Bitcoin analogues",
-                                "The honest takeaway: Monero hides more by default; Bitcoin's privacy is opt-in and takes work. Neither is magic, and 'untraceable' is marketing in both cases",
-                                "Follow Super's repos — between URSF-110, node_faker, and this, something new lands almost weekly"
-                            ],
-                            "link": "https://github.com/supertestnet?tab=repositories",
-                            "linkLabel": "Super's Repositories"
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "Privacy lessons from the leaks — the same mistakes deanonymize Bitcoiners",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Steal the Lessons From the Leaks",
-                            "body": "Tonight's spotlight is secretly a Bitcoin privacy checklist. The same three mistakes that trace Monero users trace Bitcoiners: reuse, timing, and spy nodes. So: never reuse a receive address — every wallet generates fresh ones free. Watch your timing patterns — paying the same person at the same time weekly is a signature. And your wallet is only as private as the node it talks to: run your own, or at minimum connect to a trusted node over Tor. Privacy isn't a product you buy — it's a set of habits.",
-                            "link": "https://en.bitcoin.it/wiki/Privacy",
-                            "linkLabel": "The Bitcoin Privacy Wiki"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W27": {
-            "week": "2026-W27",
-            "date": "2026-07-01",
-            "title": "Worst Month Since 2022, Strategy's 'Never Sell' Ends & a Nostr-Native Internet",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market",
-                    "title": "Live Dashboard & Market",
-                    "description": "Where Bitcoin sits live — and the worst monthly close since June 2022",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Live Dashboard",
-                            "body": "Before the headlines — here's where Bitcoin sits right now. Open the full dashboards below:",
-                            "widget": "live-price",
-                            "links": [
-                                {
-                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
-                                    "label": "Clark Moody Dashboard"
-                                },
-                                {
-                                    "url": "https://mempool.space",
-                                    "label": "mempool.space"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "The Worst Month Since June 2022",
-                            "body": "June closed down roughly 20% — Bitcoin's worst monthly performance since June 2022, and more than 50% below October's all-time high. The monthly candle tells the story better than any headline.",
-                            "bullets": [
-                                "The June candle is a full-bodied bearish Marubozu — open June 1, close June 30, sellers in control the entire month; chartists read it as a continuation signal, with bottom chatter clustering $48K-$55K",
-                                "Fear & Greed hit 12 and sat below 20 for days — the same extreme-fear zone that preceded the 2018, COVID-2020, and FTX-2022 bottoms",
-                                "Citi cut its Bitcoin target to $82,000, citing the ETF exits (next slide)",
-                                "And yet, today: Bitcoin reclaimed $60,000 with Strategy and Strive both up 10%+ — the month ended ugly, the quarter starts with a bounce"
-                            ],
-                            "link": "https://www.coindesk.com/markets/2026/07/01/bitcoin-s-20-june-crash-looks-even-deadlier-on-the-charts-here-s-why",
-                            "linkLabel": "The Chart Breakdown"
-                        },
-                        {
-                            "heading": "The ETF Exodus, Now Historic",
-                            "body": "Two structural records in one week — the institutional bid didn't just soften, it inverted.",
-                            "bullets": [
-                                "June was the worst month EVER for US spot Bitcoin ETFs: $4.5B in net outflows, the biggest since they launched in January 2024",
-                                "K33: rolling one-year flows went NEGATIVE (-1,176 BTC as of June 18) — first time since November 2023",
-                                "Global Bitcoin ETPs now hold ~1.47M BTC, down 127,774 BTC (-8%) from the peak — the largest drawdown on record",
-                                "The silver lining: the pace is cooling fast — ~625 BTC/day of outflows over the past two weeks vs ~4,462 BTC/day in mid-May through early June"
-                            ],
-                            "link": "https://www.theblock.co/post/405989/bitcoin-etp-outflows-push-rolling-one-year-flows-negative-first-time-since-2023-k33",
-                            "linkLabel": "The K33 Data"
-                        }
-                    ]
-                },
-                {
-                    "id": "bip-110-watch",
-                    "title": "BIP-110 Watch: Five Weeks Out",
-                    "description": "Our standing tracker — signaling is still a rounding error as the August window nears",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "BIP-110 Watch: The Numbers",
-                            "body": "Our standing tracker on the data-limit soft fork. Five weeks to the flag day, and the gap between the deadline and the support is becoming the story itself.",
-                            "bullets": [
-                                "Miner signaling: 0.59% of blocks in the current difficulty period (4 of the 681 tracked so far) — the bar is 55% of a single period; this period ends ~July 10",
-                                "In hashrate terms: roughly 5 EH/s of a ~940 EH/s network (~0.31%)",
-                                "Node support: estimates range 2-8% and are disputed — and note Knots itself is ~22% of reachable nodes, so running Knots clearly doesn't mean endorsing BIP-110",
-                                "The countdown: voluntary signaling ends at block 961,632 (~August 7), then the mandatory window runs to block 963,647 — BIP-110 nodes would reject non-signaling blocks"
-                            ],
-                            "link": "https://bip110monitor.com/",
-                            "linkLabel": "Live Signaling Monitor"
-                        },
-                        {
-                            "heading": "The August Collision + Where We Stand",
-                            "bullets": [
-                                "Paul Sztorc's eCash hard fork targets ~block 964,000 — a few hundred blocks after the BIP-110 mandatory window ends; two protocol events, one August",
-                                "Sztorc spent the week pushing back on the 'theft' framing: the fork can't move anyone's BTC — the disputed reassignment (600K to dormant addresses, ~500K to funders) happens on his NEW chain (more on the next topic)",
-                                "Adam Back and Jameson Lopp keep the chain-split warnings up — 'reckless' activation parameters remain the critics' core charge",
-                                "Our position is unchanged: we're with Super Testnet (URSF-110) — sound money, yes; a 55% UASF that can freeze miniscript funds and risk a split is the wrong vehicle. Watch whether signaling moves at all when the new period starts ~July 10"
-                            ],
-                            "link": "https://www.coindesk.com/tech/2026/04/28/bitcoiners-are-calling-ecash-a-hard-fork-theft-but-it-doesn-t-even-touch-satoshi-s-btc",
-                            "linkLabel": "The 'Not a Theft' Case"
-                        }
-                    ]
-                },
-                {
-                    "id": "satoshi-tributes",
-                    "title": "Satoshi's Address: The Living Rebuttal",
-                    "description": "People keep sending BTC to coins nobody can ever move — tribute as a statement",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Tributes to the Untouchable Address",
-                            "body": "While the reassign-dormant-coins debate rages, Bitcoiners are doing the opposite: sending MORE bitcoin to Satoshi's genesis address. The latest verified send landed June 30 — right in the middle of the eCash drama.",
-                            "bullets": [
-                                "June 30: ~0.185 BTC sent to the genesis address; February: a ~$200K send — tributes have ranged from $7K to $1.2M (someone sent 26.9 BTC in January 2024)",
-                                "The address now holds the genesis 50 BTC plus roughly 17 years of tributes — over 100 BTC total, valued in the millions (some trackers put it north of $8M at recent prices)",
-                                "The genesis coinbase is hard-coded unspendable in Bitcoin itself — not even Satoshi could move it",
-                                "Every tribute is provably burned value — sent anyway, on purpose"
-                            ],
-                            "link": "https://mempool.space/address/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
-                            "linkLabel": "Watch the Address Live"
-                        },
-                        {
-                            "heading": "The Point Being Made",
-                            "bullets": [
-                                "Dormant does not mean abandoned, and abandoned does not mean up for grabs — nobody can take these coins: not a fork, not a vote, not a foundation",
-                                "The critics' warning about eCash (Peter McCormack: 'theft and disrespectful') is about precedent: reassign Satoshi's allocation on any chain, and every dormant address becomes negotiable",
-                                "The tributes read as a living counter-statement — value sent to provably frozen coins, a monument to property rights you can audit on-chain",
-                                "Live demo: let's pull this address up on mempool.space right now and look at the tribute history together"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "strategy-never-sell",
-                    "title": "Strategy Ends 'Never Sell'",
-                    "description": "A $2B buyback plan — funded, if needed, by selling bitcoin. Four years of doctrine, over",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "The Digital Credit Capital Framework",
-                            "body": "On June 29, Strategy's board adopted a new capital framework — and with it, formally ended the absolute 'never sell the bitcoin' rule that defined the company for four years.",
-                            "bullets": [
-                                "Up to $2B in share buybacks (two $1B programs), aimed at the stock trading below the value of its bitcoin",
-                                "Authorized: selling up to $1.25B of BTC — strictly to replenish the ~$2.55B cash buffer, pay preferred dividends, and fund the buybacks; anything beyond needs fresh board approval",
-                                "The STRC preferred dividend rises to 12% effective today, July 1",
-                                "The market's verdict so far: MSTR +12% on announcement day, +10% more today"
-                            ],
-                            "link": "https://www.coindesk.com/markets/2026/06/29/strategy-opens-the-door-to-selling-bitcoin-under-new-capital-plan-here-s-what-it-means",
-                            "linkLabel": "What It Means"
-                        },
-                        {
-                            "heading": "'Bitcoin Is Capital' + Discussion",
-                            "bullets": [
-                                "Saylor's reframe: the stack is no longer a sealed vault — it's working capital, managed by rules, in service of the balance sheet",
-                                "The bigger trend: bitcoin-backed preferred stock has quietly become a ~$13B financing market (Strategy, Strive, and imitators)",
-                                "Two honest readings: prudent maturation in a 50% drawdown — or the first crack in the strongest hands narrative",
-                                "Discussion: does a rules-based seller sitting above the market change anyone's thesis here?"
-                            ],
-                            "link": "https://www.coindesk.com/markets/2026/06/29/saylor-s-strategy-initiates-buybacks-bitcoin-monetization-program-lifts-strc-dividend",
-                            "linkLabel": "The Announcement Coverage"
-                        }
-                    ]
-                },
-                {
-                    "id": "platform-gatekeeping",
-                    "title": "GitHub Bans Bitcoin Devs, Apple Backs Down",
-                    "description": "Rust Bitcoin's org banned with no appeal; Sparrow's account saved — platform-risk week",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "GitHub Bans the Rust Bitcoin Org",
-                            "body": "Matt Corallo — one of Bitcoin's longest-serving developers — announced that GitHub permanently banned the open-source org behind rust-bitcoin and the LDK Lightning ecosystem: 'no explanation and no option to appeal.' The apparent trigger: a moderation bot wrongly flagging a brand-new contributor.",
-                            "bullets": [
-                                "The org lost CI overnight — testing and merge tracking froze on code that many Lightning wallets depend on",
-                                "rust-bitcoin is already migrating to self-hosted infrastructure (git.rust-bitcoin.org); LDK is expected to follow, likely onto Forgejo",
-                                "Corallo's conclusion: 'I guess it's time for Bitcoin projects to leave @github'",
-                                "The lesson: critical Bitcoin infrastructure was one moderation bot away from the void — on a platform everyone treated as neutral ground"
-                            ],
-                            "link": "https://bitcoinmagazine.com/business/matt-corallo-urges-bitcoin-projects-to-exit-github-after-rust-lightning-ban",
-                            "linkLabel": "Read the Story"
-                        },
-                        {
-                            "heading": "Sparrow vs Apple: Resolved (Mostly)",
-                            "body": "Closing last week's loop: Apple REVERSED the termination of Craig Raw's developer account after his appeal and a loud community response — reportedly right around the time we were presenting it.",
-                            "bullets": [
-                                "macOS Sparrow is safe — notarized installs and updates continue as normal",
-                                "But the dozen-plus FAKE Sparrow apps that caused the whole mess are STILL on the App Store, still putting funds at risk",
-                                "It took a well-known developer and a public outcry to fix — a less famous dev likely stays banned",
-                                "Same story twice in one week: your stack shouldn't depend on one company's mercy (see tonight's Quick Tip — and FIPS, later)"
-                            ],
-                            "link": "https://sparrowwallet.com/download/",
-                            "linkLabel": "Official Download + Verify"
-                        }
-                    ]
-                },
-                {
-                    "id": "lnd-dos",
-                    "title": "Lightning Security: LND Crash Bug",
-                    "description": "A cheap remote crash in LND before v0.20.1-beta, responsibly disclosed — patch your node",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "The LND Crash Bug — Upgrade Now",
-                            "body": "Bitcoin Optech #411 published the responsible disclosure: LND versions before v0.20.1-beta can be crashed remotely with malformed gossip messages.",
-                            "bullets": [
-                                "The bug: gossip with a zero timestamp slipped past validation — an internal bookkeeping error ends in a runtime panic that kills the node",
-                                "The attack is cheap: broadcast announcements for synthetic channels — no Lightning node required, and it's repeatable",
-                                "The fix: v0.20.1-beta rejects zero-timestamp messages at parse time",
-                                "If you route payments or hold funds on LND: upgrade tonight, not this weekend"
-                            ],
-                            "link": "https://bitcoinops.org/en/newsletters/2026/06/26/",
-                            "linkLabel": "Optech #411 Disclosure"
-                        },
-                        {
-                            "heading": "Also Shipping This Week",
-                            "bullets": [
-                                "LDK v0.1.10 and v0.2.3 — maintenance releases fixing their own denial-of-service and channel-persistence bugs (a busy week for Lightning security)",
-                                "BTCPay Server 2.4.0 — passkey login and a guided multisig wallet setup",
-                                "Bitcoin Core PR #35070 — fixes validation bugs affecting pruned nodes during deep reorgs",
-                                "Core is also replacing libevent with an in-house HTTP server — one less external dependency in the reference node (a fitting theme this week)"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "mining-energy",
-                    "title": "Miners, the Grid & the AI Land War",
-                    "description": "Hashrate down 20%+ from peak as the DOE orders AI datacenters onto backup power",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "The Hashrate Reset",
-                            "bullets": [
-                                "Network hashrate sits around 900 EH/s — down roughly 12% in June and 20%+ below the October peak",
-                                "June 14 brought a -10.09% difficulty adjustment (second-largest of the year) — then June 25 snapped back +7% (block 955,584, verified on mempool.space)",
-                                "Hashprice recovered to ~$33/PH/day after the drop, but all-in economics remain underwater for many operators at these prices",
-                                "Next adjustment lands ~July 10 — watch whether the exodus resumes or the snap-back holds"
-                            ],
-                            "link": "https://mempool.space/mining",
-                            "linkLabel": "Live Mining Dashboard"
-                        },
-                        {
-                            "heading": "The Energy Story Underneath",
-                            "body": "The capacity leaving Bitcoin isn't dying — it's defecting to AI. And this week the grid itself became the story.",
-                            "bullets": [
-                                "The DOE issued an emergency directive pushing AI datacenters onto backup generators as PJM forecasts record demand (~166,000 MW)",
-                                "Miners understood the energy bottleneck years before the AI industry did — that thesis is now playing out on the front page (Marty Bent: 'The AI War Is Being Fought at Every Layer')",
-                                "The miner's edge in a constrained grid: flexible load — miners can curtail in seconds; AI datacenters can't",
-                                "Discussion: does the grid crunch make miners the grid's best allies — or just acquisition targets for AI money?"
-                            ],
-                            "link": "https://www.tftc.io/",
-                            "linkLabel": "Marty's Take (TFTC)"
-                        }
-                    ]
-                },
-                {
-                    "id": "nostr-roundup",
-                    "title": "Nostr: The Orange Web Grows Up",
-                    "description": "Nutzaps land in Amethyst, Nostur goes desktop, and a wave of new apps in the pipeline",
-                    "type": "tool",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "The Orange Web + Amethyst 1.12",
-                            "body": "Bitcoin Magazine's framing this week: Nostr is 'the Orange Web' — Bitcoin's own alternative internet, where your identity is your keys and no platform can delete you. Right on cue, the flagship Android client shipped a major release.",
-                            "bullets": [
-                                "Amethyst's v1.12 line (now at v1.12.6) lands nutzaps — zaps that carry Cashu ecash, so value moves natively with your notes instead of bouncing through a custodial Lightning address",
-                                "Also new: a CLINK driver for on-chain zaps, and a Tor 'self-heal' cluster — connectivity repairs itself when circuits die",
-                                "Zaps are quietly becoming a payments primitive: ecash, on-chain, and Lightning, all behind one gesture",
-                                "After tonight's GitHub and Apple stories, the Orange Web pitch lands differently — own the identity layer and the rails, and there's nothing to ban"
-                            ],
-                            "link": "https://github.com/vitorpamplona/amethyst",
-                            "linkLabel": "Amethyst on GitHub"
-                        },
-                        {
-                            "heading": "The Pipeline: What's Coming",
-                            "bullets": [
-                                "Nostur 1.29 brings the polished iOS client to the desktop — with zap-receipt replies and anonymous replies",
-                                "ZapBook — Nostr-native social reading circles — shipped 17 builds in 4 days and landed multi-account switching; the ecosystem velocity is real",
-                                "OpenSats' latest Nostr wave funds the next layer: 44Billion (a Nostr app launcher/store), NosCall (encrypted calls over WebRTC), Routstr (permissionless AI inference paid in sats), and Wisp (a newcomer-friendly client with built-in Lightning)",
-                                "Discussion: which of these actually replaces a centralized app in your daily stack — and what's still missing?"
-                            ],
-                            "link": "https://opensats.org/blog/seventeenth-wave-of-nostr-grants",
-                            "linkLabel": "The OpenSats Wave"
-                        }
-                    ]
-                },
-                {
-                    "id": "fips-watch",
-                    "title": "NEW — FIPS Watch: A Nostr-Native Internet",
-                    "description": "Debut of our new standing tracker — a mesh network where your npub is your address",
-                    "type": "discussion",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "FIPS: The Free Internetworking Peering System",
-                            "body": "New standing segment — we'll track this weekly, like BIP-110 — because it aims at the last dependency: the ISP itself. FIPS is a self-organizing, end-to-end-encrypted mesh network where Nostr keypairs ARE the network identity.",
-                            "bullets": [
-                                "Your npub is your network address — no DNS registrars, no IP allocation, no routing authorities, no central anything",
-                                "It runs over raw Ethernet, WiFi, Bluetooth, or serial/radio — or overlays today's internet via UDP, TCP, Tor, and the Nym mixnet; an IPv6 adapter means existing apps can use it unmodified",
-                                "Nostr relays handle peer discovery and NAT traversal — the network bootstraps itself over the social layer",
-                                "The builder matters: jmcorgan is Johnathan Corgan, former Chief Architect of GNU Radio — serious open-source radio/infrastructure pedigree. Rust, MIT-licensed"
-                            ],
-                            "link": "https://github.com/jmcorgan/fips",
-                            "linkLabel": "FIPS on GitHub"
-                        },
-                        {
-                            "heading": "State of the Mesh + How It Compares",
-                            "bullets": [
-                                "This week: v0.4.0 shipped June 27 — Nym mixnet transport, LAN discovery, hitless rekey — and a public test mesh is live; v0.5.0 is in development",
-                                "Honesty check: it's pre-audit. Experiment with it, join the test mesh — but don't bet funds or safety on it yet. We'll report audit progress here weekly",
-                                "The landscape: Meshtastic = off-grid LoRa texting · Reticulum = the sovereign network stack (closest sibling) · Pear/Keet = serverless apps on the old internet · FIPS = a new internet where your npub is your address",
-                                "Why we're tracking it: Bitcoin separated money from the state; Nostr separated identity from the platform; FIPS wants to separate connectivity from the ISP"
-                            ],
-                            "link": "https://stacker.news/items/1441835",
-                            "linkLabel": "Community Discussion"
-                        }
-                    ]
-                },
-                {
-                    "id": "builder-spotlight",
-                    "title": "Builder Spotlight: Super Testnet's node_faker",
-                    "description": "Run bitcoind in your browser — zero-install Bitcoin node practice from Super Testnet",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Builder Spotlight: node_faker",
-                            "body": "The spotlight stays with Super Testnet this week — fresh off updates to node_faker (June 28): bitcoind and bitcoin-cli, emulated entirely in your browser. Type real node commands, get real behavior, install nothing.",
-                            "bullets": [
-                                "The zero-setup on-ramp: practice getblockchaininfo, inspect blocks, and learn the CLI before ever touching a real node",
-                                "It pairs with everything we said tonight about BIP-110 and node counts — 'verify, don't trust' starts with knowing your way around a node",
-                                "Classic Super: all front-end, no server, clean and simple",
-                                "Runs anywhere a browser runs — including the laptop you brought tonight"
-                            ],
-                            "link": "https://github.com/supertestnet/node_faker",
-                            "linkLabel": "Try node_faker"
-                        },
-                        {
-                            "heading": "Homework + Follow Super",
-                            "bullets": [
-                                "It lowers the scariest step in self-sovereignty — the first bitcoin-cli command — to opening a browser tab",
-                                "This week's homework: open it, run three commands you've never run, and tell us next week what surprised you",
-                                "He also refreshed the BitDevs SJ site this week — the tooling around meetups like ours keeps getting better",
-                                "Watch the repos page — something new lands almost weekly"
-                            ],
-                            "link": "https://github.com/supertestnet?tab=repositories",
-                            "linkLabel": "Super's Repositories"
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "Verify your wallet downloads — the fake Sparrows are still out there",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Verify Your Wallet Downloads",
-                            "body": "Sparrow survived Apple this week — but the dozen-plus FAKE Sparrow apps that caused the mess are still on the App Store, still draining funds. The rule: never install a wallet from an app-store search result. Go to the project's official site, download there, and verify the release signature or hash before opening it. And remember this week's other lesson — 30,000 customers of Dutch exchange Knaken are locked out of their funds right now. A license is not protection. Your keys are.",
-                            "link": "https://sparrowwallet.com/download/",
-                            "linkLabel": "Example: Sparrow's Verify Guide"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W26": {
-            "week": "2026-W26",
-            "date": "2026-06-24",
-            "title": "Two August Forks, Bitcoin Mortgages & Illinois's Crypto Tax",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market",
-                    "title": "Live Dashboard & Market",
-                    "description": "Where Bitcoin sits live, and why it's a rough day near two-week lows",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Live Dashboard",
-                            "body": "Before the headlines — here's where Bitcoin sits right now. Open the full dashboards below:",
-                            "widget": "live-price",
-                            "links": [
-                                {
-                                    "url": "https://bitcoin.clarkmoody.com/dashboard/",
-                                    "label": "Clark Moody Dashboard"
-                                },
-                                {
-                                    "url": "https://mempool.space",
-                                    "label": "mempool.space"
-                                }
-                            ]
-                        },
-                        {
-                            "heading": "A Rough Day: Near Two-Week Lows",
-                            "body": "Bitcoin is back near two-week lows. After the US-Iran peace deal was formally signed June 19, the geopolitical 'safe-haven' bid faded — and a more hawkish Fed isn't helping.",
-                            "bullets": [
-                                "The June 19 peace signing in Switzerland reopened the Strait of Hormuz — good for the world, but it removed the risk premium that had lifted BTC",
-                                "ETF demand is still soft: after one inflow day on June 12, outflows resumed — about 19 of the last 22 trading days were negative",
-                                "A more hawkish Fed (rate hikes later this year) is pressuring risk assets broadly",
-                                "Zoom out: Bitcoin is still down roughly $43,000 from a year ago"
-                            ],
-                            "link": "https://finance.yahoo.com/personal-finance/investing/article/bitcoin-and-ethereum-prices-today-wednesday-june-24-2026-opened-at-lowest-levels-in-about-two-weeks-125349040.html",
-                            "linkLabel": "Read the Market Recap"
-                        }
-                    ]
-                },
-                {
-                    "id": "bip-110-watch",
-                    "title": "BIP-110 Watch: Signaling Begins",
-                    "description": "Our standing tracker — miner signaling appears for the first time, still tiny",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "BIP-110 Watch: Signaling Has Begun",
-                            "body": "Our standing tracker on the data-limit soft fork. This week it crossed from talk into action — miner signaling has appeared in the data for the first time, though it's still a rounding error.",
-                            "bullets": [
-                                "Miner signaling: ~0.31% of blocks (up from ~0% last week) — far below the 55% activation bar",
-                                "Node support: 2.38% (583 of ~24,481 nodes); Bitcoin Knots remains the implementation",
-                                "Only ~5 EH/s of the network's ~940 EH/s is signaling",
-                                "Flag day approaches: block 961,632, around August 2026"
-                            ],
-                            "link": "https://bip110monitor.com/",
-                            "linkLabel": "Live Signaling Monitor"
-                        },
-                        {
-                            "heading": "Where We Stand",
-                            "bullets": [
-                                "The camps, recap: Core (raised OP_RETURN limits) vs Knots/BIP-110 (restrict data) vs Super Testnet's URSF-110 (reject the soft fork)",
-                                "Our position: sound money is the reason to be wary — a 55% UASF that can freeze miniscript funds and risk a chain split is the wrong vehicle. We're with Super",
-                                "And August just got crowded — Paul Sztorc's hard fork lands days after the BIP-110 flag day (next topic)"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "sztorc-fork",
-                    "title": "Paul Sztorc's August Hard Fork",
-                    "description": "A 1:1 airdrop fork that would reassign Satoshi's coins — critics call it theft",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Paul Sztorc's August Hard Fork",
-                            "body": "Drivechain creator Paul Sztorc (BIP-300) plans a hard fork around block 964,000 in August: a new SHA-256d chain that begins as a near-copy of Bitcoin, activates Drivechains, and airdrops 1:1 to BTC holders at the fork block. He's dubbed it 'eCash' — no relation to Cashu/Fedimint Chaumian ecash.",
-                            "link": "https://unchainedcrypto.com/bitcoin-developer-paul-sztorc-plans-august-hard-fork-dubbed-ecash-with-a-plan-to-reassign-satoshi-nakamotos-coins/",
-                            "linkLabel": "Read the Plan"
-                        },
-                        {
-                            "heading": "Why It's Controversial",
-                            "bullets": [
-                                "The flashpoint: a plan to reassign Satoshi Nakamoto's dormant coins — critics are calling it theft",
-                                "It lands right beside the BIP-110 flag day — two protocol events on nearly the same August timetable",
-                                "Critics warn it could fracture consensus and set a precedent for tampering with old coins",
-                                "A 1:1 airdrop sounds like 'free money' — but touching it has real risks (see this week's Quick Tip)"
-                            ],
-                            "link": "https://www.coindesk.com/tech/2026/04/27/a-long-time-developer-wants-to-fork-bitcoin-and-reassign-satoshi-coins-the-community-is-calling-it-a-theft",
-                            "linkLabel": "The 'Theft' Debate"
-                        }
-                    ]
-                },
-                {
-                    "id": "bitcoin-mortgages",
-                    "title": "Bitcoin Hits the Mortgage Market",
-                    "description": "First Fannie Mae-backed Bitcoin-collateral mortgages close — including a $4.2M Florida home",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Bitcoin Hits the Mortgage Market",
-                            "body": "Bitcoin just entered the U.S. housing system. Better and Coinbase closed the first Fannie Mae-backed mortgages using Bitcoin as collateral — letting buyers borrow against their BTC for a down payment without selling it.",
-                            "bullets": [
-                                "The first close went to a Michigan couple; a $4.2M Florida home followed — and closed in just 23 days",
-                                "Structure: a standard Fannie conforming mortgage plus a separate Bitcoin-collateral loan for the down payment",
-                                "Collateral ratio ~2.5:1 (pledge ~$250K in BTC for a $100K down payment); routine price swings don't trigger margin calls",
-                                "Enabled by the FHFA directing Fannie/Freddie to recognize crypto held on exchanges; BTC + USDC, nationwide rollout this summer"
-                            ],
-                            "link": "https://www.housingwire.com/articles/fannie-mae-bitcoin-mortgage/",
-                            "linkLabel": "Read the Details"
-                        },
-                        {
-                            "heading": "Why It Matters + Discussion",
-                            "bullets": [
-                                "This is Bitcoin plugging directly into the largest asset class on earth — U.S. housing",
-                                "The pitch: keep your stack and buy the house, avoiding a taxable sale and keeping the upside",
-                                "The catch: fall ~60 days behind on payments and the Bitcoin can be liquidated — leverage cuts both ways",
-                                "For the legacy-finance crowd: is collateralized BTC the on-ramp that finally normalizes it?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "illinois-tax",
-                    "title": "Illinois Taxes Crypto — A First",
-                    "description": "First state to directly tax crypto transactions: a 0.2% levy on gross value",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Illinois Taxes Crypto — A First",
-                            "body": "Illinois became the first state to put a direct tax on crypto transactions. Gov. Pritzker signed it into the $56B state budget on June 16 — the Digital Asset Tax Act, a 0.2% 'privilege tax' on digital-asset activity, charged on the gross value moved, not on profits.",
-                            "link": "https://www.coindesk.com/policy/2026/06/17/crypto-industry-aghast-at-illinois-new-tax-on-holding-or-transferring-digital-assets-in-state-budget",
-                            "linkLabel": "Read the Coverage"
-                        },
-                        {
-                            "heading": "The Fine Print + Discussion",
-                            "bullets": [
-                                "It targets brokers/custodians based in Illinois or serving IL residents (with $100K+ gross receipts) — not literally your P2P self-custody sends, but costs get passed to users",
-                                "Illinois doesn't tax stocks, bonds, or derivatives this way — the Crypto Council calls it 'the most punitive digital asset tax in the country'",
-                                "Set to take effect in 2027; projected to raise about $60M a year",
-                                "A tax on moving your own money — a precedent other states copy, or an outlier that gets challenged?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "sparrow-apple",
-                    "title": "Sparrow Wallet vs. Apple",
-                    "description": "Apple threatens to terminate Sparrow's developer account — macOS installs at risk June 30",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Sparrow Wallet vs. Apple",
-                            "body": "A wallet many of us run is in trouble on macOS. Sparrow's developer, Craig Raw, said on June 22 that Apple flagged his developer account for termination by June 30 — which would break notarized installs and updates on Mac.",
-                            "link": "https://cryptobriefing.com/sparrow-wallet-macos-apple-termination/",
-                            "linkLabel": "Read What Happened"
-                        },
-                        {
-                            "heading": "The Irony + What To Do",
-                            "bullets": [
-                                "The trigger: Raw submitted an app to warn users about a dozen-plus fake 'Sparrow' apps stealing funds — Apple labeled his warning 'dishonest activity'",
-                                "If the account is terminated: new Mac users must clear Gatekeeper hurdles to install, and existing users stop getting updates",
-                                "Windows and Linux are unaffected",
-                                "Takeaway: only download Sparrow from sparrowwallet.com and verify the release — open-source self-custody vs platform gatekeeping in a nutshell"
-                            ],
-                            "link": "https://sparrowwallet.com/download/",
-                            "linkLabel": "Official Download + Verify"
-                        }
-                    ]
-                },
-                {
-                    "id": "nostr-zapstore",
-                    "title": "Nostr: Zapstore & the OpenSats Wave",
-                    "description": "A Nostr-native app store you can't de-platform, plus Amethyst's big release",
-                    "type": "tool",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "Nostr: Zapstore & the OpenSats Wave",
-                            "body": "A standout in the Nostr ecosystem: Zapstore — an app store built ON Nostr, where developers publish releases as signed Nostr events and users verify the binaries before installing. Permissionless software distribution — a pointed contrast to this week's Sparrow-vs-Apple story.",
-                            "link": "https://opensats.org/projects/zapstore",
-                            "linkLabel": "Zapstore (OpenSats)"
-                        },
-                        {
-                            "heading": "Also Shipping + Discussion",
-                            "bullets": [
-                                "Amethyst shipped a big release: Kotlin Multiplatform migration, desktop builds for Linux and Windows, and an iOS port in development",
-                                "OpenSats has now directed over $27M (~31 billion sats) to 319 free-and-open-source grantees across 32+ countries",
-                                "The throughline: Nostr as an app-distribution layer no Apple or Google can de-platform",
-                                "Discussion: could a Zapstore-style model have spared Sparrow's Mac users?"
-                            ],
-                            "link": "https://opensats.org/projects/amethyst",
-                            "linkLabel": "Amethyst"
-                        }
-                    ]
-                },
-                {
-                    "id": "builder-spotlight",
-                    "title": "Builder Spotlight: Super Testnet's spam_tester",
-                    "description": "Our first weekly Builder Spotlight — an interactive Core-vs-Knots spam experiment",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Builder Spotlight: Super Testnet's spam_tester",
-                            "body": "Kicking off our new weekly Builder Spotlight with Super Testnet. His latest tool, spam_tester, is an interactive web app that gives empirical data on how Bitcoin Core vs Bitcoin Knots handle inscription 'spam' — the exact fight at the heart of the BIP-110 debate.",
-                            "link": "https://github.com/supertestnet/spam_tester",
-                            "linkLabel": "Try spam_tester"
-                        },
-                        {
-                            "heading": "Why We Love It",
-                            "bullets": [
-                                "It targets 100-400kb data transactions — the range Core treats as standard but Knots rejects as nonstandard — and lets you see the resource difference",
-                                "Empirical, not ideological: the point is you can prove that spam filters reduce strain on node resources",
-                                "Intellectual honesty on display: Super publicly corrected his own RAM claim in Oct 2025 after re-reading the code (Knots' extrapool keeps the txs anyway)",
-                                "Classic Super: clean, front-end, hands-on. Follow his work at github.com/supertestnet"
-                            ],
-                            "link": "https://github.com/supertestnet?tab=repositories",
-                            "linkLabel": "Super's Repositories"
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "How to safely handle a fork airdrop without losing your real coins",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Surviving a Fork Airdrop",
-                            "body": "With Sztorc's hard fork promising a 1:1 'free coin' airdrop in August, here's the self-custody rule: the danger isn't the fork — it's the rush to claim. Scam 'claim' tools will ask for your seed phrase or private keys. Never paste them anywhere. Wait for replay protection, and if you ever do claim forkcoins, move your real BTC to a fresh wallet first. Free coins are never worth a drained wallet."
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W25": {
-            "week": "2026-W25",
-            "date": "2026-06-17",
-            "title": "BIP-110's Fork Fight, the Rebound & a Record Difficulty Drop",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market-rebound",
-                    "title": "The Ceasefire Rebound",
-                    "description": "BTC dipped below $60K, then snapped back above $65K on a US-Iran ceasefire",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "The Ceasefire Rebound",
-                            "body": "After last week's slide, Bitcoin briefly fell below $60,000 — its lowest since November 2024 — then snapped back to around $65-66K. The trigger was geopolitical: a US-Iran ceasefire deal flipped markets risk-on, with oil falling and equities rallying.",
-                            "link": "https://finance.yahoo.com/personal-finance/investing/article/bitcoin-and-ethereum-prices-today-monday-june-15-2026-prices-rising-after-us-iran-agree-to-ceasefire-deal-114616600.html",
-                            "linkLabel": "Read the Market Recap"
-                        },
-                        {
-                            "heading": "What Turned It Around",
-                            "bullets": [
-                                "US-Iran ceasefire deal → risk appetite returned across markets",
-                                "Oil fell, equities rallied, and SpaceX debuted +19% on its first Nasdaq trading day",
-                                "Resolves last week's cliffhanger — the sub-$60K low and the CPI report we flagged",
-                                "Perspective: even after the bounce, BTC sits roughly $48,800 below where it traded a year ago"
-                            ],
-                            "link": "https://fortune.com/article/price-of-bitcoin-06-15-2026/",
-                            "linkLabel": "Price Snapshot"
-                        },
-                        {
-                            "heading": "Discussion Points",
-                            "bullets": [
-                                "Was the sub-$60K print the bottom, or just a relief rally on geopolitics?",
-                                "How much is Bitcoin now a macro 'risk asset' that moves on ceasefires and CPI prints?",
-                                "If a war headline can move it 10%, how 'uncorrelated' is it really?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "etf-flip",
-                    "title": "The ETF Outflows Reverse",
-                    "description": "Last week's record exodus flipped to inflows — the streak finally broke",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "The ETF Outflows Reverse",
-                            "body": "The sequel to last week's 'ETF Exodus': the bleeding stopped. On June 12, US spot Bitcoin ETFs took in $85.85 million — breaking a four-week outflow streak that had drained roughly $5.4 billion. BlackRock's IBIT led the turnaround with about $57.7M (~1,350 BTC).",
-                            "link": "https://news.bitcoin.com/bitcoin-etf-inflows-ethereum-outflows-june-2026/",
-                            "linkLabel": "Read the Flows Breakdown"
-                        },
-                        {
-                            "heading": "Why It Matters + Discussion",
-                            "bullets": [
-                                "None of the 12 funds saw outflows that day — a clean break from the prior week's $1.72B exit",
-                                "IBIT again drove the action, both down (last week) and up (this week)",
-                                "The flip tracks the ceasefire risk-on move — ETF flows increasingly mirror macro sentiment",
-                                "Real question: institutional conviction returning, or a one-day dead-cat bounce?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "difficulty-drop",
-                    "title": "A Historic 10% Difficulty Drop",
-                    "description": "Second-biggest drop of 2026 as miners power down — exactly as we predicted",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "A Historic 10% Difficulty Drop",
-                            "body": "We called this one last week. On June 14 (block 953,568), mining difficulty fell 10.09% — from 138.96T to 124.93T, the lowest since July 2025. It was the second-biggest drop of 2026 and the 11th-largest in Bitcoin's history.",
-                            "link": "https://cryptobriefing.com/bitcoin-mining-difficulty-drops-10-percent/",
-                            "linkLabel": "Read the Coverage"
-                        },
-                        {
-                            "heading": "The Miner Squeeze",
-                            "bullets": [
-                                "Miners powered off inefficient rigs as BTC fell ~15% in June, dragging hashrate down",
-                                "The adjustment lifted output-per-hashrate ~11%; hashprice recovered to about $32.31/PH/s/day",
-                                "But estimated average cost to mine a coin (~$84,300) sits well above the ~$63K price",
-                                "Translation: many miners are underwater — the classic bear-market shakeout"
-                            ],
-                            "link": "https://crypto.news/bitcoin-mining-difficulty-just-had-its-11th-biggest-drop-ever/",
-                            "linkLabel": "The 11th-Biggest Drop Ever"
-                        },
-                        {
-                            "heading": "Discussion Points",
-                            "bullets": [
-                                "Who survives mining at these prices — and who gets bought for pennies?",
-                                "Difficulty dropping is relief for whoever keeps hashing: the strong get stronger",
-                                "Does cheap-power consolidation worry anyone, or is it just healthy natural selection?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "bip-110-watch",
-                    "title": "BIP-110 Watch: The Soft-Fork Fight",
-                    "description": "Our new standing weekly tracker — the data-limit UASF dividing Bitcoin, and where we stand",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "BIP-110 Watch: The Data-Limit Soft Fork",
-                            "body": "New standing segment. BIP-110 — the 'Reduced Data Temporary Softfork' (introduced December 2025 by pseudonymous dev Dathon Ohm) — would cap transaction output scriptPubKeys at 34 bytes and OP_RETURN at 83 bytes for about a year, aiming to curb Ordinals/Runes 'spam.' It's the OP_RETURN war escalated into an actual activation attempt.",
-                            "link": "https://bip110.org/",
-                            "linkLabel": "BIP-110 Project Site"
-                        },
-                        {
-                            "heading": "The Three Camps",
-                            "bullets": [
-                                "Bitcoin Core — raised the OP_RETURN limit (83 → 100,000 bytes in v30); 'don't filter, let the fee market decide'",
-                                "Knots + BIP-110 — restrict the data, 'keep Bitcoin for money' (the Luke Dashjr camp)",
-                                "Super Testnet's URSF-110 ('User Rejected Soft Fork') — a tool that REJECTS BIP-110-signaling blocks via invalidateblock; he opposes BIP-110 (it can freeze miniscript funds using OP_IF in Taproot, and a forced 55% activation risks a chain split that backfires on the anti-spam goal)",
-                                "ProductionReady (Jimmy Song & Samson Mow) — funding a conservative third node client to break Core's monopoly on the reference implementation"
-                            ],
-                            "link": "https://github.com/supertestnet/URSF-110",
-                            "linkLabel": "Super Testnet's URSF-110"
-                        },
-                        {
-                            "heading": "By the Numbers + Where We Stand",
-                            "bullets": [
-                                "Support is tiny: ~2.38% of nodes (583 of ~24,481) run BIP-110, and 0.00% of blocks are signaling",
-                                "Context: Knots runs ~22-25% of nodes, but few enabled BIP-110 — and miners aren't signaling at all",
-                                "Activation needs 55% of blocks (vs the 95% norm); flag day is block 961,632 (~Aug 2026). Adam Back warns a contested activation could split the chain by fall; Jameson Lopp doubts data filters even work",
-                                "Where we stand: sound money is the REASON to be wary — BIP-110 can freeze real funds and a rushed UASF risks a fork that backfires. We're with Super's URSF-110."
-                            ],
-                            "link": "https://bip110monitor.com/",
-                            "linkLabel": "Live Signaling Monitor"
-                        }
-                    ]
-                },
-                {
-                    "id": "clarity-act",
-                    "title": "CLARITY Act: The Ethics Snag",
-                    "description": "The market-structure bill is on the calendar but stuck on an ethics provision",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "CLARITY Act: The Ethics Snag",
-                            "body": "The Digital Asset Market CLARITY Act sits on the Senate calendar (Calendar No. 423) after clearing the Banking Committee 15-9. It would hand the CFTC exclusive jurisdiction over digital-commodity spot markets like Bitcoin's, with the SEC keeping investment contracts — but floor support is hung up on an ethics provision about government officials' crypto ties.",
-                            "link": "https://www.coindesk.com/news-analysis/2026/06/02/clarity-act-survival-depends-on-the-u-s-senate-getting-a-lot-of-non-crypto-work-done",
-                            "linkLabel": "Where It Stands"
-                        },
-                        {
-                            "heading": "The Clock + Discussion",
-                            "bullets": [
-                                "Still needs 60 floor votes, reconciliation with the Senate Ag Committee, then the House",
-                                "Roughly eight weeks remain before the summer break — and midterm politics loom after",
-                                "Does a market-structure bill survive an election-year Congress, or slip to 2027?",
-                                "Is clear CFTC jurisdiction over spot Bitcoin a win worth the wait?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "strategic-reserve",
-                    "title": "Strategic Bitcoin Reserve: Weeks Away?",
-                    "description": "White House signals an announcement soon; the bill drops its 1M-BTC target",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Strategic Bitcoin Reserve: Weeks Away?",
-                            "body": "Patrick Witt of the President's Council of Advisors for Digital Assets told Consensus Miami an announcement on the reserve is coming 'in the next few weeks.' Meanwhile the latest reserve bill quietly dropped its 1-million-BTC purchase target, while keeping the 20-year lockup and quarterly proof-of-reserve mandates.",
-                            "link": "https://www.theblock.co/post/402264/new-strategic-bitcoin-reserve-bill-drops-btc-purchase-target-adds-lockup",
-                            "linkLabel": "Read the Bill Changes"
-                        },
-                        {
-                            "heading": "The Stakes + Discussion",
-                            "bullets": [
-                                "If the BITCOIN Act passes, Treasury's first official purchase is estimated for Q4 2026 — the first sovereign to actively accumulate",
-                                "The US already holds an estimated ~328,000 BTC, mostly from forfeitures",
-                                "Does dropping the 1M-BTC target gut the ambition, or make it actually passable?",
-                                "Quarterly proof-of-reserve from a government — a precedent we'd want every nation to copy?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "nostr-signing",
-                    "title": "Nostr: Zaps + the Remote-Signing Era",
-                    "description": "NIP-57 updated this week; the ecosystem moves off pasting your nsec",
-                    "type": "tool",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "Nostr: Zaps Spec Updated + Remote Signing",
-                            "body": "NIP-57 — the spec that defines Lightning zaps — was updated this week (June 13). The bigger 2026 shift: Nostr has moved away from pasting your private key (nsec) into every app, toward remote signing where your key stays locked in one place.",
-                            "link": "https://nips.nostr.com/57",
-                            "linkLabel": "NIP-57 (Zaps)"
-                        },
-                        {
-                            "heading": "How It Works + Discussion",
-                            "bullets": [
-                                "NIP-46 'bunkers' keep your nsec in a dedicated app (like Amber on Android); other clients get a temporary, revocable session key",
-                                "NIP-47 (Nostr Wallet Connect) lets apps request Lightning payments directly — seamless zapping, no invoice copy-paste",
-                                "Clients like Damus, Primal, and Amethyst now build around delegated signing",
-                                "Is key management the real adoption hurdle for Nostr — and is remote signing the fix?"
-                            ],
-                            "link": "https://nips.nostr.com/46",
-                            "linkLabel": "NIP-46 (Remote Signing)"
-                        }
-                    ]
-                },
-                {
-                    "id": "ecash",
-                    "title": "Ecash Grows Up: Cashu & Fedimint",
-                    "description": "Chaumian ecash over Lightning keeps maturing — private, instant, bearer Bitcoin",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Ecash Grows Up: Cashu & Fedimint",
-                            "body": "Chaumian ecash — private, instant, bearer tokens backed by Bitcoin over Lightning — keeps maturing. Cashu's Nutshell 0.20.0 (Q1 2026) added improved P2PK/HTLC validation; Keyset V2 derivation is rolling out, Bolt12 support for cashu.me is close, and security audits are a stated priority.",
-                            "link": "https://opensats.org/projects/cashu",
-                            "linkLabel": "Cashu (OpenSats)"
-                        },
-                        {
-                            "heading": "The Tradeoff + Discussion",
-                            "bullets": [
-                                "Cashu uses a single mint; Fedimint spreads custody across a federation of guardians",
-                                "The deal: you trust a mint/federation in exchange for instant, private, no-account payments",
-                                "It's the privacy renaissance pairing with Lightning — exactly the 'invisible' UX newcomers need",
-                                "Is custodial-but-private ecash the right on-ramp for everyday Bitcoin, or a step backward on self-custody?"
-                            ],
-                            "link": "https://blog.bitfinex.com/education/cashu-chaumian-e-cash-mints-over-lightning/",
-                            "linkLabel": "How Cashu Works"
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "Stop pasting your nsec — use a remote signer",
-                    "type": "tool",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Stop Pasting Your nsec",
-                            "body": "If you're on Nostr, stop pasting your private key (nsec) into every web app — each one is a place it can leak. Instead, use a remote signer: keep your nsec in one dedicated app (Amber on Android) or an NIP-46 bunker, and let other clients sign through it with a temporary, revocable key. Same login everywhere, far smaller attack surface.",
-                            "link": "https://soapbox.pub/blog/managing-nostr-keys/",
-                            "linkLabel": "Managing Your Nostr Keys"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        },
-        "2026-W24": {
-            "week": "2026-W24",
-            "date": "2026-06-10",
-            "title": "ETF Exodus, Strategy's Dip Buy & the Reserve Bill",
-            "subtitle": "This week in Bitcoin & Nostr news",
-            "timerMinutes": 20,
-            "topics": [
-                {
-                    "id": "market-pulse",
-                    "title": "Bitcoin's Ugliest Week in Months",
-                    "description": "Worst week since February — $61.5K, $1.1B in liquidations, and longtime holders selling",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Bitcoin's Ugliest Week in Months",
-                            "body": "Bitcoin is trading near $61,500 after its worst week in months — down roughly 17% over the past seven days. The drop through $64,000 triggered about $1.1 billion in liquidations, and longtime high-conviction holders have started selling into weakness.",
-                            "link": "https://www.cnbc.com/2026/06/04/bitcoin-is-weathering-its-ugliest-week-in-months-as-narrative-fades-and-liquidity-rotates.html",
-                            "linkLabel": "Read CNBC's Breakdown"
-                        },
-                        {
-                            "heading": "What's Driving It",
-                            "bullets": [
-                                "Liquidity rotation: capital is chasing momentum in AI and semiconductor trades, leaving Bitcoin without a fresh narrative",
-                                "Long-term holders are distributing — CNBC reports 'high-conviction holders are turning into sellers' as price hit new lows",
-                                "Macro jitters: this week's CPI report could decide whether the $60K–$63K range holds",
-                                "Perspective check: Bitcoin sits about $48,800 below where it traded at this time last year"
-                            ],
-                            "link": "https://www.cnbc.com/2026/06/03/bitcoins-high-conviction-holders-are-selling-as-price-hits-new-lows.html",
-                            "linkLabel": "Who's Selling"
-                        },
-                        {
-                            "heading": "Discussion Points",
-                            "bullets": [
-                                "Is this a cyclical flush or the start of a deeper bear?",
-                                "Does Bitcoin need a 'narrative' at all — or is that a trader's framing for what holders just call an opportunity?",
-                                "Side note: Sam Bankman-Fried is reportedly seeking a pardon from President Trump — what would that say about crypto's standing in Washington?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "etf-outflows",
-                    "title": "The ETF Exodus",
-                    "description": "$1.72B left U.S. spot Bitcoin ETFs in a week — the biggest exit since February 2025",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "ETF Exodus: $1.72B Out in One Week",
-                            "body": "U.S. spot Bitcoin ETFs posted $1.72 billion in net outflows for the week ending June 6 — the largest weekly exit since February 2025, and the fourth straight week of withdrawals. The four-week bleed totals roughly $5.4 billion.",
-                            "link": "https://www.coindesk.com/markets/2026/06/05/bitcoin-and-ether-etfs-end-record-multi-billion-outflow-streak",
-                            "linkLabel": "How the Streak Ended"
-                        },
-                        {
-                            "heading": "Inside the Numbers",
-                            "bullets": [
-                                "BlackRock's IBIT led the outflows, shedding about $1.34B on the week — its worst week since launching in January 2024",
-                                "A record multi-day outflow streak finally snapped on June 5 with the first net inflows in weeks",
-                                "Analysts point to rising Treasury yields, shifting Fed rate expectations, and profit-taking after the long rally",
-                                "One analyst take: the multi-billion-dollar bleed 'looks more cyclical than structural'"
-                            ],
-                            "link": "https://www.investing.com/analysis/bitcoins-34-billion-etf-bleed-looks-more-cyclical-than-structural-200681474",
-                            "linkLabel": "The Cyclical Case"
-                        },
-                        {
-                            "heading": "Discussion Points",
-                            "bullets": [
-                                "ETFs were the 2024–25 demand engine — what happens to price when that engine runs in reverse?",
-                                "Did Wall Street adoption make Bitcoin stronger, or just turn it into another momentum trade?",
-                                "Would a streak of inflows flip sentiment as fast as the outflows broke it?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "strategy",
-                    "title": "Strategy Sells… Then Buys the Dip",
-                    "description": "First sale since 2022, then a $101M buy — and a cost basis now underwater",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Strategy Sells… Then Buys the Dip",
-                            "body": "Michael Saylor's Strategy disclosed its first Bitcoin sale since 2022 — just 32 BTC for about $2.5 million in late May — then turned around and bought 1,550 BTC for roughly $101 million between June 1 and 7. The treasury now stands at 845,256 BTC.",
-                            "link": "https://www.coindesk.com/markets/2026/06/01/strategy-sold-32-btc-for-usd2-5-million-in-late-may-filing-shows",
-                            "linkLabel": "Read the Filing Coverage"
-                        },
-                        {
-                            "heading": "The Numbers",
-                            "bullets": [
-                                "845,256 BTC held — about 4% of the entire 21 million supply, acquired for $33.1 billion total",
-                                "Average purchase price: $66,385 — with Bitcoin at $61.5K, Strategy is underwater on its cost basis",
-                                "The buy was funded with at-the-market equity sales: about 1.41 million shares for roughly $181M net",
-                                "Cash reserve raised by $100M to $1B; co-CEO Phong Le: 'Rumors otherwise are just rumors'"
-                            ],
-                            "link": "https://bitbo.io/treasuries/microstrategy",
-                            "linkLabel": "Track Strategy's Holdings"
-                        },
-                        {
-                            "heading": "Discussion Points",
-                            "bullets": [
-                                "Why sell 32 BTC at all? Housekeeping, a signal, or a trial balloon to test the market's reaction?",
-                                "Strategy is now below its average cost — does the 'sell shares, buy Bitcoin' flywheel work in reverse?",
-                                "One company holding 4% of all Bitcoin: systemic risk, or proof of conviction?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "clarity-act",
-                    "title": "CLARITY Act: On the Senate Calendar",
-                    "description": "The market-structure bill cleared committee — now it faces a 60-vote wall and a shrinking calendar",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "CLARITY Act: On the Senate Calendar",
-                            "body": "The Digital Asset Market CLARITY Act — the big crypto market-structure bill — cleared the Senate Banking Committee 15–9 on May 14 and was placed on the Senate legislative calendar June 1. It would give the CFTC exclusive jurisdiction over 'digital commodity' spot markets like Bitcoin's, with the SEC keeping investment contracts.",
-                            "link": "https://www.coindesk.com/news-analysis/2026/06/02/clarity-act-survival-depends-on-the-u-s-senate-getting-a-lot-of-non-crypto-work-done",
-                            "linkLabel": "Where Things Stand"
-                        },
-                        {
-                            "heading": "The Roadblocks",
-                            "bullets": [
-                                "Two Democrats (Gallego, Alsobrooks) joined all Republicans in committee — but the floor takes 60 votes to clear the filibuster",
-                                "The Banking Committee version still has to merge with the Senate Agriculture Committee's framework",
-                                "Roughly eight weeks remain on the Senate calendar before the summer break",
-                                "61 crypto industry leaders sent a letter urging the Senate to keep developer protections intact"
-                            ],
-                            "link": "https://bitcoinmagazine.com/news/crypto-leaders-urge-to-pass-clarity-act",
-                            "linkLabel": "Read About the Industry Letter"
-                        },
-                        {
-                            "heading": "Why We Care + Discussion",
-                            "bullets": [
-                                "Clear CFTC jurisdiction over spot Bitcoin could end a decade of regulator turf wars",
-                                "Developer protections decide whether writing open-source Bitcoin software carries legal risk",
-                                "If it slips past the summer break, does a market-structure bill survive an election-year Congress at all?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "stablecoin-rules",
-                    "title": "Stablecoin Rules Get Real",
-                    "description": "GENIUS Act deadlines hit — the comment window closed June 9, full rules land July 18",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Stablecoin Rules Get Real",
-                            "body": "The GENIUS Act — the federal stablecoin law signed last July — hit a key milestone this week: June 9 was the deadline for public comments on the FinCEN–OFAC anti-money-laundering rules. The full regulatory framework takes effect July 18.",
-                            "link": "https://crypto.news/genius-act-deadline-puts-stablecoin-issuers-on-notice/",
-                            "linkLabel": "Read the Deadline Rundown"
-                        },
-                        {
-                            "heading": "The State of Stablecoins",
-                            "bullets": [
-                                "Total stablecoin supply now exceeds $240 billion — Tether's USDT holds about 67% market share, Circle's USDC about 27%",
-                                "New York's DFS proposed aligning its state framework with Treasury's GENIUS Act certification rules",
-                                "From July 18, issuers face full federal AML obligations, reserve requirements, and audits"
-                            ],
-                            "link": "https://home.treasury.gov/news/press-releases/sb0435",
-                            "linkLabel": "Treasury's Proposed Rule"
-                        },
-                        {
-                            "heading": "Why It Matters for Bitcoin + Discussion",
-                            "bullets": [
-                                "Stablecoins are the on-ramp and trading pair for most Bitcoin volume — regulated rails change how money reaches BTC",
-                                "Regulated digital dollars: a gateway to Bitcoin, or a state-approved competitor to it?",
-                                "Does Tether's offshore dominance survive a fully certified U.S. regime?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "reserve-bill",
-                    "title": "Strategic Bitcoin Reserve: The Fine Print",
-                    "description": "H.R. 8957's full text: a 20-year lockup and proof-of-reserve for the U.S. stash",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Strategic Bitcoin Reserve: The Fine Print Arrives",
-                            "body": "Congress finally got a detailed look at the Strategic Bitcoin Reserve. The full text of the bipartisan American Reserve Modernization Act (H.R. 8957) — introduced by Rep. Nick Begich (R-AK) and Rep. Jared Golden (D-ME) with more than 20 co-sponsors — was published this week.",
-                            "link": "https://bitcoinmagazine.com/news/full-of-strategic-bitcoin-reserve-bill",
-                            "linkLabel": "Read the Full-Text Breakdown"
-                        },
-                        {
-                            "heading": "What's in the Bill",
-                            "bullets": [
-                                "A mandatory 20-year hold: reserve BTC can't be sold, swapped, auctioned, or encumbered — for any purpose",
-                                "After 20 years, at most 10% can be offloaded in any two-year window, subject to Congressional review",
-                                "Quarterly public proof-of-reserve attestations, independent third-party audits, and Comptroller General oversight",
-                                "The U.S. government already holds an estimated ~328,000 BTC — the largest known state holder"
-                            ]
-                        },
-                        {
-                            "heading": "Signals from the Administration + Discussion",
-                            "bullets": [
-                                "Treasury Secretary Bessent told a Senate committee June 3 the reserve is proceeding with 'deliberate speed'",
-                                "A White House adviser has teased a reserve update 'in the next few weeks'",
-                                "Does a 20-year lockup make the reserve credible — or just easy for a future Congress to repeal?",
-                                "Quarterly proof-of-reserve from a government: a precedent we want every nation to copy?"
-                            ],
-                            "link": "https://www.thestreet.com/crypto/markets/treasury-secretary-bessent-reveals-new-information-on-bitcoin-reserve",
-                            "linkLabel": "Bessent's Testimony"
-                        }
-                    ]
-                },
-                {
-                    "id": "mining-difficulty",
-                    "title": "Difficulty Drop Incoming as Miners Chase AI",
-                    "description": "A ~9% difficulty drop is coming as public miners pivot rigs toward AI",
-                    "type": "discussion",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Difficulty Drop Incoming",
-                            "body": "Mining difficulty is set to fall roughly 9% around June 13–14 — from 138.96T to about 123.9T — as squeezed miners power down or redirect capacity. Network hashrate sits near 962 EH/s after recently touching the 1 zettahash milestone.",
-                            "link": "https://www.coinwarz.com/mining/bitcoin/difficulty-chart",
-                            "linkLabel": "Live Difficulty Chart"
-                        },
-                        {
-                            "heading": "The AI Pivot",
-                            "bullets": [
-                                "Bitcoin recorded its first Q1 hashrate decline in six years — partly from miners diverting power to AI workloads",
-                                "Industry projections: listed miners could earn ~70% of revenue from AI and HPC by the end of 2026, up from ~30% today",
-                                "With BTC near $61K, margins favor large operators with cheap power; transaction fees are only 10–15% of miner income"
-                            ],
-                            "link": "https://cryptonews.net/news/mining/32977167/",
-                            "linkLabel": "Why Miners Are Becoming AI Data Centers"
-                        },
-                        {
-                            "heading": "Discussion Points",
-                            "bullets": [
-                                "Is the AI pivot bullish (miners stay solvent) or bearish (security budget drifts away from the network)?",
-                                "A 9% difficulty drop is relief for whoever keeps hashing — who's left mining at these prices?",
-                                "Does miner consolidation around cheap power worry anyone here?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "nostr-vpn",
-                    "title": "Satoshi's First Collaborator Ships a Nostr VPN",
-                    "description": "Martti Malmi releases a Tailscale-style VPN where your npub is the login",
-                    "type": "tool",
-                    "accent": "nostr",
-                    "slides": [
-                        {
-                            "heading": "A Nostr VPN from a Bitcoin OG",
-                            "body": "Martti Malmi — 'Sirius,' who worked directly with Satoshi from 2009–2011 and co-ran Bitcoin.org — released a privacy-focused, Tailscale-style VPN built on Nostr. Your Nostr public key replaces email logins entirely: no accounts, no third parties.",
-                            "link": "https://cointelegraph.com/news/bitcoin-developer-privacy-focused-nostr-vpn-public-keys",
-                            "linkLabel": "Read the Coverage"
-                        },
-                        {
-                            "heading": "How It Works",
-                            "bullets": [
-                                "Nostr public keys handle identity and signaling between your devices — the same cryptography that secures Bitcoin",
-                                "Direct peer-to-peer connections, with Nostr-relay multihop routing as the fallback when P2P fails",
-                                "A multiplatform interface for managing VPN settings across devices, inspired by Tailscale",
-                                "The same trust-minimization logic as Bitcoin — applied to internet privacy instead of money"
-                            ]
-                        },
-                        {
-                            "heading": "Elsewhere on Nostr + Discussion",
-                            "bullets": [
-                                "Damus shipped 'Damus Labs' features — live-streaming and offline note-loading",
-                                "Primal added Remote Login: sign into other Nostr clients without ever exposing your private key",
-                                "OpenSats' Nostr Fund continues funding work on accessibility, security, and decentralization",
-                                "Is identity — keys instead of accounts — Nostr's real killer app, beyond social media?"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "quick-tip",
-                    "title": "Quick Tip of the Week",
-                    "description": "The mempool is nearly empty — do your on-chain housekeeping while fees are cheap",
-                    "type": "tool",
-                    "accent": "bitcoin",
-                    "slides": [
-                        {
-                            "heading": "Quick Tip: Housekeeping While Fees Are Low",
-                            "body": "The mempool is nearly empty right now — low-priority transactions are clearing at around 1 sat/vB or less. That makes this the cheap window for on-chain housekeeping: consolidate your small UTXOs, open or rebalance Lightning channels, and move coins to cold storage. Check live fees before you send.",
-                            "link": "https://mempool.space/",
-                            "linkLabel": "Check Live Fees on mempool.space"
-                        }
-                    ]
-                },
-                {
-                    "id": "community-news",
-                    "title": "Community News & Topics",
-                    "description": "Share what you're interested in talking about!",
-                    "type": "text",
-                    "slides": [
-                        {
-                            "heading": "Next Week's Meetup",
-                            "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
-                            "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
-                            "linkLabel": "Submit a Topic"
-                        }
-                    ]
-                }
-            ]
-        }
-    };
-
     // === Initialize ===
     function init() {
+        if (CFG.liveAccent) {
+            document.documentElement.style.setProperty('--live-accent', CFG.liveAccent);
+        }
         const params = new URLSearchParams(window.location.search);
         const weekId = params.get('week');
 
@@ -5324,7 +1476,7 @@
             weekData = data;
 
             // Update page title
-            document.title = `${data.title} — Bitcoin Meetup`;
+            document.title = `${data.title} — ${CFG.siteName || ''}`;
 
             // Set timer from data
             if (data.timerMinutes) {
@@ -5363,6 +1515,7 @@
             gsap.to(subtitles, { opacity: 0.85, duration: 1.2, ease: 'power4.out', delay: 0.5 });
 
             updateControls();
+            updateSlideCredit();
 
             // Start button
             const startBtn = document.getElementById('start-btn');
@@ -5374,30 +1527,74 @@
 
             // Show keyboard hints briefly
             setTimeout(showKeyboardHints, 2000);
+
+            // Deep link (share/search feature): ?topic=<id> lands on that topic's first slide,
+            // or on its zero-based ?slide=<n> when that slide exists.
+            // A shared link shouldn't start the meetup timer — suppress autostart for the jump.
+            const topicParam = params.get('topic');
+            if (topicParam) {
+                const requestedSlide = Number.parseInt(params.get('slide'), 10);
+                let idx = Number.isInteger(requestedSlide)
+                    ? slides.findIndex(s => s.topicId === topicParam && s.slideIndex === requestedSlide)
+                    : -1;
+                if (idx < 0) idx = slides.findIndex(s => s.topicId === topicParam);
+                if (idx > 0) {
+                    const wasStarted = timerStarted;
+                    timerStarted = true;
+                    goToSlide(idx, 1);
+                    timerStarted = wasStarted;
+                }
+            }
         }
 
-        // Try fetch first (GitHub Pages / HTTP), fall back to inline data (file://)
-        fetch(`weeks/${weekId}.json`)
-            .then(res => {
-                if (!res.ok) throw new Error(`Week ${weekId} not found`);
-                return res.json();
-            })
-            .then(data => loadPresentation(data))
-            .catch(err => {
-                // Fall back to inline data
-                if (INLINE_WEEKS[weekId]) {
-                    console.log('Using inline data (file:// mode)');
-                    loadPresentation(INLINE_WEEKS[weekId]);
-                } else {
-                    console.error('Failed to load presentation:', err);
-                    loadingState.innerHTML = `
-                        <div style="text-align: center;">
-                            <p style="opacity: 0.5; margin-bottom: 16px;">Could not load presentation</p>
-                            <a href="index.html" class="btn secondary-btn">Back to Archive</a>
-                        </div>
-                    `;
+        function loadExtraScripts(done) {
+            const extraScripts = CFG.extraScripts || [];
+            let index = 0;
+            function next() {
+                if (index >= extraScripts.length) {
+                    done();
+                    return;
                 }
-            });
+                const src = extraScripts[index++];
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = next;
+                script.onerror = () => {
+                    console.warn('Failed to load extra script:', src);
+                    next();
+                };
+                document.head.appendChild(script);
+            }
+            next();
+        }
+
+        function start() {
+            // Try fetch first (GitHub Pages / HTTP), fall back to inline data (file://)
+            fetch(`weeks/${weekId}.json`)
+                .then(res => {
+                    if (!res.ok) throw new Error(`Week ${weekId} not found`);
+                    return res.json();
+                })
+                .then(data => loadPresentation(data))
+                .catch(err => {
+                    // Fall back to inline data
+                    const inlineWeeks = window.INLINE_WEEKS || {};
+                    if (inlineWeeks[weekId]) {
+                        console.log('Using inline data (file:// mode)');
+                        loadPresentation(inlineWeeks[weekId]);
+                    } else {
+                        console.error('Failed to load presentation:', err);
+                        loadingState.innerHTML = `
+                            <div style="text-align: center;">
+                                <p style="opacity: 0.5; margin-bottom: 16px;">Could not load presentation</p>
+                                <a href="index.html" class="btn secondary-btn">Back to Archive</a>
+                            </div>
+                        `;
+                    }
+                });
+        }
+
+        loadExtraScripts(start);
     }
 
     // Expose public API
@@ -5409,8 +1606,50 @@
         goToOverview,
         toggleTOC,
         toggleQR,
+        toggleSearch,
         resetTimer
     };
+
+    // === Image Lightbox (click a slide photo to expand it) ===
+    (function setupImageLightbox() {
+        const overlay = document.createElement('div');
+        overlay.className = 'image-lightbox';
+        overlay.innerHTML = '<img class="image-lightbox-img" alt="">';
+        document.body.appendChild(overlay);
+        const lightboxImg = overlay.querySelector('.image-lightbox-img');
+
+        function openLightbox(src, alt) {
+            lightboxImg.src = src;
+            lightboxImg.alt = alt || '';
+            overlay.classList.add('visible');
+        }
+        function closeLightbox() {
+            overlay.classList.remove('visible');
+        }
+
+        // Open when a slide photo (single image or gallery item) is clicked
+        document.addEventListener('click', (e) => {
+            const img = e.target.closest('.slide-image-container img, .slide-gallery-item img');
+            if (img) {
+                e.preventDefault();
+                openLightbox(img.currentSrc || img.src, img.alt);
+            }
+        });
+
+        // Click anywhere off the image (the dimmed backdrop) to close
+        overlay.addEventListener('click', (e) => {
+            if (e.target !== lightboxImg) closeLightbox();
+        });
+
+        // Escape also closes it (runs before the presenter's own Escape handler)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('visible')) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                closeLightbox();
+            }
+        }, true);
+    })();
 
     init();
 
