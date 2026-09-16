@@ -30,11 +30,13 @@
     --btn-sec-hover: rgba(255, 255, 255, 0.1);
     --divider: rgba(255, 255, 255, 0.08);
     --text-muted: rgba(255, 255, 255, 0.5);
+    --glass-bg: rgba(0, 0, 0, 0.72);
 }
 
 [data-theme="light"] {
     --bg-color: var(--theme-light-gray);
     --text-color: var(--theme-black);
+    --glass-bg: rgba(245, 245, 247, 0.78);
     --card-bg: rgba(255, 255, 255, 0.7);
     --card-border: rgba(0, 0, 0, 0.1);
     --card-hover: rgba(255, 255, 255, 0.9);
@@ -93,6 +95,12 @@ a {
     align-items: center;
     z-index: 100;
     transition: padding 0.3s ease;
+    /* Frosted glass (Max, 2026-09-10): slide/page content scrolling underneath stays
+       legible behind the bar instead of colliding with the nav text. */
+    background: var(--glass-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--divider);
 }
 
 .logo {
@@ -469,7 +477,8 @@ button.card:hover .card-arrow {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 120px 40px 110px;
+    /* bottom clears the fixed byline pill at max scroll (Max, 2026-09-10) */
+    padding: 120px 40px 150px;
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -547,7 +556,9 @@ button.card:hover .card-arrow {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 1rem;
+    /* 0.85rem = the one size for everything on the slide's bottom line
+       (link, Share, like count) — Max, 2026-09-10 */
+    font-size: 0.85rem;
     font-weight: 500;
     opacity: 0.7;
     transition: opacity 0.3s ease;
@@ -874,26 +885,31 @@ button.card:hover .card-arrow {
 /* === Slide credit: byline + per-topic contact (Max Sikorski) === */
 .slide-credit {
     position: fixed;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     bottom: 84px;
-    width: 100%;
+    width: auto;
+    max-width: calc(100% - 24px);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 0 20px;
+    /* Frosted glass pill (Max, 2026-09-10): keeps the byline readable over slide content
+       instead of colliding with it. */
+    padding: 7px 16px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--divider);
+    border-radius: 999px;
     font-size: 0.72rem;
     font-weight: 500;
     letter-spacing: 0.01em;
     color: var(--text-color);
-    opacity: 0.5;
+    opacity: 1; /* full-strength pill, same presence as the glass header (Max, 2026-09-10) */
     z-index: 90;
     pointer-events: none; /* don't block the slide or the controls */
     transition: opacity 0.3s ease;
-}
-
-.slide-credit:hover {
-    opacity: 0.9;
 }
 
 .slide-credit-byline strong {
@@ -1040,6 +1056,13 @@ button.card:hover .card-arrow {
     margin-bottom: 24px;
 }
 
+/* Which deck am I in? (Max, 2026-09-10 — search lands you mid-archive with no week
+   reference on the deck itself; the TOC popout carries it.) */
+.toc-week {
+    opacity: 0.75;
+    font-weight: 600;
+}
+
 .toc-close {
     position: absolute;
     top: 28px;
@@ -1147,7 +1170,7 @@ button.card:hover .card-arrow {
     opacity: 0.35;
     cursor: pointer;
     font-family: inherit;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 500;
     letter-spacing: 0.02em;
     padding: 6px 0;
@@ -1160,6 +1183,104 @@ button.card:hover .card-arrow {
 
 .slide-share-btn:active {
     transform: scale(0.97);
+}
+
+/* === Likes (engine-level) — standalone heart, bottom-right of the slide content
+   (Max, 2026-09-10: independent of the Share row, a touch bigger).
+   Dormant unless a likes adapter is active.
+   Sanctioned color exception #2 (Max, 2026-09-10): the LIKED heart fills red. === */
+.slide-like-btn {
+    position: absolute;
+    /* Align with the RIGHT EDGE of the 700px text measure (.slide-body/.slide-bullets),
+       not the wider content box — Max, 2026-09-10 ("in line with the text"). Falls back
+       to the content edge on narrow screens. */
+    right: max(0px, calc(100% - 700px));
+    bottom: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    opacity: 0.45;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    padding: 8px 0 8px 8px;
+    transition: opacity 0.3s ease;
+    --like-red: #ff375f;
+}
+
+.slide-like-btn:hover {
+    opacity: 0.85;
+}
+
+.slide-like-btn .like-heart {
+    fill: transparent;
+    transition: fill 0.45s ease, stroke 0.45s ease;
+}
+
+.slide-like-btn .like-count {
+    min-width: 1ch;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.45s ease;
+}
+
+.slide-like-btn.liked {
+    opacity: 0.9;
+}
+
+.slide-like-btn.liked .like-heart {
+    fill: var(--like-red);
+    stroke: var(--like-red);
+}
+
+.slide-like-btn.liked .like-count {
+    color: var(--like-red);
+}
+
+/* The elegant jump on like */
+.slide-like-btn.like-pop .like-heart {
+    animation: like-pop 0.6s cubic-bezier(0.22, 1.4, 0.36, 1);
+}
+
+@keyframes like-pop {
+    0%   { transform: scale(1) translateY(0); }
+    30%  { transform: scale(1.35) translateY(-7px); }
+    55%  { transform: scale(0.92) translateY(1px); }
+    75%  { transform: scale(1.08) translateY(-2px); }
+    100% { transform: scale(1) translateY(0); }
+}
+
+/* Light sparkles radiating from the heart */
+.like-sparkle {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--like-red);
+    pointer-events: none;
+    opacity: 0;
+    animation: like-sparkle 0.65s ease-out forwards;
+}
+
+.like-sparkle-star {
+    width: auto;
+    height: auto;
+    background: none;
+    color: var(--like-red);
+    font-size: 8px;
+    line-height: 1;
+}
+
+@keyframes like-sparkle {
+    0%   { opacity: 0;   transform: translate(0, 0) scale(0.4); }
+    25%  { opacity: 0.9; }
+    100% { opacity: 0;   transform: translate(var(--sx), var(--sy)) scale(1); }
 }
 
 .share-overlay {
@@ -1348,6 +1469,13 @@ button.card:hover .card-arrow {
 }
 
 @media (max-width: 768px) {
+    /* Phones: link, Share and the heart share ONE line (Max, 2026-09-10 round 4) —
+       the flow content stops 60px short of the right edge so the heart has its own
+       lane on that line instead of overlapping the Share label. */
+    .slide-content:has(.slide-like-btn) {
+        padding-right: 60px;
+    }
+
     .share-sheet {
         bottom: 78px;
         padding: 22px;
@@ -2001,7 +2129,10 @@ button.card:hover .card-arrow {
     }
 
     .slide {
-        padding: 70px 20px 100px;
+        /* top clears the two-line glass header on phones (Max, 2026-09-10 — the
+           "TOPIC N" badge was sliding under it); bottom clears the byline pill,
+           which wraps taller on phones, so the last line scrolls fully clear of it */
+        padding: 110px 20px 170px;
     }
 
     .presenter-controls {

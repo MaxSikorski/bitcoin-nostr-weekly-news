@@ -47,6 +47,60 @@
         return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
     const WORK_WITH_MAILTO = mailtoFor(MAIL.workWithSubject || '', MAIL.workWithBody || '');
+
+    // === Likes (engine-level, 2026-09-10 — issue #6 second half) ===
+    // Dormant unless config.js sets likes.adapter, or the page runs with ?likesDemo=1.
+    // v1 ships the 'mock' adapter only (localStorage, seeded counts) so the UI can be demoed
+    // before the Nostr backend exists; the 'nostr' adapter replaces load/like/unlike later
+    // (relay URL comes from SITE_CONFIG.likes.relay — see future features/like-button-plan.md).
+    const LIKES_CFG = CFG.likes || {};
+    const likesDemo = new URLSearchParams(window.location.search).get('likesDemo') === '1';
+    const likesAdapter = likesDemo ? 'mock' : (LIKES_CFG.adapter || null);
+    let likesStore = null;
+    if (likesAdapter === 'mock') {
+        likesStore = {
+            _key(weekId) { return 'likes:mock:' + weekId; },
+            _read(weekId) {
+                try { return JSON.parse(localStorage.getItem(this._key(weekId))) || {}; }
+                catch (e) { return {}; }
+            },
+            _write(weekId, counts) {
+                try { localStorage.setItem(this._key(weekId), JSON.stringify(counts)); } catch (e) {}
+            },
+            _seed(topicId) {
+                // Deterministic fake count per topic so the demo looks alive (3–24).
+                let h = 0;
+                for (let i = 0; i < topicId.length; i++) h = ((h << 5) - h + topicId.charCodeAt(i)) | 0;
+                return 3 + (Math.abs(h) % 22);
+            },
+            load(weekId, topicIds) {
+                const stored = this._read(weekId);
+                const counts = {};
+                topicIds.forEach(id => { counts[id] = (id in stored) ? stored[id] : this._seed(id); });
+                return Promise.resolve(counts);
+            },
+            like(weekId, topicId, current) {
+                const stored = this._read(weekId);
+                stored[topicId] = current + 1;
+                this._write(weekId, stored);
+                return Promise.resolve(stored[topicId]);
+            },
+            unlike(weekId, topicId, current) {
+                const stored = this._read(weekId);
+                stored[topicId] = Math.max(0, current - 1);
+                this._write(weekId, stored);
+                return Promise.resolve(stored[topicId]);
+            }
+        };
+    }
+    function likedKey(weekId) { return 'likes:liked:' + weekId; }
+    function readLiked(weekId) {
+        try { return JSON.parse(localStorage.getItem(likedKey(weekId))) || {}; }
+        catch (e) { return {}; }
+    }
+    function writeLiked(weekId, map) {
+        try { localStorage.setItem(likedKey(weekId), JSON.stringify(map)); } catch (e) {}
+    }
     function contactMailto(topicTitle) {
         const fill = (s) => (s || '').replace('{topic}', topicTitle || '');
         return topicTitle
@@ -648,7 +702,19 @@
 
                 // Share (engine-level, 2026-08-13 — community request, GitHub issue #6):
                 // every topic's FIRST slide carries a quiet share affordance; S opens the sheet.
+                // Likes (2026-09-10, issue #6 second half): heart sits beside Share, only when a
+                // likes adapter is active — otherwise this block renders exactly as before.
                 if (slideIndex === 0) {
+                    if (likesStore) {
+                        slideHTML += `
+                            <button type="button" class="slide-like-btn" data-topic-id="${topic.id}" aria-label="Like this topic" title="Like this topic">
+                                <svg class="like-heart" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                                </svg>
+                                <span class="like-count"></span>
+                            </button>
+                        `;
+                    }
                     slideHTML += `
                         <button type="button" class="slide-share-btn" data-topic-id="${topic.id}" aria-label="Share this topic" title="Share this topic (S)">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -888,7 +954,7 @@
         });
 
         // Animate inner elements stagger
-        const innerElements = nextSlideEl.querySelectorAll('.slide-topic-badge, .slide-heading, .slide-body, .slide-bullets li, .slide-link, .video-container, .topic-card, .connect-links, .slide-share-btn');
+        const innerElements = nextSlideEl.querySelectorAll('.slide-topic-badge, .slide-heading, .slide-body, .slide-bullets li, .slide-link, .video-container, .topic-card, .connect-links, .slide-share-btn, .slide-like-btn');
         if (innerElements.length > 0) {
             gsap.set(innerElements, { opacity: 0, y: 15 });
             gsap.to(innerElements, {
@@ -909,6 +975,9 @@
             });
             nextSlideEl.querySelectorAll('.slide-share-btn').forEach(el => {
                 gsap.to(el, { opacity: 0.35, duration: 0.6, ease: 'power4.out', delay: 0.3 });
+            });
+            nextSlideEl.querySelectorAll('.slide-like-btn').forEach(el => {
+                gsap.to(el, { opacity: el.classList.contains('liked') ? 0.9 : 0.45, duration: 0.6, ease: 'power4.out', delay: 0.3 });
             });
         }
 
@@ -1193,9 +1262,94 @@
         if (btn) openShare(btn.dataset.topicId);
     });
 
+    // === Likes — hydration + interaction (no-op when no adapter is active) ===
+    const likeCounts = {};   // topicId -> count (hydrated once per deck)
+    let likesWeekId = null;
+
+    // Count display (Max, 2026-09-10): plain through 999; 1,000–99,999 as K with one
+    // decimal ("1K", "1.1K", "45.2K"); 100,000+ as whole K ("100K", "101K").
+    function formatLikeCount(n) {
+        if (n < 1000) return String(n);
+        if (n < 100000) {
+            const v = Math.floor(n / 100) / 10;
+            return (v % 1 === 0 ? String(v) : v.toFixed(1)) + 'K';
+        }
+        return Math.floor(n / 1000) + 'K';
+    }
+
+    function renderLikeBtn(btn, count, liked) {
+        btn.classList.toggle('liked', liked);
+        const countEl = btn.querySelector('.like-count');
+        if (countEl) countEl.textContent = count > 0 ? formatLikeCount(count) : '';
+    }
+
+    function initLikes(data) {
+        if (!likesStore) return;
+        likesWeekId = data.week;
+        const topicIds = (data.topics || []).map(t => t.id);
+        const liked = readLiked(likesWeekId);
+        likesStore.load(likesWeekId, topicIds).then(counts => {
+            Object.assign(likeCounts, counts);
+            document.querySelectorAll('.slide-like-btn').forEach(btn => {
+                const id = btn.dataset.topicId;
+                renderLikeBtn(btn, likeCounts[id] || 0, !!liked[id]);
+            });
+        }).catch(() => { /* adapter unreachable → hearts stay dormant, no errors */ });
+    }
+
+    function sparkleBurst(btn) {
+        // Light glimmer: a few tiny dots + stars radiating from the heart, then gone.
+        const PARTICLES = 7;
+        for (let i = 0; i < PARTICLES; i++) {
+            const p = document.createElement('span');
+            p.className = 'like-sparkle' + (i % 3 === 0 ? ' like-sparkle-star' : '');
+            const angle = (Math.PI * 2 * i) / PARTICLES + (Math.random() - 0.5) * 0.6;
+            const dist = 18 + Math.random() * 14;
+            p.style.setProperty('--sx', (Math.cos(angle) * dist).toFixed(1) + 'px');
+            p.style.setProperty('--sy', (Math.sin(angle) * dist).toFixed(1) + 'px');
+            p.style.animationDelay = (Math.random() * 80) + 'ms';
+            if (p.classList.contains('like-sparkle-star')) p.textContent = '✦';
+            btn.appendChild(p);
+            p.addEventListener('animationend', () => p.remove());
+        }
+    }
+
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.slide-like-btn');
+        if (!btn || !likesStore || !likesWeekId) return;
+        const id = btn.dataset.topicId;
+        const liked = readLiked(likesWeekId);
+        const current = likeCounts[id] || 0;
+        if (liked[id]) {
+            // Unlike: quiet — outline returns, count steps down, no celebration.
+            delete liked[id];
+            likeCounts[id] = Math.max(0, current - 1);
+            renderLikeBtn(btn, likeCounts[id], false);
+            likesStore.unlike(likesWeekId, id, current).catch(() => {});
+        } else {
+            liked[id] = true;
+            likeCounts[id] = current + 1;
+            renderLikeBtn(btn, likeCounts[id], true);
+            btn.classList.remove('like-pop');
+            void btn.offsetWidth;   // restart the pop animation on rapid re-like
+            btn.classList.add('like-pop');
+            sparkleBurst(btn);
+            likesStore.like(likesWeekId, id, current).catch(() => {});
+        }
+        writeLiked(likesWeekId, liked);
+    });
+
     // === TOC ===
     function buildTOC(data) {
         tocList.innerHTML = '';
+
+        // Week reference in the popout (Max, 2026-09-10): search can land you in any deck —
+        // the TOC says which one. "2026-W37" → "· Week 37 · 2026"
+        const tocWeekEl = document.getElementById('toc-week');
+        if (tocWeekEl && data.week) {
+            const m = data.week.match(/^(\d{4})-W(\d{2})$/);
+            tocWeekEl.textContent = m ? `· Week ${parseInt(m[2], 10)} · ${m[1]}` : `· ${data.week}`;
+        }
 
         // Overview item
         const overviewItem = document.createElement('button');
@@ -1487,6 +1641,7 @@
             // Build slides and TOC
             buildSlides(data);
             buildTOC(data);
+            initLikes(data);
             initLiveDashboard();
             initBip110Dashboard();
 
