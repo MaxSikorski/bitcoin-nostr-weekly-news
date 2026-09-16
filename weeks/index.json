@@ -1,6 +1,11 @@
 {
     "weeks": [
         {
+            "id": "2026-W38",
+            "date": "2026-09-16",
+            "title": "The Senate Folds & the Agents Sign In"
+        },
+        {
             "id": "2026-W37",
             "date": "2026-09-09",
             "title": "The Liquid Heist, an On-Chain Ransom & the Self-Custody Dip"

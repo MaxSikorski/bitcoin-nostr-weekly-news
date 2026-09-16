@@ -1,0 +1,356 @@
+{
+  "week": "2026-W38",
+  "date": "2026-09-16",
+  "title": "The Senate Folds & the Agents Sign In",
+  "subtitle": "This week in Bitcoin & Nostr news",
+  "timerMinutes": 20,
+  "topics": [
+    {
+      "id": "market",
+      "title": "Live Dashboard & Market",
+      "description": "The inflow streak snapped — then the Senate lit the match",
+      "type": "discussion",
+      "accent": "bitcoin",
+      "slides": [
+        {
+          "heading": "Live Dashboard",
+          "body": "Where Bitcoin sits right now. The full dashboards:",
+          "widget": "live-price",
+          "links": [
+            {
+              "url": "https://bitcoin.clarkmoody.com/dashboard/",
+              "label": "Clark Moody Dashboard"
+            },
+            {
+              "url": "https://mempool.space",
+              "label": "mempool.space"
+            }
+          ]
+        },
+        {
+          "heading": "Market: The Streak Snaps",
+          "body": "Last week we called the three-week inflow run the strongest stretch of 2026. It's over.",
+          "bullets": [
+            "ETFs gave back $462.7M over four sessions (Sep 8–11) — the streak-ender. Thursday alone: $282.7M out, the worst day since July",
+            "The sellers were broad: ARKB −$234M, GBTC −$129M, even IBIT and FBTC bled ~$50M each",
+            "Price rode it down from the low $80Ks — then Monday's Senate vote (next topic) knocked another 4% off in a day",
+            "The bright spot: a Braiins solo miner hit block 966,351 on Sep 11 — 3.147 BTC, about $245K, the first solo block in nearly 40 days"
+          ],
+          "link": "https://mempool.space/block/966351",
+          "linkLabel": "Block 966,351 — the solo win"
+        }
+      ]
+    },
+    {
+      "id": "clarity-act",
+      "title": "The Clarity Act Dies",
+      "description": "40+ senators killed the market-structure bill — and the dev protections were already gone",
+      "type": "discussion",
+      "accent": "bitcoin",
+      "slides": [
+        {
+          "heading": "Clarity Act: The Senate Kills It",
+          "body": "Monday night, the crypto industry's biggest legislative bet since the ETF died on a procedural vote.",
+          "bullets": [
+            "Cloture failed Sept 15 — the bill needed 60 votes and fell well short, with 40+ senators against. Market-structure law is dead for 2026",
+            "This was the bill that would have settled who regulates what: SEC vs CFTC, a federal framework for digital assets",
+            "The House passed it 294–134 back in July 2025. The Senate sat on it for over a year, then buried it",
+            "Why it died: Democrats wanted ethics guardrails around the Trump family's crypto businesses; the GOP's last-minute revision didn't close the gap",
+            "The market called it early — Polymarket odds fell from 30% to 14% in the final 24 hours. Bitcoin dropped ~4% on the day; Coinbase −6.7%, Circle −8%"
+          ],
+          "link": "https://www.coindesk.com/business/2026/09/15/live-updates-bitcoin-slides-from-nearly-usd80-000-as-senate-votes-on-clarity-act",
+          "linkLabel": "CoinDesk: the vote, live"
+        },
+        {
+          "heading": "The Part Nobody Covered: Devs Lost Before the Vote",
+          "body": "Buried in the final text: the developer safe harbor had already been gutted. Even the 'good' bill left builders exposed.",
+          "bullets": [
+            "The BRCA — the piece saying non-custodial devs aren't money transmitters — got narrowed to civil and BSA cases only",
+            "The explicit shield against Section 1960 CRIMINAL prosecution was stripped. That's the statute used against the Samourai and Tornado Cash devs",
+            "Translation: write wallet software, hold no one's keys — a federal prosecutor could still charge you as an unlicensed money transmitter",
+            "What's next: midterms point to a split Congress. The industry spent hundreds of millions on this push and walks away with nothing",
+            "The takeaway for this room: the legal ground under open-source Bitcoin development is exactly as unsettled as it was in 2024"
+          ],
+          "link": "https://cryptobriefing.com/senate-blockchain-regulatory-certainty-act-criminal-protections/",
+          "linkLabel": "How the BRCA got narrowed"
+        }
+      ]
+    },
+    {
+      "id": "buzz",
+      "title": "Buzz, Revisited",
+      "description": "33K stars later, Block's humans-and-agents workspace is real — demo coming",
+      "type": "tool",
+      "accent": "nostr",
+      "slides": [
+        {
+          "heading": "Buzz: Eight Weeks Later, It's Real",
+          "body": "We covered Buzz the week it launched (W31). Since then it became one of the hottest repos on GitHub — 33K+ stars — and the feature list stopped being a promise.",
+          "bullets": [
+            "The pitch, still: a self-hostable workspace where people and AI agents share the same rooms — 'on a relay you own.' One Nostr relay = one community, every message and commit a signed event",
+            "Works TODAY: desktop app, channels, threads, DMs, canvases, media with frame-pinned comments, search, audit log — plus YAML workflows and git hosting over NIP-34",
+            "Agents plug in through buzz-cli and an ACP harness: Goose, Codex, and Claude Code all drive it. Agents get their own keypair, their own memberships, their own audit trail",
+            "Shipping pace: a release nearly every week — v0.5.23 landed Sep 5 with information-flow control and NIP-29 membership authorization",
+            "Still being wired: mobile apps, workflow approval gates, huddle lifecycle"
+          ],
+          "link": "https://github.com/block/buzz",
+          "linkLabel": "block/buzz — 33K stars"
+        },
+        {
+          "heading": "The Tell: Outside Agents Are Moving In",
+          "body": "The strongest signal isn't Block's own roadmap — it's who else is building for it.",
+          "bullets": [
+            "Nous Research's Hermes Agent now ships Buzz as a bundled gateway — native WebSocket transport, NIP-42 auth. A third-party AI agent that speaks Buzz out of the box",
+            "That's the W31 thesis playing out: identity as a keypair means ANY agent can join as a member — no vendor integration, no bot API",
+            "The skeptic's seat, still open: self-hostABLE isn't self-hostED. The audit trail is only as honest as whoever runs the relay",
+            "Try it yourself: packaged desktop builds are on the releases page — point it at a relay and you're in"
+          ],
+          "link": "https://github.com/block/buzz/releases",
+          "linkLabel": "Grab a build"
+        },
+        {
+          "heading": "Coming Up: A Live Buzz Demo",
+          "body": "This one graduates from a news slide to a project. I've been running it — next step is showing you.",
+          "bullets": [
+            "Planned for an upcoming meetup: live demo — local relay, the desktop app, and an agent with its own npub doing real work in a channel",
+            "If there's interest, we'll grow it into a hands-on workshop: everyone leaves with their own community running",
+            "Homework if you want a head start: install the desktop build and poke around — it's Apache 2.0, nothing to sign up for",
+            "Tell me tonight: demo-level interest or workshop-level interest?"
+          ],
+          "link": "https://buzz.xyz/",
+          "linkLabel": "buzz.xyz"
+        }
+      ]
+    },
+    {
+      "id": "block-ai",
+      "title": "Dorsey's Frontier Argument",
+      "description": "Block's founder picks a side in the AI pacing war — and keeps shipping Bitcoin",
+      "type": "discussion",
+      "accent": "bitcoin",
+      "slides": [
+        {
+          "heading": "Dorsey's Frontier Argument: Nobody Gets a Veto",
+          "body": "Sunday, Dorsey published an argument against slowing frontier AI by committee. It reads like his Bitcoin playbook applied to AI.",
+          "bullets": [
+            "His position: no industry-wide limits negotiated by today's incumbents — they'd lock out everyone building alternatives",
+            "What he wants instead: open-source releases, independent researchers with real model access, and public compute no lab or government can veto",
+            "The other camps: Anthropic's Amodei floats third-party evaluators pacing frontier development; the White House calls any AI-control talk a conspiracy and frames it as a race with China",
+            "Block's stake is obvious: Goose and Buzz are open-source agent infrastructure. From the Q2 letter: 'the models are interchangeable' — the harness and distribution are the moat",
+            "Sound familiar? Permissionless building vs. gatekeeper pacing is THE Bitcoin argument, replayed at the AI layer"
+          ],
+          "link": "https://news.bitcoin.com/opinion-and-analysis/bitcoin-bull-jack-dorsey-joins-ai-pacing-war-as-block-at-stake/",
+          "linkLabel": "The pacing war, mapped"
+        },
+        {
+          "heading": "Meanwhile, Block Keeps Shipping Bitcoin",
+          "body": "The public roadmap quietly filled its 2026 column. The full rollout is on schedule.",
+          "bullets": [
+            "August: Cash App added automatic bitcoin withdrawals straight to Bitkey — stack on the app, custody on your hardware",
+            "July: Square merchants got bitcoin payments on invoices; Cash App got ACH bitcoin buys from your bank",
+            "June: tap-to-pay bitcoin at Square terminals, plus a bitcoin toggle at checkout",
+            "In progress: Bitkey coin control, transaction labels, multi-beneficiary inheritance; Cash App human-readable addresses",
+            "The through-line: Dorsey's 'Bitcoin is money, not crypto' push — including a de-minimis tax exemption so small payments just work"
+          ],
+          "link": "https://block.xyz/bitcoin/roadmap",
+          "linkLabel": "Block's open Bitcoin roadmap"
+        }
+      ]
+    },
+    {
+      "id": "local-ai",
+      "title": "Local AI Meets Your Stack",
+      "description": "Run the agent at home, hand it your own Bitcoin and Nostr rails",
+      "type": "discussion",
+      "accent": "nostr",
+      "slides": [
+        {
+          "heading": "Local AI: Self-Custody for Your Thoughts",
+          "body": "You already run your own node. The same argument now applies to the AI you talk to all day.",
+          "bullets": [
+            "The case: every prompt you send a cloud model is a data trail. Local inference is the self-custody argument, applied to AI — Gladstein's been making exactly this point about encrypted inference",
+            "The tooling caught up in 2026: Goose — Block's agent, now under the Linux Foundation — runs fully local against Ollama models. Rust, Apache 2.0, no API key",
+            "Nous Research's Hermes Agent goes further: a persistent agent living on hardware you own — people are running it on the same box as their Bitcoin node",
+            "One config file gets you the whole stack: the NixOS crowd ships bitcoind + electrs + Tor + a local model + a Nostr relay as a single reproducible build"
+          ],
+          "link": "https://d-central.tech/self-hosting/",
+          "linkLabel": "The sovereign self-hosting stack"
+        },
+        {
+          "heading": "The Fun Part: Give the Agent Your Rails",
+          "body": "A local model is just a brain. MCP is how you hand it hands — your hands, on your infrastructure.",
+          "bullets": [
+            "Lightning: Alby's MCP server connects any agent to a wallet over Nostr Wallet Connect — it can check balances, pay invoices, get paid",
+            "Nostr: MCP servers let the agent post notes and read feeds; with NIP-46 remote signing, your keys never enter the model's context at all",
+            "Your node: bitcoind and mempool MCP servers turn 'what's in the mempool?' into a question your own hardware answers",
+            "Where this converges: a local agent, its own npub, a Lightning wallet, your node's data — every piece is running in this room already",
+            "Live demo energy: ask your agent to check the fee market before this meetup ends. No cloud involved"
+          ],
+          "link": "https://github.com/getAlby/mcp",
+          "linkLabel": "Alby MCP — Lightning for agents"
+        }
+      ]
+    },
+    {
+      "id": "nostr-week",
+      "title": "Nostr This Week",
+      "description": "Pay-per-byte VPNs settle in Cashu, and freedom tech gets its report card",
+      "type": "discussion",
+      "accent": "nostr",
+      "slides": [
+        {
+          "heading": "Nostr This Week: The VPN You Pay by the Byte",
+          "body": "Two projects clicked together this week: Martti Malmi's Nostr VPN and Calle's Europa marketplace.",
+          "bullets": [
+            "Nostr VPN 4.1.10 (Sep 10): Cashu-paid exit nodes now connect, recover, and bill reliably — manual or automatic exit selection. Everywhere except iOS",
+            "The plumbing: providers publish byte-priced offers over Nostr; you settle usage in ecash. No account, no subscription, no payment trail",
+            "Builder pedigree: mmalmi is Martti Malmi — Satoshi's first collaborator, now shipping Nostr tooling",
+            "Why it matters: VPN trust has always been 'pick a company and pray.' A marketplace of independent operators paid anonymously flips the model",
+            "More on the marketplace side in tonight's Builder Spotlight"
+          ],
+          "link": "https://freedom.tech/posts/2026-09-10-nostr-vpn-4-1-10/",
+          "linkLabel": "Nostr VPN 4.1.10"
+        },
+        {
+          "heading": "Odds & Ends From the Purple Side",
+          "body": "Quieter week for headlines, busy week for infrastructure.",
+          "bullets": [
+            "OpenSats published its freedom-tech report card: Tor's Rust rewrite (Arti) shipped 1.4.5/1.4.6 plus a migration tool, and WireGuard hit 1.0 on Android and Windows — both on Bitcoin-world grant money",
+            "Hermes × Buzz (from earlier): a mainstream AI lab treating a Nostr relay as a first-class chat surface is itself Nostr news",
+            "Thinky read of the week: NostrMag on NIP-85 — building a web-of-trust layer so recommendations come from humans you trust, not an engagement algorithm",
+            "FIPS stays dormant on the news front — a pfSense package quietly landed in master, nothing more. We cover it again when there's a release"
+          ],
+          "link": "https://opensats.org/blog/open-infrastructure-for-the-bitcoin-network",
+          "linkLabel": "OpenSats: Tor & WireGuard report"
+        }
+      ]
+    },
+    {
+      "id": "security-desk",
+      "title": "Security Desk",
+      "description": "Trezor's own email pipe turned against it, and Electrum's backup bug",
+      "type": "discussion",
+      "accent": "bitcoin",
+      "slides": [
+        {
+          "heading": "Security Desk: The Phish Came From Inside the House",
+          "body": "Last week: Trezor's shipping partner breached. This week: their EMAIL provider. The summer of hacks rolls on.",
+          "bullets": [
+            "Sep 9: attackers got into Trezor's account at Brevo — the newsletter service — and mailed ~347,000 subscribers from Trezor's own sender",
+            "Because it went through Trezor's real pipe, it passed every authentication check your inbox runs. No red flag to catch",
+            "The bait was tailored to us: 'Critical Security Alert: STM32 Entropy Vulnerability' — download this tool, enter your wallet backup",
+            "Trezor killed the domain in ~20 minutes. About 2,500 people had already clicked",
+            "The lesson compounds weekly: vendors will leak your email. Assume every 'urgent security tool' email is the attack itself"
+          ],
+          "link": "https://techcrunch.com/2026/09/11/scammers-target-hundreds-of-thousands-of-crypto-owners-after-trezor-confirms-data-breach-of-email-provider/",
+          "linkLabel": "TechCrunch on the Brevo phish"
+        },
+        {
+          "heading": "Patch Corner: Electrum's Missing Keys & the CLN Callback",
+          "body": "One quiet bug that could have cost people funds, and the answer to last week's cliffhanger.",
+          "bullets": [
+            "Electrum 4.8.2 (Sep 12): some Lightning wallet backups — non-deterministic keys plus anchor channels — were missing the keys needed to sweep funds after a remote force-close",
+            "If you're affected, Electrum warns you at launch: export a FRESH backup. Old ones can't fully restore",
+            "Also in 4.8.2: stricter HTLC validation, and Android now blocks QR scanning from screenshots",
+            "CLN callback (W37): the embargo on the AI-reported vulnerabilities lifted — the fixes shipped in v26.06.7, and the AI-generated reports that started the scramble in August proved partly real",
+            "The full technical writeup is still pending alongside the next CLN release — we'll cover the details when they publish"
+          ],
+          "link": "https://github.com/spesmilo/electrum/blob/master/RELEASE-NOTES",
+          "linkLabel": "Electrum 4.8.2 notes"
+        }
+      ]
+    },
+    {
+      "id": "optech",
+      "title": "Optech #422",
+      "description": "Coinjoins disguised as bets, and silent payments get benchmarked",
+      "type": "discussion",
+      "accent": "bitcoin",
+      "slides": [
+        {
+          "heading": "Optech #422: Privacy Research Corner",
+          "body": "Two genuinely new ideas in one newsletter this week.",
+          "bullets": [
+            "'Babilonia' (Adam Gibson): coinjoins disguised as covert bets — participants flip coins on-chain with adaptor signatures, everyone keeps their funds minus fees, and the common-input heuristic breaks",
+            "The honest caveat, from the author himself: no clear measure yet of how much privacy it actually buys",
+            "Silent payments, benchmarked: BlindBit Oracle v2 vs compact block filters across 255K blocks — the dedicated index downloads ~2× the bytes but never false-positives and never fetches full blocks",
+            "Why you care: this is the plumbing race to make receive-privacy (one static address, no reuse) practical on phones"
+          ],
+          "link": "https://bitcoinops.org/en/newsletters/2026/09/11/",
+          "linkLabel": "Optech Newsletter #422"
+        },
+        {
+          "heading": "Releases & Core Changes Worth Knowing",
+          "body": "The stack hardened this week, mostly in places you never see.",
+          "bullets": [
+            "LDK v0.3-rc1: splices get RBF fee-bumping, anchor channels by default. LDK v0.2.6 is a security release — patch if you build on it",
+            "BTCPay 2.4.4: security release — legacy API keys removed, invoice state changes now need authorization",
+            "Bitcoin Core merged BIP54's time-warp mitigation into block templates — a consensus cleanup milestone years in the making",
+            "Also fixed in Core: a command-injection hole in -walletnotify. If you use that option, update"
+          ],
+          "link": "https://bitcoinops.org/en/newsletters/2026/09/11/#releases-and-release-candidates",
+          "linkLabel": "The release rundown"
+        }
+      ]
+    },
+    {
+      "id": "builder-spotlight",
+      "title": "Builder Spotlight",
+      "description": "Calle's Europa — a VPN marketplace with no company in the middle",
+      "type": "tool",
+      "accent": "nostr",
+      "slides": [
+        {
+          "heading": "Builder Spotlight: Europa",
+          "body": "Calle — the developer behind the Cashu ecash protocol — built a VPN marketplace where the marketplace can't rug you.",
+          "bullets": [
+            "What it is: independent operators list WireGuard/OpenVPN servers; you pay per hour, day, or gigabyte. No subscription, no account required",
+            "How the money moves: Lightning or Cashu ecash, straight from your wallet to the operator's. The site holds nothing and takes no cut",
+            "How discovery works: offers publish over Nostr — no company to pressure, no payment processor to block, no sign-up database to subpoena",
+            "It composes: this is the marketplace Nostr VPN's new Cashu-paid exits plug into. Two builders, one working pay-per-byte privacy stack",
+            "Calle's shipping streak continues besides — Granola (Cashu atomic-swap order book over Nostr) and sayit, a private local text-to-speech tool",
+            "Try it: europa.westernbtc.com — and the QR opens the full story on Nostr, where a thing like this belongs"
+          ],
+          "link": "https://primal.net/e/note1t9m62yqkdtma9mu0wkj3wshka9zs32rnef9tytuyyw9uwywalxsqwwyqy0",
+          "linkLabel": "Europa, explained — TFTC on Primal"
+        }
+      ]
+    },
+    {
+      "id": "quick-tip",
+      "title": "Quick Tip of the Week",
+      "description": "Give your local AI an npub — then make it do something",
+      "type": "tool",
+      "accent": "nostr",
+      "slides": [
+        {
+          "heading": "Quick Tip: Give Your Agent an npub",
+          "body": "This week's homework: make your local AI actually touch Bitcoin or Nostr. My recommendation — the thing I already run at home — is giving the agent its own Nostr identity.",
+          "bullets": [
+            "Generate a keypair for the agent — it's now a citizen of the same network you're on, with an identity no platform issued",
+            "Start small: have it sign a message, post a note, read your feed. An MCP server plus any local model gets you there in an evening",
+            "Level up: NIP-46 remote signing means the agent asks YOUR signer for signatures — it never holds the keys it signs with",
+            "Or point it at money: Nostr Wallet Connect gives it a Lightning allowance you control",
+            "Then bring what it did to next week's meetup — best agent story gets the floor"
+          ],
+          "link": "https://github.com/AbdelStark/nostr-mcp",
+          "linkLabel": "A Nostr MCP server to start with"
+        }
+      ]
+    },
+    {
+      "id": "community-news",
+      "title": "Community News & Topics",
+      "description": "Share what you're interested in talking about!",
+      "type": "text",
+      "slides": [
+        {
+          "heading": "Next Week's Meetup",
+          "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+          "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+          "linkLabel": "Submit a Topic"
+        }
+      ]
+    }
+  ]
+}
