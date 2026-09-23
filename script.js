@@ -6,6 +6,20 @@
 (function () {
     'use strict';
 
+    // === Telemetry beacon (engine-level, 2026-09-17) — archive-page visit counter ===
+    // Dormant unless config.js sets telemetry.url; anonymous tick only (see presenter.js).
+    // Fires only on the archive page (week.html has its own view-deck beacon).
+    (function () {
+        const t = (window.SITE_CONFIG || {}).telemetry || {};
+        if (!t.url || !navigator.sendBeacon) return;
+        if (!document.getElementById('archive-list')) return;
+        try {
+            navigator.sendBeacon(t.url, JSON.stringify({
+                site: t.site || '', kind: 'view-archive', week: '', topic: ''
+            }));
+        } catch (e) { /* never break the page */ }
+    })();
+
     // === Deck search (engine-level) ===
     let deckSearchIndex = null;
 
@@ -311,7 +325,19 @@
         groups.forEach(group => {
             const groupLabel = document.createElement('div');
             groupLabel.className = 'palette-group';
-            groupLabel.textContent = `${group.entry.deckTitle} · ${formatPaletteDate(group.entry.date)}`;
+            // Deck header outranks the hits under it (Max, 2026-09-23): date big + bold,
+            // then "Week 38 · Deck title" as the quieter second line.
+            const groupDate = document.createElement('span');
+            groupDate.className = 'palette-group-date';
+            groupDate.textContent = formatPaletteDate(group.entry.date);
+            const groupDeck = document.createElement('span');
+            groupDeck.className = 'palette-group-deck';
+            const weekMatch = String(group.entry.week || '').match(/-W(\d{2})$/);
+            groupDeck.textContent = weekMatch
+                ? `Week ${parseInt(weekMatch[1], 10)} · ${group.entry.deckTitle}`
+                : group.entry.deckTitle;
+            groupLabel.appendChild(groupDate);
+            groupLabel.appendChild(groupDeck);
             searchPaletteResults.appendChild(groupLabel);
 
             group.hits.forEach(entry => {

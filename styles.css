@@ -1213,6 +1213,16 @@ button.card:hover .card-arrow {
     --like-red: #ff375f;
 }
 
+/* Hearts stay hidden until the adapter hydrates real counts (body gets .likes-live).
+   Relay unreachable / offline → the deck renders exactly as if likes didn't exist. */
+.slide-like-btn {
+    display: none;
+}
+
+body.likes-live .slide-like-btn {
+    display: inline-flex;
+}
+
 .slide-like-btn:hover {
     opacity: 0.85;
 }
@@ -1695,6 +1705,15 @@ button.card:hover .card-arrow {
 /* === Current ("This Week") featured card === */
 .current-section {
     padding-bottom: 28px;
+    /* Hero scroll cue lands with "This Week" ~30px clear of the fixed header
+       (header is ~89px tall; ~69px under 768px) (Max, 2026-09-23). */
+    scroll-margin-top: 120px;
+}
+
+@media (max-width: 768px) {
+    .current-section {
+        scroll-margin-top: 96px;
+    }
 }
 
 .current-list {
@@ -1946,11 +1965,35 @@ button.card:hover .card-arrow {
     padding: 8px;
 }
 
+/* Deck header in search results — bigger and bolder than the slide hits under it,
+   so it's obvious which week's deck a hit lives in (Max, 2026-09-23). */
 .palette-group {
-    padding: 10px 12px 4px;
+    margin-top: 10px;
+    padding: 16px 12px 6px;
+    border-top: 1px solid var(--divider);
+}
+
+.palette-group:first-child {
+    margin-top: 0;
+    padding-top: 8px;
+    border-top: 0;
+}
+
+.palette-group-date {
+    display: block;
+    color: var(--text-color);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    line-height: 1.3;
+}
+
+.palette-group-deck {
+    display: block;
+    margin-top: 2px;
     color: var(--text-muted);
     font-size: .75rem;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: .08em;
     line-height: 1.4;
     text-transform: uppercase;

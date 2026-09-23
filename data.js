@@ -4,6 +4,11 @@
 window.INLINE_DATA = {
     "weeks": [
         {
+            "id": "2026-W39",
+            "date": "2026-09-23",
+            "title": "The Squeeze & the Signal"
+        },
+        {
             "id": "2026-W38",
             "date": "2026-09-16",
             "title": "The Senate Folds & the Agents Sign In"
@@ -82,6 +87,323 @@ window.INLINE_DATA = {
 };
 
 window.INLINE_WEEKS = {
+    "2026-W39": {
+        "week": "2026-W39",
+        "date": "2026-09-23",
+        "title": "The Squeeze & the Signal",
+        "subtitle": "This week in Bitcoin & Nostr news",
+        "timerMinutes": 20,
+        "topics": [
+            {
+                "id": "market",
+                "title": "Live Dashboard & Market",
+                "description": "Why Bitcoin jumped: a squeeze, an oil slide, and a record ETF day",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Live Dashboard",
+                        "body": "Where Bitcoin sits right now. The full dashboards:",
+                        "widget": "live-price",
+                        "links": [
+                            {
+                                "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                                "label": "Clark Moody Dashboard"
+                            },
+                            {
+                                "url": "https://mempool.space",
+                                "label": "mempool.space"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Why Bitcoin Jumped: Four Forces at Once",
+                        "body": "Monday, Sep 21, Bitcoin broke $85K for the first time since January. No single cause. Four things lined up.",
+                        "bullets": [
+                            "The chart: the Sep 20 weekly close ($81,159) cleared the 50-week average ($78,786), the first time in 45 weeks",
+                            "The squeeze: $746.6M liquidated in 24 hours, $647.9M of it shorts. Bears forced to buy back in",
+                            "The money: spot ETFs took in $999M on Sep 21, the biggest day of 2026. IBIT $381M, ARKB $289M, FBTC $239M. Another ~$715M Tuesday",
+                            "The oil: Brent slid from ~$108 to under $100 in five sessions. Trump offered to meet Iran's president at the UN; Saudi exports are recovering"
+                        ],
+                        "link": "https://www.coindesk.com/markets/2026/09/21/bitcoin-hits-usd85-000-as-short-squeeze-forces-out-usd648-million-of-bearish-bets",
+                        "linkLabel": "CoinDesk: the squeeze, by the numbers"
+                    },
+                    {
+                        "heading": "Why Bitcoin Jumped: The Fed Went the Other Way",
+                        "body": "The strange part: this rally came five days after a rate HIKE.",
+                        "bullets": [
+                            "Sep 16: the Fed raised rates to 3.75–4.00%. First hike since 2023, first under Chair Warsh, 12–0",
+                            "The reason was energy-driven inflation. So when oil cracked, the market read it as the pressure easing",
+                            "Squeeze or real demand? Both. Open interest ROSE 7.6% to $156B, so traders re-entered rather than fled. The ETF bid is spot buying",
+                            "Saylor kept stacking: Strategy added 950 BTC at ~$79,670, now 846,000 BTC",
+                            "Check the dashboard for where it sits right now. Squeezes fade; the ETF flows are the tell to watch"
+                        ],
+                        "link": "https://cryptobriefing.com/blackrock-ibit-leads-bitcoin-etf-inflows/",
+                        "linkLabel": "The $999M ETF day"
+                    }
+                ]
+            },
+            {
+                "id": "white-noise",
+                "title": "White Noise Is Back",
+                "description": "The Nostr messenger rebuilt from scratch, and your AI agent is just another contact",
+                "type": "tool",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "White Noise: Rebuilt From Scratch",
+                        "body": "Sep 21, the team posted \"We're back.\" Private group chat on Nostr, now as native apps.",
+                        "bullets": [
+                            "The old Flutter app is retired. New native apps for iPhone and Android, with Mac, Linux, and web in progress",
+                            "Built on Marmot: MLS group encryption over Nostr relays. A key exposed today can't unlock older messages",
+                            "No phone number, no email. Your key is your account. Swap relays or run your own",
+                            "New: replies, reactions, encrypted media, multiple accounts, invite QR cards. iOS gets Face ID lock and private push",
+                            "Get it: iPhone via TestFlight, Android via Zapstore or GitHub. App Store review is pending",
+                            "Their own caveat: a beta, a \"friends and family\" release for the Nostr community"
+                        ],
+                        "link": "https://whitenoise.chat/download",
+                        "linkLabel": "Download White Noise"
+                    },
+                    {
+                        "heading": "White Noise: An Agent Is Just Another Contact",
+                        "body": "The AI angle, twice over.",
+                        "bullets": [
+                            "Agents as contacts: a connector links Hermes, OpenClaw, Claude Code, Codex, OpenCode, or Pi to the app. Text your agent from your phone, end-to-end encrypted",
+                            "Each agent gets its own White Noise identity. It's a member of the chat, not a bot bolted onto a server",
+                            "Agents as builders: the team's own AI agent, Pip, is the #2 contributor to the Marmot dev kit (247 commits) and the Android app (436)",
+                            "The guardrail: Pip opens pull requests; humans still merge",
+                            "Funded by OpenSats, HRF, and the Internet Privacy Foundation. The builder behind it is tonight's Spotlight"
+                        ],
+                        "link": "https://whitenoise.chat/agents",
+                        "linkLabel": "Connect your agent"
+                    }
+                ]
+            },
+            {
+                "id": "fips-watch",
+                "title": "FIPS Watch",
+                "description": "No new release, but your phone's mesh address just got a name",
+                "type": "discussion",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "FIPS Watch: home.fips Instead of npub1…",
+                        "body": "No new FIPS release since v0.5.1 (W37). The action this week is on your phone, plus a fix release lining up on master.",
+                        "bullets": [
+                            "fips2go v0.6.0 (Sep 20): an Android app with the FIPS mesh built in. Pick which apps use the mesh; everything else stays on normal internet",
+                            "New: mesh names. Name a node's npub \"home\" and any app on your phone can open home.fips: browser, SSH, anything",
+                            "It's a hosts file, same format as the FIPS daemon's. The names live on your phone only, not shared with the mesh",
+                            "On master since v0.5.1: 100+ commits. Rekey and session-setup fixes, and a forged rekey message can no longer drop a link",
+                            "Also queued: Ethernet and Wi-Fi interfaces that appear late or come and go get picked up automatically. That fixes a router boot race",
+                            "Still pre-audit. The security story behind the v0.4.2 release is the next topic"
+                        ],
+                        "link": "https://github.com/fr34aky/fips2go/releases/tag/v0.6.0",
+                        "linkLabel": "fips2go v0.6.0",
+                        "links": [
+                            {
+                                "url": "https://github.com/jmcorgan/fips",
+                                "label": "FIPS on GitHub"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "ai-foss",
+                "title": "AI Builds & Audits Our Stack",
+                "description": "An AI review hardened FIPS and caught a Nostr bug. Who checks the machines?",
+                "type": "discussion",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "AI in Our Stack: The Audit That Checked Out",
+                        "body": "Aug 11, a stranger filed a GitHub issue on FIPS titled \"GPT5.6 security review.\" Here's what happened next.",
+                        "bullets": [
+                            "The report flagged a slow-connection denial of service, open-by-default configs, weak key-file handling, and vulnerable dependencies",
+                            "Corgan checked each finding by hand. Most were real. The fixes became v0.4.2, the armor release we covered in W35",
+                            "The big catch was in rust-nostr's relay pool, a library many Nostr apps use. It could accept events with forged signatures (RUSTSEC-2026-0224)",
+                            "The bug: a failed signature check got cached as a pass. Send the same event again with a fake signature, and verification was skipped",
+                            "Corgan: every cited file and line landed on the right code, \"not the usual outcome\" for a generated report"
+                        ],
+                        "link": "https://github.com/jmcorgan/fips/issues/137",
+                        "linkLabel": "The review, finding by finding"
+                    },
+                    {
+                        "heading": "AI in Our Stack: Who Reviews the Machines?",
+                        "body": "AI now writes, audits, and attacks Bitcoin and Nostr code. Maintainers are adjusting in public.",
+                        "bullets": [
+                            "Writing: White Noise's agent is its #2 committer. Hermes, the open-source agent, just passed 248K GitHub stars",
+                            "Attacking: AI makes exploit prototypes cheap. After this summer's Coldcard and Liquid hacks, teams take that seriously",
+                            "Defending: Alpen Labs runs AI audit scans and an open-weight red-team model against its own staging network. That talk is at TABConf",
+                            "The maintainer's problem: a flood of AI-written bug reports and PRs. TABConf has a whole panel on Bitcoin FOSS \"in a post-LLM world\"",
+                            "Question for the room: would you run code an agent wrote if a human signed off on it? What if no human did?"
+                        ],
+                        "link": "https://github.com/TABConf/8.tabconf.com/issues/50",
+                        "linkLabel": "TABConf panel: FOSS in a post-LLM world"
+                    }
+                ]
+            },
+            {
+                "id": "clarity-act",
+                "title": "Why the Clarity Act Failed",
+                "description": "49–50, the ethics fight, and regulators moving within 48 hours",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Clarity Act: How It Actually Died",
+                        "body": "Correction first: last week's slide said 40+ senators voted no. The real tally was 49–50. It didn't even get a simple majority, let alone 60.",
+                        "bullets": [
+                            "Four Republicans voted no: Collins, Hawley, Moran, Tillis",
+                            "Tillis's no was a procedural move. Only someone on the winning side can bring the vote back, so the bill stays technically alive",
+                            "Seven Democrats who helped WRITE the bill voted no: Gillibrand, Warner, Booker, Warnock, Gallego, Alsobrooks, Cortez Masto",
+                            "The sticking point was ethics. Democrats wanted tighter limits on officials AND their families running crypto businesses. Read: the Trump family's ventures",
+                            "Republicans say they'd already taken 100+ Democratic edits. Stablecoin yield and DeFi were never fully settled either"
+                        ],
+                        "link": "https://www.fintechweekly.com/news/clarity-act-cloture-vote-fails-49-50-september-2026",
+                        "linkLabel": "The 49–50 vote, explained"
+                    },
+                    {
+                        "heading": "Clarity Act: The Regulators Didn't Wait",
+                        "body": "Congress stalled. The agencies moved within 48 hours.",
+                        "bullets": [
+                            "Sep 17: SEC Chair Atkins granted an \"Innovation Exemption\" for tokenized-stock trading venues",
+                            "Same day: the CFTC sent its crypto-markets rule to the White House for review",
+                            "The catch: agency rules can be undone by the next administration. A law can't be undone that easily",
+                            "For devs, still no written-into-law shield from money-transmitter charges. That protection was stripped before the vote",
+                            "What's next: the Senate returns Oct 5, heads into midterms. A lame-duck session is the only real window. Betting markets give 2026 passage single digits"
+                        ],
+                        "link": "https://www.cryptotimes.io/2026/09/20/clarity-act-fails-49-50-in-us-senate-as-sec-cftc-move-ahead-on-crypto-rules-within-48-hours/",
+                        "linkLabel": "SEC & CFTC move ahead"
+                    }
+                ]
+            },
+            {
+                "id": "tabconf",
+                "title": "TABConf 8 in Atlanta",
+                "description": "Oct 12–15 at Georgia Tech. Builder days, AI sessions, free-ticket grants",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "TABConf 8: Atlanta, Oct 12–15",
+                        "body": "The technical Bitcoin conference. Volunteer-run and, in their words, not a pay-to-play hype fest.",
+                        "bullets": [
+                            "Where: Georgia Tech Exhibition Hall. Doors open Monday 11 AM",
+                            "Mon–Tue: Builder Days and hands-on workshops. Wed–Thu: main stage",
+                            "Closing ceremony is Wednesday at 4 PM, on purpose, so the room is still full",
+                            "Tickets: $256, one type for all four days, no VIP tiers. Pay in bitcoin or card",
+                            "Grants: free tickets for students and Bitcoin builders who can't afford one. Applications are open; apply early",
+                            "The schedule is open source: talks get proposed as GitHub issues. Capture the Bitcoin, the scavenger hunt, is back"
+                        ],
+                        "link": "https://8.tabconf.com/",
+                        "linkLabel": "TABConf 8"
+                    },
+                    {
+                        "heading": "TABConf 8: The Sessions for This Room",
+                        "body": "Accepted talks already on the board that match what we cover here.",
+                        "bullets": [
+                            "\"Agentic Engineering for Bitcoin Developers\": a workshop on a NixOS-based AI coding setup built for sovereignty",
+                            "\"ai: L402 and agents\": Kevin Cai of Lightning Labs on agents that pay their own way",
+                            "\"Protocol security in the age of cyber AI\" and the post-LLM FOSS panel (previous topic)",
+                            "\"rbitcoin\": vibe-coding a rust-bitcoin full node in two months",
+                            "Nostr: remote multisig coordination over relays and QR. More Nostr proposals are still under consideration",
+                            "Also: private mempools, Bolt12, rust-bitcoin 1.0, the state of Bitcoin forks"
+                        ],
+                        "link": "https://github.com/TABConf/8.tabconf.com/issues",
+                        "linkLabel": "Browse the talk board"
+                    }
+                ]
+            },
+            {
+                "id": "optech",
+                "title": "Optech #423",
+                "description": "Utreexo sync gets lighter, miners get a fairer difficulty, Eclair patches",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Optech #423: Lighter Nodes, Fairer Pools",
+                        "body": "Three ideas and a security release, from the Sep 18 newsletter.",
+                        "bullets": [
+                            "Utreexo: a node that stores almost nothing still has to download proofs during first sync, about 200GB. Davidson Souza's proposal cuts that to near zero using SwiftSync hints. Work is underway in Floresta",
+                            "Mining pools: when a miner slows down, pool difficulty can get stuck too high. Fix: lower it on a timer. Stratum v2 already does",
+                            "A draft BIP standardizes an \"unspendable\" taproot key, so different wallets derive the same address from the same policy",
+                            "Eclair 0.14.3 is a security release: malicious peers could exploit closing and splicing. Patch if you run it",
+                            "Also: BitBoxApp 4.52 adds Lightning via Spark and Breez; Covenants.diy lets you play with CTV and CAT scripts in the browser"
+                        ],
+                        "link": "https://bitcoinops.org/en/newsletters/2026/09/18/",
+                        "linkLabel": "Optech Newsletter #423"
+                    }
+                ]
+            },
+            {
+                "id": "builder-spotlight",
+                "title": "Builder Spotlight",
+                "description": "JeffG and the Marmot protocol, the engine under White Noise",
+                "type": "tool",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "Builder Spotlight: JeffG & the Marmot Protocol",
+                        "body": "White Noise is the app. The real work underneath is Marmot, an open protocol any app can use. Jeff Gardner (JeffG) wrote it.",
+                        "bullets": [
+                            "What it is: MLS, the standard for encrypted group chat, running on Nostr keys and relays. No phone numbers, no central server",
+                            "Why MLS: it scales to big groups where one-to-one designs like Signal's strain, and it protects past messages if a key leaks",
+                            "The dev kit (MDK) ships Rust plus Swift, Kotlin, and C bindings. v0.10.4 landed Sep 20",
+                            "Least Authority audited MDK; the fixes are already in",
+                            "It's a protocol, not a walled garden: five independent clients shipped Marmot code in March, including Vector and Pika",
+                            "Context: JeffG has had an OpenSats grant since 2024; co-founder Max Hillebrand, former zkSNACKs (Wasabi Wallet) CEO, came up with the idea"
+                        ],
+                        "link": "https://github.com/marmot-protocol/marmot",
+                        "linkLabel": "The Marmot protocol",
+                        "links": [
+                            {
+                                "url": "https://whitenoise.chat",
+                                "label": "whitenoise.chat"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "quick-tip",
+                "title": "Quick Tip of the Week",
+                "description": "Text your own AI agent, end-to-end encrypted, from White Noise",
+                "type": "tool",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "Quick Tip: Text Your Agent Over White Noise",
+                        "body": "Last week: give your agent an npub. This week: message it from your phone.",
+                        "bullets": [
+                            "You need White Noise on your phone and an agent already running on your Mac or Linux box: Hermes, Claude Code, Codex, OpenCode, OpenClaw, or Pi",
+                            "Run the installer for your agent. It asks which npub may message it, then creates a separate identity for the agent",
+                            "Verify the checksum before you run it. The guide shows how, and you should never skip it",
+                            "Add the agent's npub in White Noise, say hi. It's an encrypted group chat with your own agent",
+                            "Bring the best exchange to next week's meetup"
+                        ],
+                        "link": "https://github.com/marmot-protocol/mdk/blob/master/integrations/README.md",
+                        "linkLabel": "White Noise + agents setup"
+                    }
+                ]
+            },
+            {
+                "id": "community-news",
+                "title": "Community News & Topics",
+                "description": "Share what you're interested in talking about!",
+                "type": "text",
+                "slides": [
+                    {
+                        "heading": "Next Week's Meetup",
+                        "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                        "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                        "linkLabel": "Submit a Topic"
+                    }
+                ]
+            }
+        ]
+    },
     "2026-W38": {
         "week": "2026-W38",
         "date": "2026-09-16",

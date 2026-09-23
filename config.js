@@ -42,11 +42,21 @@ window.SITE_CONFIG = {
         qrHref: "https://cal.com/maxsikorski"
     },
     footer: null,
+    // Likes: LIVE on Nostr (2026-09-23, W39). A like = a kind-7 reaction to this site's
+    // per-topic anchor events on Max's Buzz relay; the shared site key publishes anchors via
+    // ../tools/likes_admin.py. Same relay + key as 3D Printing Weekly; the "btcnw" tag
+    // prefix keeps the two sites' counts apart. Relay URL lives ONLY here.
+    likes: {
+        adapter: "nostr",
+        relay: "wss://buzz-production-7d9e.up.railway.app",
+        sitePubkey: "0daf0fbd4c54dbeccb22e21feffbb8faeb1db0c8f72077135aa33e57cacde4ac",
+        tagPrefix: "btcnw"
+    },
     accents: {
         bitcoin: "#f7931a",
         nostr: "#a06af9"
     },
     halo: ["#f7931a", "#a06af9"],
     liveAccent: "#f7931a",
-    archive: { openMonths: 2 }
+    archive: { openMonths: 0 }   // every month collapsed by default (Max, 2026-09-23)
 };
