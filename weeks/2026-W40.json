@@ -1,0 +1,320 @@
+{
+    "week": "2026-W40",
+    "date": "2026-09-30",
+    "title": "Private Money, Private Minds",
+    "subtitle": "This week in Bitcoin & Nostr news",
+    "timerMinutes": 20,
+    "topics": [
+        {
+            "id": "market",
+            "title": "Live Dashboard & Market",
+            "description": "Price stalled on an oil spike; ETFs had their best week in a year",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Live Dashboard",
+                    "body": "Where Bitcoin sits right now. The full dashboards:",
+                    "widget": "live-price",
+                    "links": [
+                        {
+                            "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                            "label": "Clark Moody Dashboard"
+                        },
+                        {
+                            "url": "https://mempool.space",
+                            "label": "mempool.space"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Market: Price Stalled, the ETFs Didn't",
+                    "body": "A flat-to-down week on the chart. Underneath, the biggest ETF buying in almost a year.",
+                    "bullets": [
+                        "Sep 28: Bitcoin slipped ~1.7% to about $83K. Oil went back above $100 after Trump rejected Iran's terms for reopening the Strait of Hormuz. Gold and silver fell too",
+                        "Meanwhile, spot ETFs took in $2.4B in the week ending Sep 25, their biggest week since October 2025. IBIT $1.2B, FBTC $702M",
+                        "That flipped 2026 ETF flows positive: +$934M for the year, after sitting ~$5.8B in the red on July 13",
+                        "Analysts credit the Treasury's plan to buy back more long-dated bonds",
+                        "Saylor kept stacking: Strategy bought 1,665 BTC at ~$85,681, now 847,666 BTC"
+                    ],
+                    "link": "https://www.theblock.co/news/markets/2026-09-26-bitcoin-etfs-turn-positive-for-2026-with-2-4-billion-weekly-inflow-their-largest-since-october-416944",
+                    "linkLabel": "The Block: ETFs turn positive for 2026",
+                    "links": [
+                        {
+                            "url": "https://www.coindesk.com/markets/2026/09/28/bitcoin-falls-to-usd83-000-while-altcoins-unwind-friday-s-rally",
+                            "label": "CoinDesk: the oil-driven dip"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "shielded-bitcoin",
+            "title": "Shielded Bitcoin",
+            "description": "A proposal for Zcash-style private payments on Bitcoin with no soft fork",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Shielded Bitcoin: Private Payments, No Soft Fork",
+                    "body": "Sep 24: researchers at [alloc] init published a plan to hide who paid whom, and how much, on Bitcoin itself.",
+                    "bullets": [
+                        "Authors: Clara Shikhelman, Misha Komarov, Aleksei Moskvin",
+                        "It borrows Zcash's design: encrypted notes, zero-knowledge proofs, and \"nullifiers\" that stop double-spends without revealing which coin moved",
+                        "No rule change: shielded transactions ride inside normal Bitcoin transactions as tagged data (\"shbtc:\" in OP_RETURN or the witness)",
+                        "Indexers, programs anyone can run, read the chain, check the proofs, and ignore anything invalid",
+                        "The week's most-discussed thread on Delving Bitcoin"
+                    ],
+                    "link": "https://bitcoinmagazine.com/technical/alloc-init-releases-shielded-bitcoin-proposal-for-private-bitcoin-transactions",
+                    "linkLabel": "Bitcoin Magazine: the proposal",
+                    "links": [
+                        {
+                            "url": "https://www.coindesk.com/tech/2026/09/26/bitcoin-could-soon-get-zcash-style-shielded-privacy-without-changing-its-rules",
+                            "label": "CoinDesk: inside the paper"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Shielded Bitcoin: The Catch, and a Regulator's Nod",
+                    "body": "The hard part isn't in this paper yet: getting real BTC in and out.",
+                    "bullets": [
+                        "Locking and releasing actual BTC is left to a follow-up paper on \"PIPEs v2\", a scheme that unlocks a key only when a valid proof shows up",
+                        "Goal: no federation, no custodian. Until that paper lands, it's a design, not a product",
+                        "Same week, SEC Commissioner Hester Peirce's farewell speech (Sep 23, \"Looking for Change in Haystacks\"): collecting ever more customer data makes crime harder to find, not easier",
+                        "Her fix: zero-knowledge proofs, so a bank can confirm you passed a check without keeping your documents",
+                        "Question for the room: would you use a privacy layer that lives outside Bitcoin's rules?"
+                    ],
+                    "link": "https://www.tftc.io/zk-proof-kyc-reform-hester-peirce-sec-sifma-2026",
+                    "linkLabel": "TFTC: Peirce's farewell shot"
+                }
+            ]
+        },
+        {
+            "id": "local-ai",
+            "title": "Local AI Meets Bitcoin & Nostr",
+            "description": "Run the model yourself, pay for AI with sats, give agents wallets with limits",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "Local AI: Not Your Model, Not Your Mind",
+                    "body": "Same idea as \"not your keys, not your coins.\" If the model runs on someone else's server, they see every prompt.",
+                    "bullets": [
+                        "Sep 17: Bonsai 2 27B, a strong open model squeezed to 5.9 GB. It keeps 98.2% of the full model's benchmark score. Runs on a Mac, iPhone, or iPad",
+                        "Apache 2.0 license, reads text and images, and it's free to download",
+                        "Ollama, the easiest way to run models at home, shipped three releases in September",
+                        "Umbrel's app store has Ollama and Open WebUI: local AI on the same box as your node",
+                        "Sep 24–25: HRF and NED's AI Hack for Freedom. HRF's advice to activists: run the model on your own device so prompts never leave it"
+                    ],
+                    "link": "https://prismml.com/news/bonsai-2-27b",
+                    "linkLabel": "Bonsai 2 27B",
+                    "links": [
+                        {
+                            "url": "https://hrf.org/program/ai-for-individual-rights/",
+                            "label": "HRF: AI for individual rights"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Local AI: Pay for Models With Sats, No Account",
+                    "body": "Some models are too big for a laptop. The Bitcoin answer: pay per question, with no sign-up.",
+                    "bullets": [
+                        "Routstr: an AI marketplace where providers are listed on Nostr and paid in Cashu ecash, topped up over Lightning",
+                        "Got a spare GPU? Run a Routstr node and sell your own model's answers for sats",
+                        "Sep 26: the Sovran ecash wallet now pays Routstr per request, straight from your balance. It shows each provider's price and a privacy rating",
+                        "Sep 24: Block brought Lightning to x402, the web standard for AI agents paying for things. Google, AWS, Coinbase, Visa, and Mastercard are members",
+                        "Spiral's Steve Lee: \"Agents will make billions of small payments.\" Now some settle in sats"
+                    ],
+                    "link": "https://routstr.com",
+                    "linkLabel": "routstr.com",
+                    "links": [
+                        {
+                            "url": "https://github.com/SovranBitcoin/Sovran/pull/285",
+                            "label": "Sovran: pay-per-request AI"
+                        },
+                        {
+                            "url": "https://crypto.news/block-joins-x402-with-lightning-support/",
+                            "label": "Block brings Lightning to x402"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Local AI: Agents Get Keys and Wallets, With Limits",
+                    "body": "Once an agent can pay, the question is how much it's allowed to spend.",
+                    "bullets": [
+                        "Sep 23: Bray 3.5, a tool that lets AI assistants use Nostr, added wallet guardrails: a cap per payment, a daily budget, and a human confirm before spending",
+                        "Keys stay in a separate signer (NIP-46), so the agent never holds your nsec",
+                        "Nymbot: an AI assistant you message over encrypted Nostr DMs. No email, no card, pay with Lightning. Cloud models, but no account",
+                        "Sep 19: the NostrAgent paper proposes a standard for agent identity, delegation, and Lightning payments on Nostr",
+                        "Question for the room: would you hand an agent a wallet connection with a $5-a-day limit?"
+                    ],
+                    "link": "https://github.com/forgesworn/bray/releases",
+                    "linkLabel": "Bray releases",
+                    "links": [
+                        {
+                            "url": "https://arxiv.org/abs/2609.22944",
+                            "label": "The NostrAgent paper"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "core-32",
+            "title": "Core 32 & a Lightning Patch",
+            "description": "Bitcoin Core 32.0 is in final testing; Core Lightning users should upgrade now",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Core 32 & a Lightning Patch: Upgrade Season",
+                    "body": "Two things for node runners, one of them urgent.",
+                    "bullets": [
+                        "Bitcoin Core 32.0 is at release candidate 2. The final release is targeted for Oct 10",
+                        "What's new: faster block validation, better fee estimates, and PSBT version 2 as the default in several wallet commands",
+                        "It also fixes a command-execution flaw in certain wallet setups. Testers wanted: rc2 is out now",
+                        "Urgent: Core Lightning 26.06.8 is a security release. Upgrade now. The tests are held back for a while so attackers can't copy them",
+                        "Further out: a working post-quantum Lightning prototype (Optech #424). The cost: nodes download ~10x more data"
+                    ],
+                    "link": "https://bitcoinops.org/en/newsletters/2026/09/25/",
+                    "linkLabel": "Optech #424",
+                    "links": [
+                        {
+                            "url": "https://www.coindesk.com/tech/2026/09/16/bitcoin-core-32-enters-final-testing-with-faster-validation-fee-changes-and-security-fixes",
+                            "label": "CoinDesk: what changes in Core 32"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "fips-watch",
+            "title": "FIPS Watch",
+            "description": "v0.5.2: a security release every node should install",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "FIPS Watch: v0.5.2, Every Node Should Upgrade",
+                    "body": "Sep 28: a maintenance and security release. No network format change, so nodes can upgrade one at a time.",
+                    "bullets": [
+                        "A privacy leak closed: nodes using Nostr to get through home routers signed some messages with their routing key. That tied their identity to those messages on every relay",
+                        "Windows: any user on the machine could read or plant the node's key. The installer now locks that folder down",
+                        "Gateway: any device on the LAN could exhaust its address pool. Now capped and rate-limited",
+                        "A security update to the TLS library its relay connections use",
+                        "New: RPM packages for Fedora-style Linux. Still pre-audit, as always"
+                    ],
+                    "link": "https://github.com/jmcorgan/fips/releases/tag/v0.5.2",
+                    "linkLabel": "FIPS v0.5.2 release notes"
+                }
+            ]
+        },
+        {
+            "id": "nostr-this-week",
+            "title": "Nostr This Week",
+            "description": "Iris calls, smarter relays, three NIPs merged, and our own relay",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "Nostr This Week: Calls, Relays, and New NIPs",
+                    "body": "From Nostr Compass #42 (Sep 30).",
+                    "bullets": [
+                        "Iris Chat (Sep 24): voice and video calls, even over a local network with no internet",
+                        "nostream 3.1: relays can now raise or lower their spam proof-of-work automatically as traffic changes",
+                        "NIPs merged: NIP-39 identity proofs now cover Bluesky and Discord. NIP-86 adds relay invite codes. NIP-51 moves follow sets to a new kind",
+                        "Our own relay: every heart on these slides is a Nostr reaction stored on our Buzz relay. Tap the topics you liked"
+                    ],
+                    "link": "https://nostrcompass.org/en/newsletters/2026-09-30-newsletter/",
+                    "linkLabel": "Nostr Compass #42"
+                }
+            ]
+        },
+        {
+            "id": "clarity-act",
+            "title": "Clarity Act: The Champions Leave",
+            "description": "Tillis, Lummis, and Peirce are all heading out",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Clarity Act: The Champions Are Leaving",
+                    "body": "Two weeks after the 49–50 vote that stalled it, the bill is losing the people who carried it.",
+                    "bullets": [
+                        "Sen. Thom Tillis is not seeking re-election and steps down at year's end",
+                        "Sen. Cynthia Lummis, the lead author in the Senate, isn't running again either",
+                        "SEC Commissioner Hester Peirce, head of the crypto task force, leaves this Friday, Oct 2",
+                        "What's left: talk of reviving it in the lame-duck session after the midterms. No date",
+                        "Why it matters to us: the next bill gets written by people who haven't been in this fight"
+                    ],
+                    "link": "https://techflowpost.com/en-US/article/34311",
+                    "linkLabel": "Who leads the Clarity Act next?"
+                }
+            ]
+        },
+        {
+            "id": "builder-spotlight",
+            "title": "Builder Spotlight",
+            "description": "Super Testnet's lilp2p: browser-to-browser chat, with Nostr only as the introduction",
+            "type": "tool",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "Builder Spotlight: Super Testnet's lilp2p",
+                    "body": "No new Bitcoin code from Super in September, so here's one from February we never covered.",
+                    "bullets": [
+                        "What it is: a tiny JavaScript library (~240 lines) that lets two web browsers talk to each other directly",
+                        "The trick: the introduction runs over encrypted Nostr messages through any relay, using throwaway keys",
+                        "After the handshake the relay drops out. Messages go browser to browser over WebRTC",
+                        "Honest limit: strict firewalls can block the direct link, and there's no fallback server yet",
+                        "Try it: one person clicks \"Set up comms\", the other scans the QR. Public domain (CC0). I forked it to help build it out"
+                    ],
+                    "link": "https://supertestnet.github.io/lilp2p/",
+                    "linkLabel": "Try the lilp2p demo",
+                    "links": [
+                        {
+                            "url": "https://github.com/supertestnet/lilp2p",
+                            "label": "github.com/supertestnet/lilp2p"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "quick-tip",
+            "title": "Quick Tip of the Week",
+            "description": "Run an AI model on your own computer tonight, then unplug the internet",
+            "type": "tool",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "Quick Tip: Run an AI Model on Your Own Computer",
+                    "body": "Ten minutes, free, and your prompts never leave your machine.",
+                    "bullets": [
+                        "Install Ollama from ollama.com (Mac, Windows, Linux)",
+                        "In a terminal: ollama run gemma4:e2b. It's a small model built for laptops, a few GB to download",
+                        "Ask it anything. Then turn off Wi-Fi and ask again. Still works: that's the point",
+                        "No terminal? Ollama and Open WebUI are one-click installs in Umbrel's app store",
+                        "Bring back one thing it got right and one it got wrong"
+                    ],
+                    "link": "https://ollama.com/library/gemma4",
+                    "linkLabel": "Ollama: gemma4 models"
+                }
+            ]
+        },
+        {
+            "id": "community-news",
+            "title": "Community News & Topics",
+            "description": "Share what you're interested in talking about!",
+            "type": "text",
+            "slides": [
+                {
+                    "heading": "Next Week's Meetup",
+                    "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                    "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                    "linkLabel": "Submit a Topic"
+                }
+            ]
+        }
+    ]
+}
