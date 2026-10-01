@@ -627,6 +627,57 @@
 
     applyBranding();
 
+    // === Phone nav menu ===
+    // On narrow screens the header's text links (config navLinks + any hard-coded .nav-link)
+    // collapse into a hamburger. Pages with no text links get no button, so nothing changes there.
+    function setupNavMenu() {
+        const nav = document.querySelector('.header-nav');
+        const right = nav && nav.querySelector('.nav-right');
+        if (!right) return;
+        const links = Array.from(right.querySelectorAll('a.nav-link'));
+        if (!links.length) return;
+
+        const btn = document.createElement('button');
+        btn.className = 'theme-toggle nav-menu-toggle';
+        btn.setAttribute('aria-label', 'Menu');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-controls', 'nav-menu');
+        btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>';
+
+        const menu = document.createElement('div');
+        menu.id = 'nav-menu';
+        menu.className = 'nav-menu';
+        menu.hidden = true;
+        links.forEach(link => {
+            const item = link.cloneNode(true);
+            item.className = 'nav-menu-link';
+            menu.appendChild(item);
+        });
+
+        right.appendChild(btn);
+        nav.appendChild(menu);
+
+        const setOpen = (open) => {
+            menu.hidden = !open;
+            btn.setAttribute('aria-expanded', String(open));
+        };
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            setOpen(menu.hidden);
+        });
+        document.addEventListener('click', (e) => {
+            if (!menu.hidden && !menu.contains(e.target)) setOpen(false);
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !menu.hidden) { setOpen(false); btn.focus(); }
+        });
+        window.matchMedia('(min-width: 769px)').addEventListener('change', (e) => {
+            if (e.matches) setOpen(false);
+        });
+    }
+
+    setupNavMenu();
+
     // === Theme Toggle ===
     const themeBtn = document.getElementById('theme-toggle');
     const themeIcon = document.getElementById('theme-icon');

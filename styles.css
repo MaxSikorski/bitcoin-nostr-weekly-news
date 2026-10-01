@@ -2318,6 +2318,50 @@ body.likes-live .slide-like-btn {
     opacity: 1;
 }
 
+/* === Phone nav menu: text links collapse into a hamburger (script.js setupNavMenu) === */
+.nav-menu-toggle,
+.nav-menu {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .header-nav .nav-right .nav-link {
+        display: none;
+    }
+
+    .nav-menu-toggle {
+        display: flex;
+    }
+
+    .nav-menu:not([hidden]) {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 20px;
+        min-width: 210px;
+        padding: 8px;
+        background: var(--bg-color);
+        border: 1px solid var(--card-border);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+        border-radius: 16px;
+    }
+
+    .nav-menu-link {
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text-color);
+        text-decoration: none;
+    }
+
+    .nav-menu-link:hover,
+    .nav-menu-link:focus-visible {
+        background: var(--card-hover);
+    }
+}
+
 /* === Recommendations / Shop page === */
 .rec-intro {
     padding-bottom: 8px;
