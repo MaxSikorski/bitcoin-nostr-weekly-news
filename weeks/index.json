@@ -1,6 +1,11 @@
 {
     "weeks": [
         {
+            "id": "2026-W41",
+            "date": "2026-10-07",
+            "title": "Mesh Banned, Rules Dropped"
+        },
+        {
             "id": "2026-W40",
             "date": "2026-09-30",
             "title": "Private Money, Private Minds"
