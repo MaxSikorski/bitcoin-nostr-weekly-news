@@ -4,6 +4,11 @@
 window.INLINE_DATA = {
     "weeks": [
         {
+            "id": "2026-W41",
+            "date": "2026-10-07",
+            "title": "Mesh Banned, Rules Dropped"
+        },
+        {
             "id": "2026-W40",
             "date": "2026-09-30",
             "title": "Private Money, Private Minds"
@@ -92,6 +97,387 @@ window.INLINE_DATA = {
 };
 
 window.INLINE_WEEKS = {
+    "2026-W41": {
+        "week": "2026-W41",
+        "date": "2026-10-07",
+        "title": "Mesh Banned, Rules Dropped",
+        "subtitle": "This week in Bitcoin & Nostr news",
+        "timerMinutes": 20,
+        "topics": [
+            {
+                "id": "market",
+                "title": "Live Dashboard & Market",
+                "description": "A weekly high on Sunday, then oil and bond yields took it back",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Live Dashboard",
+                        "body": "Where Bitcoin sits right now. The full dashboards:",
+                        "widget": "live-price",
+                        "links": [
+                            {
+                                "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                                "label": "Clark Moody Dashboard"
+                            },
+                            {
+                                "url": "https://mempool.space",
+                                "label": "mempool.space"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Market: Sunday's High, Wednesday's Slide",
+                        "body": "Bitcoin nearly reached $87K on Sunday. By this morning it had given back about 4%.",
+                        "bullets": [
+                            "The drivers are the same two as last week: Brent crude back above $102 after Iran stepped up attacks in the Strait of Hormuz, and the 10-year Treasury yield at 5.33%, a 22-year high",
+                            "Gold, silver, and stocks fell with it. US mortgage rates rose for a seventh straight week",
+                            "September added only 29K jobs, so traders mostly priced out an October Fed hike. Fed minutes drop today",
+                            "ETF flows went quiet after the record $2.4B week: roughly flat, with only IBIT still buying on Monday",
+                            "Buyers anyway: Strategy +334 BTC (now 848,000), Strive +2,000 BTC, and Robinhood put its first $25M of corporate Bitcoin on the balance sheet"
+                        ],
+                        "link": "https://bitcoinmagazine.com/markets/bitcoin-price-falls-under-83000",
+                        "linkLabel": "Bitcoin Magazine: under $83K on oil and yields",
+                        "links": [
+                            {
+                                "url": "https://bitcoinmagazine.com/bitcoin-for-corporations/robinhood-adds-bitcoin-to-its-balance-sheet-a-strategic-signal-from-a-100b-fintech",
+                                "label": "Robinhood's first corporate BTC"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "bitchat-india",
+                "title": "India Bans Bitchat",
+                "description": "A Nostr-and-Bluetooth messenger pulled from Indian app stores the day after an internet shutdown",
+                "type": "discussion",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "India Bans Bitchat: The Order Nobody Served",
+                        "body": "Saturday, Oct 3: Jack Dorsey posted the email Apple sent the Bitchat team.",
+                        "bullets": [
+                            "India's IT ministry ordered the app off the India App Store under Section 69A of the IT Act, for \"content that is illegal in India.\" Which content, nobody said",
+                            "Gone from Google Play in India too. TestFlight blocked. The website is unreachable on several Indian ISPs",
+                            "The developers were never contacted. Jack found out from Apple's email",
+                            "The day before, authorities cut mobile internet for 12 hours around a protest at Jantar Mantar in Delhi",
+                            "In July, during the first wave of protests, India asked GitHub to pull three Bitchat repos \"within three hours.\" GitHub didn't, and the code is still up"
+                        ],
+                        "link": "https://techcrunch.com/2026/10/03/jack-dorseys-bitchat-disappears-from-app-stores-in-india-after-government-order",
+                        "linkLabel": "TechCrunch: Bitchat disappears in India"
+                    },
+                    {
+                        "heading": "India Bans Bitchat: Why You Can't Really Ban It",
+                        "body": "Bitchat is the app this ban was written for. No accounts, no phone numbers, no server.",
+                        "bullets": [
+                            "Offline: your phone relays messages over Bluetooth to nearby phones. Online: the Nostr protocol carries them the rest of the way",
+                            "India was ~85% of Bitchat's downloads during July's protests, up from 1% the month before",
+                            "Android users can install the APK from GitHub, and the app has a \"Share BitChat\" button that passes it phone to phone over a hotspot",
+                            "The Internet Freedom Foundation calls the order unconstitutional: Section 69A covers unlawful information, not an app that works during shutdowns",
+                            "Question for the room: what's the Bitcoin equivalent of an app store you can't be removed from?"
+                        ],
+                        "link": "https://www.tftc.io/download-bitchat-india-app-store-ban",
+                        "linkLabel": "TFTC: Download Bitchat before you need it",
+                        "links": [
+                            {
+                                "url": "https://github.com/permissionlesstech/bitchat-android/releases",
+                                "label": "Bitchat Android APK"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "fincen-rules",
+                "title": "FinCEN Drops Two Rules",
+                "description": "The unhosted-wallet and mixer proposals are withdrawn; the SEC floats its own custody rule",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "FinCEN Drops Two Rules: Self-Custody Gets a Break",
+                        "body": "Monday, Oct 5: the Treasury's financial-crimes unit withdrew two proposals that had hung over wallets for years.",
+                        "bullets": [
+                            "The 2020 \"unhosted wallet\" rule: banks and exchanges would have had to record and report transactions with self-custody wallets",
+                            "The 2023 mixer rule: any \"convertible virtual currency mixing\" flagged as a primary money-laundering concern",
+                            "FinCEN's own words: the mixer rule \"could have a chilling effect on legitimate activity\"",
+                            "Fine print: existing AML and KYC rules for exchanges don't change, and a withdrawn proposal can come back",
+                            "Same day, CFTC Chair Mike Selig: two crypto rules are coming under the CFTC's existing authority, no bill from Congress needed"
+                        ],
+                        "link": "https://cointelegraph.com/news/fincen-crypto-mixing-rule-legitimate-activity",
+                        "linkLabel": "Cointelegraph: FinCEN withdraws both rules"
+                    },
+                    {
+                        "heading": "FinCEN Drops Two Rules: Meanwhile at the SEC",
+                        "body": "Oct 1: the SEC proposed a 760-page custody rule for investment advisers and funds. It uses the words \"self-custody,\" but not the way we do.",
+                        "bullets": [
+                            "An adviser may hold client Bitcoin itself only when no qualified custodian is available for that asset, re-checked every quarter",
+                            "State-chartered trust companies become qualified crypto custodians, which widens the field",
+                            "Hester Peirce, on her last day, said the proposal's \"self-custody\" \"does not reflect true self-custody by investors.\" A fund still can't keep its coins on a hardware wallet",
+                            "Comment period: 60 days once it hits the Federal Register",
+                            "The Clarity Act is still stuck after the 49–50 vote. No new vote is scheduled, and fewer than 36 legislative days remain in this Congress"
+                        ],
+                        "link": "https://www.orrick.com/en/Insights/2026/10/The-CLARITY-Act-Stalls-in-the-Senate-Whats-Next-for-Digital-Asset-Regulation",
+                        "linkLabel": "Orrick: what's next after Clarity stalled",
+                        "links": [
+                            {
+                                "url": "https://bitcoinmagazine.com/news/cftc-boss-says-rules-will-stop-another-ftx",
+                                "label": "Bitcoin Magazine: Selig's CFTC rules"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "core-32",
+                "title": "Core 32 & Silent Payments",
+                "description": "Release candidate 3 is out, final still due Saturday; silent payments land in master",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Core 32 & Silent Payments: rc3 Now, Final Saturday",
+                        "body": "Bitcoin Core 32.0 hit release candidate 3 on Oct 1. The final is still targeted for Oct 10.",
+                        "bullets": [
+                            "If you run a node, test rc3: the guide covers the new exportwatchonlywallet command, PSBT version 2 as the default, and the rewritten HTTP server",
+                            "Merged into master for the next release: the groundwork for BIP352 silent payments, a reusable address that never shows the same output twice. Address encoding, scanning, and labels are in; sending and receiving aren't wired up yet",
+                            "A privacy fix: punishing a misbehaving peer could also drop your private-broadcast connections to the same address, linking the two. Now it can't. Backported to 32.x",
+                            "A wallet fix: a failed database write during encryption could leave plaintext keys on disk while reporting success. Encryption state now changes only after the write commits",
+                            "Also new: a -maxfeerate cap, 10,000 sat/vB by default, so a typo can't send a 1 BTC fee"
+                        ],
+                        "link": "https://bitcoinops.org/en/newsletters/2026/10/02/",
+                        "linkLabel": "Optech #425",
+                        "links": [
+                            {
+                                "url": "https://github.com/bitcoin/bitcoin/pull/35301",
+                                "label": "PR 35301: silent payments (take 2)"
+                            },
+                            {
+                                "url": "https://github.com/bitcoin/bitcoin/releases/tag/v32.0rc3",
+                                "label": "Core 32.0rc3"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "ai-in-bitcoin-dev",
+                "title": "AI in Bitcoin Dev",
+                "description": "An LLM found a Lightning crash bug; another wrote a formal proof for Pieter Wuille",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "AI in Bitcoin Dev: Two Eclair Crashes, One Found by an LLM",
+                        "body": "Sep 24: Matt Morehouse disclosed two ways to knock an Eclair Lightning node offline. Both need only a handshake, not a channel.",
+                        "bullets": [
+                            "Bug one: Eclair read a peer's feature list one bit at a time. A single oversized hello message burned ~300 MB of memory. A few dozen connections: every peer disconnected in a minute, out of memory in five",
+                            "Found by smite, his Lightning fuzzer: send raw bytes, check the node still answers a ping",
+                            "Bug two: Eclair still accepted zlib-compressed channel queries, a format Lightning retired in 2022. No size limit on decompression, so 64 KB in became 64 MB out",
+                            "Found by asking an LLM to scan the codebase for \"places a peer can force far more work than it spends.\" It pointed at the zlib code",
+                            "Both fixed in Eclair v0.14.0 since May. If you run v0.13.1 or older, upgrade"
+                        ],
+                        "link": "https://morehouse.dev/lightning/fuzzing-lightning-with-smite/",
+                        "linkLabel": "Morehouse: Fuzzing Lightning with smite",
+                        "links": [
+                            {
+                                "url": "https://delvingbitcoin.org/t/disclosure-dos-vulnerabilities-fixed-in-eclair-v0-14-0/2914",
+                                "label": "The disclosure on Delving Bitcoin"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "AI in Bitcoin Dev: Wuille's Proof, Written by a Machine",
+                        "body": "Pieter Wuille wanted to know how many blocks a chain can possibly have. He had an LLM prove the answer.",
+                        "bullets": [
+                            "Background: the \"timewarp\" attack lets miners lie about timestamps to speed up blocks. BIP54 adds two timestamp rules to stop it",
+                            "His result: with both rules, the long-run rate is capped at about one block every 9 minutes 56 seconds",
+                            "At today's chain work the maximum chain is 1,012,794 blocks, about 3,300 times tighter than without the rules. Drop either rule and the bound jumps past 3 billion",
+                            "The proof is written in Lean 4, a language that checks every step mechanically. An LLM wrote it; it passes with no gaps. Wuille says only the theorem statement needs a human",
+                            "Why bother: Core's defense against fake-header floods assumes a looser bound. This one is barely longer than the real chain"
+                        ],
+                        "link": "https://delvingbitcoin.org/t/bounds-on-chain-length-with-bip-54-timewarp-fixes/2899",
+                        "linkLabel": "Delving Bitcoin: bounds on chain length"
+                    }
+                ]
+            },
+            {
+                "id": "label-sync",
+                "title": "Wallet Labels Over Nostr",
+                "description": "A BIP proposal picks Nostr to sync your coin labels; the BIP-329 author pushes back",
+                "type": "discussion",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "Wallet Labels Over Nostr: The Proposal and the Pushback",
+                        "body": "Your coin labels (\"salary,\" \"KYC exchange,\" \"donation\") are what keep you from mixing the wrong coins. Today, moving them between wallets means export and import by hand.",
+                        "bullets": [
+                            "Sep 13, bitcoin-dev: a proposal to sync BIP-329 labels through any dumb, untrusted store. The storage location and encryption keys come from your wallet descriptor, so a watch-only wallet finds the same data with no private key",
+                            "Encrypted, last-write-wins, with tombstones for deletions. Nostr relays are the reference transport",
+                            "This already ships: the Bitcoin Safe wallet syncs labels over Nostr today",
+                            "Craig Raw, who wrote BIP-329 and Sparrow, wants a bigger spec (labels, PSBTs, multisig setup) and objects to Nostr: it \"optimizes for censorship resistance over everything else,\" and financial data \"should optimize for privacy over everything else\"",
+                            "Question for the room: is a public relay the right place for encrypted wallet metadata?"
+                        ],
+                        "link": "https://groups.google.com/g/bitcoindev/c/p6UUOdGi9YI",
+                        "linkLabel": "bitcoin-dev: Wallet label synchronization"
+                    }
+                ]
+            },
+            {
+                "id": "ecash-week",
+                "title": "Ecash Week in Berlin",
+                "description": "Cashu goes federated and Fedimint runs one federation on three codebases",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Ecash Week in Berlin: Cashu Gets Guardians",
+                        "body": "Two moves against the same risk: one operator, one codebase, one point of failure.",
+                        "bullets": [
+                            "Oct 1, bitcoin++ Berlin: Calle unveiled Federated Cashu. A mint run by five operators where any four keep it going, built on a new blind signature scheme (BLS)",
+                            "Calle's line: \"You don't need to trust the operator with your privacy, but you do need to trust the operator with your security.\" Federation spreads the second part",
+                            "Early design, no code or audit yet",
+                            "Sep 30, Ecash Hackday: Fedimint ran one live federation across three independent implementations, including one by a Cashu developer. Fedimint's Obi Nwosu: the \"software monoculture\" is over",
+                            "Hackathon runner-up: a bridge that lets an AI agent drive the Arké wallet on your iPhone, on-chain, Ark, or Lightning. Last week's theme keeps going"
+                        ],
+                        "link": "https://www.tftc.io/fedimint-three-implementations-federated-cashu-berlin-2026",
+                        "linkLabel": "TFTC: three codebases, one federation",
+                        "links": [
+                            {
+                                "url": "https://bitcoinmagazine.com/featured/ecash-ecosystem-rises-to-challenge-in-the-defense-of-decentralized-custody",
+                                "label": "Bitcoin Magazine: ecash rises to the challenge"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "slipstream",
+                "title": "Peter Todd Takes Slipstream",
+                "description": "A Core veteran now runs MARA's private mempool, and the final TABConf is next week",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Peter Todd Takes Slipstream: Private Mempools Go Pro",
+                        "body": "Oct 1: the MARA Foundation named Peter Todd lead maintainer of Slipstream, its send-straight-to-the-pool service.",
+                        "bullets": [
+                            "Slipstream sends your transaction to MARA Pool only. It stays hidden until it's in a block, so nobody sees your public keys before confirmation",
+                            "That mattered in July: MARA says over 9,000 BTC left vulnerable Coldcard multisigs through Slipstream, out of reach of the attackers watching the public mempool",
+                            "Todd wrote the replace-by-fee BIP, built OpenTimestamps, and forked Core into Libre Relay. His view: mempool policy \"should reflect what the market wants miners to mine\"",
+                            "The trade: confirmation-time privacy becomes a product one miner sells, not a property of the network",
+                            "He'll give a private-mempools talk at TABConf, Oct 12–15 in Atlanta. The site now says it: \"The final TABConf\""
+                        ],
+                        "link": "https://bitcoinmagazine.com/news/peter-todd-joins-mara-to-lead-slipstream",
+                        "linkLabel": "Bitcoin Magazine: Todd joins MARA",
+                        "links": [
+                            {
+                                "url": "https://foundation.mara.com/articles/9k-bitcoin-rescued-out-of-coldcard-multisigs",
+                                "label": "MARA: 9K BTC rescued from Coldcard multisigs"
+                            },
+                            {
+                                "url": "https://8.tabconf.com",
+                                "label": "The final TABConf"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "nostr-this-week",
+                "title": "Nostr This Week",
+                "description": "Message edits, smarter search, polls in White Noise, and a FIPS note",
+                "type": "discussion",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "Nostr This Week: Edits, Search, and Polls",
+                        "body": "From Nostr Compass #43 (Oct 7).",
+                        "bullets": [
+                            "Iris Chat: edit and delete sent messages, with edit history. Flotilla 1.12: screen sharing in calls",
+                            "Ants, Gigi's search client: nested AND/OR queries with per-branch author and date filters, on web and Android",
+                            "White Noise added polls inside encrypted group chats, iOS and Android",
+                            "Myco 0.10: small Nostr apps can upload to Blossom servers without ever touching your key. NIP-92 merged: profile pictures only attach on exact URL matches",
+                            "FIPS: no release this week, but master is busy: Ethernet interfaces that can appear and vanish while the node runs, BLE dial fixes, RPM tests. Tap a heart below if you want it back on a slide"
+                        ],
+                        "link": "https://nostrcompass.org/en/newsletters/2026-10-07-newsletter/",
+                        "linkLabel": "Nostr Compass #43"
+                    }
+                ]
+            },
+            {
+                "id": "builder-spotlight",
+                "title": "Builder Spotlight",
+                "description": "Matt Morehouse's smite: a fuzzer that talks to real Lightning nodes and watches for the ones that stop answering",
+                "type": "tool",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Builder Spotlight: Morehouse's smite",
+                        "body": "The tool behind this week's Eclair bugs. Matt Morehouse hunts Lightning bugs full-time and publishes every one.",
+                        "bullets": [
+                            "What it is: a fuzzer that connects to a real Lightning node like a peer, throws malformed messages at it, and checks whether it still answers a ping on time",
+                            "Why that matters: most Lightning bugs that drain or freeze nodes start with \"a peer sent something weird.\" smite automates the weird",
+                            "Track record: more than a dozen public write-ups across LND, Eclair, and CLN, from preimage theft to stalling attacks. Every one is on morehouse.dev",
+                            "This week's twist: smite found one bug, and an LLM pass over the same code found its cousin",
+                            "Try it: the write-up walks through building a scenario in a few lines. Point it at your own test node, not your money"
+                        ],
+                        "link": "https://morehouse.dev/lightning/fuzzing-lightning-with-smite/",
+                        "linkLabel": "Fuzzing Lightning with smite",
+                        "links": [
+                            {
+                                "url": "https://lnfuzz.org",
+                                "label": "lnfuzz.org advisories"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "quick-tip",
+                "title": "Quick Tip of the Week",
+                "description": "Download Bitchat before you need it, and test it with a friend tonight",
+                "type": "tool",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "Quick Tip: Download Bitchat Before You Need It",
+                        "body": "Five minutes now. The day the internet goes down is the wrong day to look for an app store.",
+                        "bullets": [
+                            "Install Bitchat from the App Store or Google Play. On Android you can also grab the APK from GitHub",
+                            "Open it, pick a nickname. No account, no phone number",
+                            "Grab a friend, both of you switch to airplane mode, and send a message. It goes over Bluetooth, phone to phone",
+                            "Android users: the \"Share BitChat\" button passes the app to a nearby phone over a hotspot, no store needed",
+                            "Then leave it installed. It's the backup you hope you never use"
+                        ],
+                        "link": "https://github.com/permissionlesstech/bitchat-android/releases",
+                        "linkLabel": "Bitchat Android releases",
+                        "links": [
+                            {
+                                "url": "https://apps.apple.com/us/app/bitchat-mesh/id6748219622",
+                                "label": "Bitchat on the App Store"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "community-news",
+                "title": "Community News & Topics",
+                "description": "Share what you're interested in talking about!",
+                "type": "text",
+                "slides": [
+                    {
+                        "heading": "Next Week's Meetup",
+                        "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                        "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                        "linkLabel": "Submit a Topic"
+                    }
+                ]
+            }
+        ]
+    },
     "2026-W40": {
         "week": "2026-W40",
         "date": "2026-09-30",
