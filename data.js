@@ -4,6 +4,11 @@
 window.INLINE_DATA = {
     "weeks": [
         {
+            "id": "2026-W42",
+            "date": "2026-10-14",
+            "title": "Wallets With Modems"
+        },
+        {
             "id": "2026-W41",
             "date": "2026-10-07",
             "title": "Mesh Banned, Rules Dropped"
@@ -97,6 +102,376 @@ window.INLINE_DATA = {
 };
 
 window.INLINE_WEEKS = {
+    "2026-W42": {
+        "week": "2026-W42",
+        "date": "2026-10-14",
+        "title": "Wallets With Modems",
+        "subtitle": "This week in Bitcoin & Nostr news",
+        "timerMinutes": 20,
+        "topics": [
+            {
+                "id": "market",
+                "title": "Live Dashboard & Market",
+                "description": "A hot inflation print, a Monday flush, and the smallest Strategy buy of the year",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Live Dashboard",
+                        "body": "Where Bitcoin sits right now. The full dashboards:",
+                        "widget": "live-price",
+                        "links": [
+                            {
+                                "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                                "label": "Clark Moody Dashboard"
+                            },
+                            {
+                                "url": "https://mempool.space",
+                                "label": "mempool.space"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Market: Hot CPI, Cold Coins",
+                        "body": "Bitcoin slipped under $82K Monday evening and is holding just above it this morning, about 1% down on the week.",
+                        "bullets": [
+                            "This morning's CPI: +0.6% in September, 3.7% for the year, core above forecast. The 10-year jumped to 5.32%; odds of an Oct 28 Fed hike doubled to about 45%",
+                            "Oil is still the engine: Brent above $105 while the Hormuz attacks continue",
+                            "Monday's dip wiped out $771M in leveraged bets in 24 hours, $686M of it longs",
+                            "ETFs lost $679M last week, Oct 7 the worst day since June. Small outflow Monday, back to inflows Tuesday, led by Fidelity",
+                            "Buyers anyway: Strategy +250 BTC, its smallest buy of 2026, now 848,250. Strive +3,311 BTC ($275M), now 32,773, the fifth-largest public holder"
+                        ],
+                        "link": "https://bitcoinmagazine.com/markets/bitcoin-price-slips-on-cpi-inflation-data",
+                        "linkLabel": "Bitcoin Magazine: under $83K on CPI",
+                        "links": [
+                            {
+                                "url": "https://bitcoinmagazine.com/news/strive-buys-more-bitcoin-to-hit-30000-btc",
+                                "label": "Strive crosses 30K BTC"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "ledger-implants",
+                "title": "Ledger Implants Confirmed",
+                "description": "A reseller shipped hardware wallets with a modem inside, and the genuine check can't see it",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Ledger Implants Confirmed: A Modem in the Box",
+                        "body": "Tuesday, Oct 13: Ledger's Donjon security team confirmed what Southeast Asian customers had been reporting for a week.",
+                        "bullets": [
+                            "Devices sold by CryptoBilis, a Malaysian reseller, carried an unauthorized implant inside the casing",
+                            "It reads the 24-word recovery phrase off the screen during setup and sends it out over LTE through an embedded eSIM",
+                            "Secure chip, OS, transactions, signatures: all untouched. Ledger's words: Genuine Check \"cannot detect unauthorized physical modifications to the hardware\"",
+                            "On-chain researchers put the losses above $86M across Bitcoin, Ethereum and Tron. Ledger says it hasn't confirmed a total or a victim count",
+                            "Bought from that reseller in the last 90 days? Ledger says don't set it up. Already did? Move everything to a new signer with a new seed"
+                        ],
+                        "link": "https://www.theblock.co/news/business/2026-10-13-ledger-confirms-hardware-implant-cryptobilis-reseller-units-mediamarkt-suspends-sales-europe-418442",
+                        "linkLabel": "The Block: Ledger confirms the implant",
+                        "links": [
+                            {
+                                "url": "https://thehackernews.com/2026/10/ledger-finds-unauthorized-hardware.html",
+                                "label": "Hacker News: how the implant works"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Ledger Implants Confirmed: Europe, Trezor, and Who to Believe",
+                        "body": "By Tuesday it had stopped being a Southeast Asia story.",
+                        "bullets": [
+                            "MediaMarkt Saturn pulled Ledger devices from its stores and website across Europe after a German customer reported an implant. Ledger says no funds were lost in that case",
+                            "Trezor, the same day: fewer resellers, vendors re-vetted, \"no evidence\" its own devices were touched. Trezor and OneKey both cut ties with CryptoBilis",
+                            "Then Kim Zetter's Zero Day: Joe Grand says he found implants in two Trezor devices (a One, a Model T) from unauthorized sellers, and told Trezor in August. Trezor denies any compromise",
+                            "The year so far: Coldcard's seed bug in July (about $120M), Trezor's 81,000-customer data leak in September, and now the box itself",
+                            "Question for the room: would you notice a modem in your wallet?"
+                        ],
+                        "link": "https://bitcoinmagazine.com/news/trezor-reduces-resellers-after-ledger-mess",
+                        "linkLabel": "Bitcoin Magazine: Trezor cuts resellers",
+                        "links": [
+                            {
+                                "url": "https://www.zetter-zeroday.com/trezor-wallets-also-compromised-with-implants/",
+                                "label": "Zero Day: Grand's Trezor findings"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "quantum-now",
+                "title": "Coinbase Says Start Now",
+                "description": "The custodian of 5% of all bitcoin publishes its quantum wishlist; a university team ships a post-quantum Lightning design",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Coinbase Says Start Now: The Quantum Wishlist",
+                        "body": "Oct 13: Coinbase, which custodies about 5% of all bitcoin, published what it wants from a post-quantum upgrade.",
+                        "bullets": [
+                            "A flexible output type that can add or swap signature schemes without a redesign. It names BIP-360 (P2MR) and P2TRv2",
+                            "A staged \"1-of-2\": during the transition, spend with either your old key or a quantum-safe one. Nobody is forced to move on one day",
+                            "Prefer stateless signatures. Stateful schemes break when you restore a backup and reuse a one-time key",
+                            "It has to work with MPC custody and keep full nodes cheap to run",
+                            "Lost coins: no position. Debate them separately so they don't stall the upgrade; any rescue must itself be quantum-safe. Their line: consensus changes \"can take years\""
+                        ],
+                        "link": "https://www.coindesk.com/tech/2026/10/14/coinbase-which-holds-5-of-all-bitcoin-wants-the-quantum-fix-started-now",
+                        "linkLabel": "CoinDesk: Coinbase wants the fix started now",
+                        "links": [
+                            {
+                                "url": "https://www.coinbase.com/en-in/blog/working-together-on-btc-post-quantum-readiness",
+                                "label": "The Coinbase post"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Coinbase Says Start Now: Lightning Goes First",
+                        "body": "Same day: a four-university team says it built the first full post-quantum security design for Lightning.",
+                        "bullets": [
+                            "Led by Ahmet Kurt at East Texas A&M. About 11,000 lines in rust-lightning, three to four months of work",
+                            "Hybrid, not replacement: ML-DSA signatures and ML-KEM key exchange layered on top of today's crypto. An attacker has to break both",
+                            "The point: Lightning has its own handshakes and invoices. Even after the base layer upgrades, those need their own fix",
+                            "Not yet: benchmarks, fee impact, an audit, or a second implementation",
+                            "Delving thread this week: what does \"post-quantum\" even mean for an L2 that still settles on a non-quantum L1?"
+                        ],
+                        "link": "https://bitcoinmagazine.com/news/quantum-defense-for-bitcoins-lightning",
+                        "linkLabel": "Bitcoin Magazine: post-quantum Lightning",
+                        "links": [
+                            {
+                                "url": "https://delvingbitcoin.org/t/what-does-post-quantum-actually-mean-for-a-bitcoin-l2-when-settlement-still-happens-on-a-non-pq-l1/2715",
+                                "label": "Delving: PQ on an L2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "lightning-security",
+                "title": "Lightning Security Week",
+                "description": "Four implementations, one month, all patched: CLN, LDK, Eclair, LND",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Lightning Security Week: Upgrade Night",
+                        "body": "Optech #426 reads like a patch calendar. If you run a node or ship a wallet, this is your to-do list.",
+                        "bullets": [
+                            "Core Lightning 26.06.9: fixes in channel reestablish, splicing and HTLC handling, plus the 26.06.8 bug that throttled peers for ordinary gossip. Tests withheld. Oct 2: CLN said attackers were already hitting unpatched nodes",
+                            "LDK 0.2.7 and 0.1.13: a peer that acks an update, reconnects, and claims it never got it could make you sign a conflicting commitment and steal a forwarded payment. Now that claim force-closes the channel",
+                            "LDK is a library, so the fix only reaches users when each wallet ships it. Ask your wallet",
+                            "Eclair 0.14.1: the sequel to last week's smite story, two more DoS bugs disclosed Oct 7",
+                            "LND: a 32-bit overflow could make blinded-path invoices advertise lower fees than charged. BTCPay 2.4.5: outbound requests to private networks blocked by default"
+                        ],
+                        "link": "https://bitcoinops.org/en/newsletters/2026/10/09/",
+                        "linkLabel": "Optech #426",
+                        "links": [
+                            {
+                                "url": "https://cryptoslate.com/unpatched-ldk-apps-can-lose-bitcoin-when-a-lightning-peer-lies-after-reconnecting/",
+                                "label": "CryptoSlate: the LDK reconnect bug"
+                            },
+                            {
+                                "url": "https://delvingbitcoin.org/t/disclosure-dos-vulnerabilities-fixed-in-eclair-v0-14-1/2928",
+                                "label": "Eclair 0.14.1 disclosure"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "core-32",
+                "title": "Core 32: rc4, Not Final",
+                "description": "The Oct 10 target slipped; meanwhile privacy fixes, smarter fees, and a revived idea for home nodes",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Core 32: rc4, Not Final",
+                        "body": "Release candidate 4 landed this morning. The Oct 10 final didn't happen and there's no new date: it ships when no critical problems are found.",
+                        "bullets": [
+                            "Merged for the next release: the private-broadcast fix. Seeing your own transaction come back used to cancel the remaining Tor and I2P attempts, a tell for watchers. Now all three complete",
+                            "Fee estimation gets a fallback instead of an error, and estimatesmartfee defaults to the new combined estimator",
+                            "A silent-payments scanning bug: a tweaked P2PKH input could make a wallet miss a payment. Fixed before any wallet uses it",
+                            "AJ Towns: let each peer pick its own one-byte message IDs over the encrypted v2 transport. Up to 66% less bandwidth on ping-only links, about 5% on a normal one",
+                            "TCP hole punching is back: 0xB10C restarted a BIP and a Core implementation so NATed home nodes can take connections. AJ's pushback: is random inbound even what you want? New option: punch through to a friend, coordinated over Signal or Nostr"
+                        ],
+                        "link": "https://delvingbitcoin.org/t/bitcoin-core-32-0rc4-is-now-available/2958",
+                        "linkLabel": "Delving: Core 32.0rc4",
+                        "links": [
+                            {
+                                "url": "https://delvingbitcoin.org/t/tcp-hole-punching-for-bitcoin-nodes-behind-home-nats/2497",
+                                "label": "Delving: TCP hole punching"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "shielded-bitcoin",
+                "title": "Shielded Bitcoin",
+                "description": "The private-transfer paper we've been waiting on is out, and it needs no soft fork",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Shielded Bitcoin: The Paper Is Out",
+                        "body": "Misha Komarov, Clara Shikhelman and Aleksei Moskvin published the design. Hidden amounts and counterparties, no consensus change.",
+                        "bullets": [
+                            "Your coins become encrypted \"notes,\" the UTXOs of the scheme. A transfer is a normal Bitcoin transaction carrying new notes, a nullifier per spent note, and a proof it all adds up",
+                            "Anyone can run an indexer that checks proofs and tracks nullifiers. No operator, no interactivity, nobody who has to stay online",
+                            "Three keys from one seed: spend, see incoming, see outgoing. Hand out a viewing key and you get Electrum-level privacy loss, by design",
+                            "What an observer still sees: that a shielded transfer happened, how many notes, the fee, size and timing. Entering and leaving leaves a trace",
+                            "The catch: a one-time setup ceremony, safe if one participant is honest. Peg-in and peg-out use witness encryption and come in a companion paper"
+                        ],
+                        "link": "https://bitcoinops.org/en/newsletters/2026/10/09/",
+                        "linkLabel": "Optech #426: Shielded Bitcoin"
+                    }
+                ]
+            },
+            {
+                "id": "uk-61k",
+                "title": "UK Court & 61,000 BTC",
+                "description": "A London judge sends the fraud victims' claims to Chinese law, which makes the Treasury the likely keeper",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "UK Court & 61,000 BTC: Chinese Law Decides",
+                        "body": "Monday, Oct 12: the biggest bitcoin seizure in history took a step toward staying with the British government.",
+                        "bullets": [
+                            "The coins: about 61,000 BTC, roughly $5B, from Zhimin Qian's Ponzi that took money from 128,000+ Chinese investors in 2014–17. She converted it to bitcoin and fled to the UK",
+                            "The ruling: Mr Justice Turner held that Chinese law, not English law, governs the victims' claims. \"The relevant damage occurred in China\"",
+                            "What it doesn't decide: who owns the coins. A further hearing will test whether any victim can prove an interest under Chinese law",
+                            "Why victims fought for English law: it could have given them property rights in the coins themselves, gains included, instead of their original principal",
+                            "The victims' lawyers are appealing. Every month the appeal runs, the Treasury's odds improve"
+                        ],
+                        "link": "https://www.coindesk.com/policy/2026/10/13/u-k-court-ruling-boosts-government-s-chances-of-keeping-gbp3-8-billion-seized-bitcoin",
+                        "linkLabel": "CoinDesk: the ruling"
+                    }
+                ]
+            },
+            {
+                "id": "tabconf-final",
+                "title": "The Final TABConf",
+                "description": "Atlanta's last technical Bitcoin conference is happening right now, and mempool.space wants .bitcoin",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "The Final TABConf: Live From Atlanta",
+                        "body": "TABConf 8 runs Oct 12 to 15. Builder days Monday and Tuesday, main stage today and tomorrow. The site says it plainly: the final one.",
+                        "bullets": [
+                            "Day one, per Christine Kim: a hodgepodge, from newcomer workshops to academic talks. AI, soft-fork governance, post-quantum, adoption in the Global South",
+                            "Peter Todd's private-mempools talk: what Slipstream guarantees, how it rescued multisig and quantum-vulnerable funds, and what happens as Core drops standardness rules",
+                            "Town Hall at 4pm today. Recordings land on the TABConf channel after; full recap next week",
+                            "Also this week: Wiz of mempool.space has a community application in for the .bitcoin domain, ICANN's first round since 2012. About 80 endorsement letters, Bitcoin-only registrations, 21% of revenue pledged to open-source development",
+                            "The application fee alone is $227,000. Status unknown until ICANN publishes the list"
+                        ],
+                        "link": "https://8.tabconf.com/",
+                        "linkLabel": "The final TABConf",
+                        "links": [
+                            {
+                                "url": "https://cryptobriefing.com/wiz-bitcoin-domain-icann-application/",
+                                "label": "Wiz's .bitcoin application"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "nostr-this-week",
+                "title": "Nostr This Week",
+                "description": "Amethyst on desktop, Amber's security fixes, a password manager, and a FIPS note",
+                "type": "discussion",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "Nostr This Week: Desktop, Signers, and a Relay in a Script",
+                        "body": "From Nostr Compass #44 (Oct 14).",
+                        "bullets": [
+                            "Amethyst 1.18 and 1.19: the Android client runs on desktop now, native Wayland on Linux, and remote signing on login",
+                            "Amber 6.6.9 closes three advisories: revoked permissions that survived a cache race, copied secrets never cleared, a lock-setting change that could lose keys. On 6.6.8 or older? Update tonight",
+                            "New: Submarine, a password manager that syncs encrypted over Nostr and imports from Bitwarden. Keep 1.3 adds a FROST threshold signer with on-device key generation",
+                            "Relay Kit: one script turns a VPS into a relay, a Blossom media server and an nsite gateway, with Nostr-key login. More relay operators beats more users",
+                            "FIPS: still v0.5.2, no release. But master this week got a bare-metal core crate and a macOS Bluetooth backend. Hearts below if you want it back on a slide"
+                        ],
+                        "link": "https://nostrcompass.org/en/newsletters/2026-10-14-newsletter/",
+                        "linkLabel": "Nostr Compass #44",
+                        "links": [
+                            {
+                                "url": "https://nostrmag.com/article/w42nostr01",
+                                "label": "NostrMag: Relay Kit"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "builder-spotlight",
+                "title": "Builder Spotlight",
+                "description": "ThrillerX's InstaOp: an Instagram-style feed where every post is an OP_RETURN confirmed on chain",
+                "type": "tool",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Builder Spotlight: ThrillerX's InstaOp",
+                        "body": "Car, who runs PlebLab in Austin, pushed a new repo this week: a social feed where the posts live on Bitcoin and the likes live in a database.",
+                        "bullets": [
+                            "What it is: a live gallery of OP_RETURN messages. It imports OP_RETURN Bot's Nostr feed as the official @OP_RETURN_Bot account, with a mempool.space card for every transaction",
+                            "Sign in with email or your Nostr key (NIP-07). Keys never touch the server. Guests can browse; signed-in users follow, like, comment and save",
+                            "The rule that makes it Bitcoin: a post goes public only after the transaction confirms. Broadcast isn't enough",
+                            "Posting: write a draft, OP_RETURN Bot hands you a Lightning invoice, pay, wait for the block. InstaOp runs no Lightning node. Hashtags, @mentions, installs as a phone app",
+                            "Try it: clone, npm install, npm start, open localhost:8788. Hours old, no hosted link yet, so expect rough edges"
+                        ],
+                        "link": "https://github.com/thrillerxx/InstaOp",
+                        "linkLabel": "InstaOp on GitHub",
+                        "links": [
+                            {
+                                "url": "https://opreturnbot.com/",
+                                "label": "OP_RETURN Bot"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "quick-tip",
+                "title": "Quick Tip of the Week",
+                "description": "Hardware wallet supply-chain hygiene: buy direct, and treat a reseller box like a stranger",
+                "type": "tool",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Quick Tip: Treat the Box Like a Stranger",
+                        "body": "This week's implants passed the genuine check. The chip was real. The box wasn't.",
+                        "bullets": [
+                            "Buy direct from the maker. The Ledger implants came through a reseller that was on the official list",
+                            "Bought from a reseller recently and haven't set it up? Don't. Already set up? Move your coins to a fresh device with a fresh seed, then investigate the old one",
+                            "Attestation and genuine checks prove the chip is real. They can't see a second board glued inside the case",
+                            "Lose the habit of reading the seed off a screen in a hurry: cover, write, verify, and know that an implant watches that screen too",
+                            "Keep a spare, known-good signer in a drawer. The week you need to move funds fast is the wrong week to shop"
+                        ],
+                        "link": "https://thehackernews.com/2026/10/ledger-finds-unauthorized-hardware.html",
+                        "linkLabel": "How the implant works"
+                    }
+                ]
+            },
+            {
+                "id": "community-news",
+                "title": "Community News & Topics",
+                "description": "Share what you're interested in talking about!",
+                "type": "text",
+                "slides": [
+                    {
+                        "heading": "Next Week's Meetup",
+                        "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                        "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                        "linkLabel": "Submit a Topic"
+                    }
+                ]
+            }
+        ]
+    },
     "2026-W41": {
         "week": "2026-W41",
         "date": "2026-10-07",
