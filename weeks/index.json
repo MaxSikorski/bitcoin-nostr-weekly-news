@@ -1,6 +1,11 @@
 {
     "weeks": [
         {
+            "id": "2026-W43",
+            "date": "2026-10-21",
+            "title": "Core 32 Ships"
+        },
+        {
             "id": "2026-W42",
             "date": "2026-10-14",
             "title": "Wallets With Modems"

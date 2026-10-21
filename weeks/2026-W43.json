@@ -1,0 +1,429 @@
+{
+    "week": "2026-W43",
+    "date": "2026-10-21",
+    "title": "Core 32 Ships",
+    "subtitle": "This week in Bitcoin & Nostr news",
+    "timerMinutes": 20,
+    "topics": [
+        {
+            "id": "market",
+            "title": "Live Dashboard & Market",
+            "description": "SpaceX earnings lift risk assets, IBIT's biggest day in a year, and Saylor buys back his own preferred",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Live Dashboard",
+                    "body": "Where Bitcoin sits right now. The full dashboards:",
+                    "widget": "live-price",
+                    "links": [
+                        {
+                            "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                            "label": "Clark Moody Dashboard"
+                        },
+                        {
+                            "url": "https://mempool.space",
+                            "label": "mempool.space"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Market: SpaceX Earnings, Saylor's Orange",
+                    "body": "Bitcoin pushed above $84,500 this morning, up about 3% on the week. SpaceX beat on revenue Tuesday, tech rallied, and risk came back on.",
+                    "bullets": [
+                        "ETFs turned: two outflow weeks ($681M, then $229M), then Monday's +$527M, the biggest day since Sep 22. IBIT alone took $665M, its best day in a year. Tuesday +$23M. October is still slightly negative",
+                        "Strategy +267 BTC at $82,900, now 848,517. Same filing: $193M of its own STRC preferred bought back, and the buyback program raised to $3B. Saylor's new pitch: a bitcoin-backed dollar stablecoin yielding 6–8%",
+                        "MSCI finalized the rule that can drop non-operating companies from its indexes. List Nov 11, effective Nov 30. MSTR fell 9.6% the next day. Incumbents need two failing years, so this is a 2027 story",
+                        "Strive +4,045 BTC, now 36,818. Its second preferred, SATS, raised $630M Tuesday and pays 15% a year, paid daily",
+                        "Difficulty +5.92% Friday to 140.58T, highest since March. Hashrate above 1 ZH/s. Fed meets Oct 28"
+                    ],
+                    "link": "https://bitcoinmagazine.com/news/bitcoin-price-nears-85000-spacex-earnings",
+                    "linkLabel": "Bitcoin Magazine: nears $85K",
+                    "links": [
+                        {
+                            "url": "https://www.theblock.co/news/business/2026-10-19-we-found-room-for-more-orange-michael-saylors-strategy-buys-more-bitcoin-418895",
+                            "label": "The Block: Strategy's buy + STRC buyback"
+                        },
+                        {
+                            "url": "https://www.theblock.co/news/business/2026-10-15-msci-rules-could-exclude-strategy-mstr-from-indexes-418729",
+                            "label": "The Block: MSCI's rule"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "core-32",
+            "title": "Core 32.0 Ships",
+            "description": "Tagged this morning, eleven days late. What changes when you upgrade, and what gets left behind",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Core 32.0 Ships: Tagged This Morning",
+                    "body": "v32.0 was tagged \"Bitcoin Core 32.0 final\" at 13:27 UTC today, eleven days past the Oct 10 target. Binaries are up. If you run 29.x, you're now end of life.",
+                    "bullets": [
+                        "Network: default max connections 125 → 200, and transaction-relaying peers can take at most half of your inbound slots. The rest is reserved for block-relay-only peers",
+                        "Tor hidden services Core creates get Tor's proof-of-work DoS defense if your Tor daemon supports it",
+                        "Relay throttling is now one global backlog instead of per peer: 14 tx/s plus a new 12MB-per-10-minutes bandwidth cap",
+                        "Private broadcast got a real fix: a v2 handshake that failed used to retry v1 directly, skipping the Tor proxy and leaking your IP. Queue now capped at 10,000, 1,000 attempts per transaction",
+                        "Two weeks from now they disclose three medium-or-high vulnerabilities fixed back in 30.0. Still on 29? That's your deadline"
+                    ],
+                    "link": "https://github.com/bitcoin/bitcoin/releases/tag/v32.0",
+                    "linkLabel": "The v32.0 tag",
+                    "links": [
+                        {
+                            "url": "https://bitcoincore.org/bin/bitcoin-core-32.0/",
+                            "label": "Binaries"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Core 32.0 Ships: Wallet, Fees, and the Fine Print",
+                    "body": "The changes most likely to bite tooling, and the ones node runners will like.",
+                    "bullets": [
+                        "PSBT version 2 is now the default from createpsbt, walletcreatefundedpsbt, converttopsbt and psbtbumpfee. Anything downstream that only reads v0 needs a psbt_version argument or an update",
+                        "estimatesmartfee now blends two estimators. The new mempool one can only lower the estimate, and only when recent blocks say the mempool is healthy",
+                        "Block validation prefetches inputs from disk in parallel, 8 threads by default. Faster initial sync on spinning disks and small boxes",
+                        "New wallet RPCs: exportwatchonlywallet (descriptors, history, no keys), derivehdkey for multisig xpubs, addhdkey",
+                        "On the chopping block: CJDNS support is under review, legacy I2P encryption sunsets by v34, and the next release drops MSVC Windows builds"
+                    ],
+                    "link": "https://github.com/bitcoin/bitcoin/blob/v32.0/doc/release-notes.md",
+                    "linkLabel": "Full release notes"
+                }
+            ]
+        },
+        {
+            "id": "bitcoin-rs",
+            "title": "Two Rust Nodes on Delving",
+            "description": "An independent Rust full node that uses Core's kernel as a lie detector, and a policy language for the node you already run",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Two Rust Nodes on Delving: bitcoin-rs",
+                    "body": "The same week Core 32 shipped, a team called gosuda announced bitcoin-rs, an independent full node in Rust. Early, but the design choices are the story.",
+                    "bullets": [
+                        "Not a port. The node keeps its own UTXO set for validation and bolts on a read-only, Esplora-compatible script index. Wallets and explorers may not need a separate Electrum server",
+                        "Consensus, chainstate, storage, networking, mempool and indexing are separate modules with failure boundaries. One part crashing shouldn't take the node down",
+                        "The twist: libbitcoinkernel, Core's extracted consensus library, runs alongside as a reference oracle. Native Rust validates, the kernel cross-checks, bitcoinfuzz hunts for disagreements",
+                        "The author's own words: AI made an independent implementation \"practical.\" First mainnet test from a libbitcoinkernel dev got stuck at height 0; fixed within three days",
+                        "Also on Delving: satd, another Rust node, proposes a cost-bounded filtering language. Operators write allow or quarantine rules in a text file. The Knots war, settled per node, in a config file"
+                    ],
+                    "link": "https://delvingbitcoin.org/t/bitcoin-rs-an-independent-bitcoin-full-node-written-in-rust/2918",
+                    "linkLabel": "Delving: bitcoin-rs",
+                    "links": [
+                        {
+                            "url": "https://github.com/gosuda/bitcoin-rs",
+                            "label": "bitcoin-rs on GitHub"
+                        },
+                        {
+                            "url": "https://delvingbitcoin.org/t/cost-bounded-transaction-filtering-language/2966",
+                            "label": "Delving: satd's filtering language"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "liquid-recovery",
+            "title": "Liquid: Final Stages",
+            "description": "Six weeks after the $320M peg exploit, swaps are back and peg-outs are next. The hackers still hold 600 BTC",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Liquid: Final Stages of Recovery",
+                    "body": "Oct 20: the Liquid Network says it's in the final stages of recovery with enhanced security. We covered the heist in September. Here's the ending so far.",
+                    "bullets": [
+                        "Recap: Sept 6, an inflation bug in Elements let attackers mint over 4,000 L-BTC that no bitcoin backed, then cash it out for real BTC through peg-outs. About $320M at the time",
+                        "3,400 BTC came back within days. The attackers kept roughly 600 BTC, about $50M now, after demanding a 10% \"bounty.\" Blockstream refused the terms. Whether there's been a private settlement since: unknown",
+                        "What's live again: L-BTC to BTC swaps, per Adam Back. What's next: restore full 1-to-1 backing, then gradually re-enable Federation peg-outs for authorized key holders",
+                        "Blockstream, the Federation and outside security firms say the safeguards are in place. The actual Elements vulnerability still hasn't been described publicly",
+                        "Question for the room: a sidechain that needed six weeks and a negotiation with its attacker. What's the lesson for every other \"backed 1-to-1\" token?"
+                    ],
+                    "link": "https://bitcoinmagazine.com/news/liquid-network-announces-recovery",
+                    "linkLabel": "Bitcoin Magazine: Liquid's recovery",
+                    "links": [
+                        {
+                            "url": "https://blog.blockstream.com/liquid-network-security-incident-assessment/",
+                            "label": "Blockstream's September assessment"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ledger-week-two",
+            "title": "Ledger Implants, Week Two",
+            "description": "Mt. Gox's old CEO found implants in units that never touched CryptoBilis, and the loss count keeps climbing",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Ledger Implants, Week Two: Not Just One Reseller",
+                    "body": "Last week Ledger confirmed the modem-in-the-box. This week the story got wider, and the person who widened it is Mark Karpelès of Mt. Gox.",
+                    "bullets": [
+                        "Karpelès had been posting implant photos since Sept 16. His two implanted Nano X units came from Yahoo! Auctions Japan and an Amazon Japan seller shipping from Malaysia. Not CryptoBilis",
+                        "He says the antenna markings point to a \"Eurasian version,\" so there's more than one variant in the wild. His research page traces the first public implanted Nano X to August 2025",
+                        "Losses: Bitquery now counts $93.2M from 315 wallets across six chains. Tether froze about $10M of it. Ledger still says every confirmed drain ties to CryptoBilis, and ledger.com units are clean",
+                        "Peter Todd's I-told-you-so: he argued years ago that a genuine check can't see a compromised screen interface. Ledger now says the same thing",
+                        "Trezor's reseller authorizations all end Jan 1, 2027. OneKey is replacing CryptoBilis units for free. Karpelès says he's building a detector you don't have to open the device to use"
+                    ],
+                    "link": "https://gizmodo.com/mt-goxs-disgraced-ex-ceo-finds-redemption-exposing-spy-implants-in-ledger-devices-2000824771",
+                    "linkLabel": "Gizmodo: Karpelès's implants",
+                    "links": [
+                        {
+                            "url": "https://decrypt.co/380848/trezor-cuts-resellers-ledger-finds-spy-implant-crypto-wallets",
+                            "label": "Decrypt: Trezor cuts resellers"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "lightning-dos",
+            "title": "Lightning: One Connection, 48 Minutes",
+            "description": "The Eclair bugs behind last month's patches are public, plus splicing hardening and an LDK privacy leak",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Lightning: One Connection, 48 Minutes, Dead Node",
+                    "body": "Optech #427 carries Erick Cestari's disclosure of the two Eclair bugs fixed in 0.14.1. Now we know how bad they were.",
+                    "bullets": [
+                        "Bug one, found by Morehouse's smite fuzzer: a race in the duplicate temporary_channel_id check. Spam identical open_channel messages and each leaks 25KB, about 1MB per second, until the node runs out of memory",
+                        "Bug two, Cestari's: reuse a finished channel's id as your next temporary id and the pending-channel limiter never counts past two. One unknown feature bit inflates each stored record to 65KB",
+                        "Result: one connection, zero on-chain cost, a 4GB node dead in 48 minutes. And since pending channels hit the database, it kept crashing on every restart",
+                        "Phoenix users were never exposed; ACINQ patched its own nodes months before. This is the sequel to the smite story we ran in W41",
+                        "Also: Eclair closed five ways a peer could trap you in a splice you can't publish. LDK fixed an onion-message leak where fake \"dummy hops\" behaved differently from real ones, giving away where a path ended"
+                    ],
+                    "link": "https://bitcoinops.org/en/newsletters/2026/10/16/",
+                    "linkLabel": "Optech #427",
+                    "links": [
+                        {
+                            "url": "https://delvingbitcoin.org/t/disclosure-dos-vulnerabilities-fixed-in-eclair-v0-14-1/2928",
+                            "label": "The Eclair disclosure"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "fips-053",
+            "title": "FIPS Watch: v0.5.3",
+            "description": "The Nostr-keyed mesh gets a security release, lands on crates.io, and still hasn't been audited",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "FIPS Watch: v0.5.3 Locks the Router Down",
+                    "body": "Johnathan Corgan shipped v0.5.3 on Oct 16, the first release since we last checked. Mostly security work, wire-compatible with 0.5.2, upgrade in any order.",
+                    "bullets": [
+                        "OpenWrt: mesh peers used to land in your router's LAN zone, with a path to LuCI, SSH and DNS. Now they get a default-deny zone of their own. Add your SSH rule before you upgrade or lock yourself out",
+                        "Handshakes: replayed rekeys refused, a forged reply no longer kills a dial, and one forged \"path broken\" signal can't erase verified coordinates. It now takes two links within 15 seconds",
+                        "The .fips DNS responder stopped answering things that aren't queries. That closes an amplification path",
+                        "The crate is now fips-mesh on crates.io. Tests: 47 suites, 3,361 unit tests, coverage up to 86.9%, a 100-node discovery run. Not tested: real routers upgrading from 0.5.2, Bluetooth, macOS or Android on hardware",
+                        "Still pre-audit. Master already opened 0.5.4 with a rekey state machine, and rekey \"no longer has an off switch\""
+                    ],
+                    "link": "https://github.com/jmcorgan/fips/releases/tag/v0.5.3",
+                    "linkLabel": "FIPS v0.5.3 release notes",
+                    "links": [
+                        {
+                            "url": "https://fips.network/",
+                            "label": "fips.network"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "tabconf-obituary",
+            "title": "The Final TABConf: The Obituary",
+            "description": "Death by a thousand cuts, the Tabbies, and a room full of people playing a Bitcoin node",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "The Final TABConf: The Obituary",
+                    "body": "Michael Tidwell held the Town Hall a day early so more people would be in the room. Everyone, including him, called it the obituary. It ended in a standing ovation.",
+                    "bullets": [
+                        "Why it ends, in his words: \"death by a thousand cuts.\" Too many conferences (Bitcoin++, OPNEXT, Prague, Lugano) and organizers scheduling over dates he announces a year out. \"David Bailey was not the reason\"",
+                        "His written version: \"TABConf was never built as a business. It has always been community service.\" Atlanta meetup in 2016, conference in 2018, planned in public on GitHub the whole way",
+                        "The Tabbies: awards \"like the Tonys, the Oscars,\" three a year for three years. Robin Linus got one. Poelstra and Sztorc opened envelopes",
+                        "Day one, per Christine Kim: about 50 people, no keynote, kids with their parents, and Nifty Nei's two-hour LARP where the attendees act out a Bitcoin node. The game is on GitHub",
+                        "Hallway: Sztorc demoed CUSF 2, a Core-untouched soft fork bundle with four post-quantum signatures plus VAULT, CTV and CAT. Christopher Allen went after Coinkite's treatment of researchers. Tidwell on Bitcoin: \"not my religion\""
+                    ],
+                    "link": "https://bitcoin-takeover.com/s17-e46-livestream-from-tabconf-8-part-1-feat-paul-sztorc-andre-beganski-alex-lewin-janusz-christopher-allen-will-michael-tidwell/",
+                    "linkLabel": "Bitcoin Takeover: the Town Hall day",
+                    "links": [
+                        {
+                            "url": "https://christinedkim.substack.com/p/issue-59",
+                            "label": "Christine Kim: day one"
+                        },
+                        {
+                            "url": "https://github.com/base58btc/LARP",
+                            "label": "Nifty's node LARP"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "wall-street",
+            "title": "Wall Street Corner",
+            "description": "A bitcoin ETF that holds no bitcoin, Switzerland's first retail ETF, JPMorgan's backhanded forecast, and a custodian with a fee cap",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Wall Street Corner: Buffers, Banks, and a Fee Cap",
+                    "body": "Four stories, one theme: the suits are building products around bitcoin faster than they're willing to say they like it.",
+                    "bullets": [
+                        "BlackRock filed PBIT, a \"managed protection\" ETF: options on IBIT in three rolling tranches, each capping your loss near 10% by selling away the upside. Holds no bitcoin. Live around Jan 2 if nobody objects",
+                        "Switzerland: FINMA approved the country's first spot bitcoin ETF for retail, waiving its diversification rule because of bitcoin's \"long trading history.\" Issuer and date not named yet",
+                        "JPMorgan's 2027 long-term assumptions: bitcoin's base case beats stocks, bonds and gold over ten years. Same report: \"premature\" for a balanced portfolio. It \"trades like a high beta risk asset that tracks global money supply growth\"",
+                        "Standard Chartered is buying Zodia Custody. Kalshi and BitGo now lend against bitcoin so prediction-market traders can fund perps",
+                        "AnchorWatch opened a Nevada trust company: qualified custody capped at $10K a month regardless of size, Lloyd's insurance up to $370M per client, keys optionally split across BitGo and CoinCorner"
+                    ],
+                    "link": "https://www.tftc.io/blackrock-pbit-buffer-bitcoin-etf-ibit-665m-inflow",
+                    "linkLabel": "TFTC: BlackRock's buffer ETF",
+                    "links": [
+                        {
+                            "url": "https://bitcoinmagazine.com/news/jpmorgan-says-bitcoin-could-outperform",
+                            "label": "JPMorgan's forecast"
+                        },
+                        {
+                            "url": "https://bitcoinmagazine.com/news/anchorwatch-debuts-nevada-trust-company",
+                            "label": "AnchorWatch's trust company"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "policy-corner",
+            "title": "Policy Corner",
+            "description": "The OCC leaves the stablecoin yield loophole open, France wants your cold storage declared, and the White House counts scam losses",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Policy Corner: Loopholes, Declarations, and $11 Billion",
+                    "body": "Three governments, three very different ideas about what to do with people who hold bitcoin.",
+                    "bullets": [
+                        "OCC finalized its GENIUS Act stablecoin rules, effective Jan 18, 2027. The banks' big ask, closing the \"rewards loophole\" where exchanges pay yield on stablecoin balances, got case-by-case review instead of a ban. Banks lost this round",
+                        "Smaller OCC changes: no more 20-day maturity cap on reserves, surplus can be withdrawn any time, and a 24-hour heads-up if redemptions top 10% in a day",
+                        "France: amendment I-CF821 would make you declare self-custodied holdings of €100K or more every Dec 31, fines up to €10K. Cleared committee Oct 9; hours later the budget section it rides on was rejected, so it needs a new vehicle. The €5K version died in April",
+                        "Also in that French budget: an exit tax on crypto over €800K and a stablecoin-swap tax that passed 38 to 37",
+                        "Today at the White House: a cybercrime event built around seized fake-investment sites. FBI's 2025 count: $11.4B in crypto losses, $7.2B of it investment scams, $4.4B from people over 60"
+                    ],
+                    "link": "https://bitcoinmagazine.com/news/occ-finalizes-genius-act-stablecoin-rules",
+                    "linkLabel": "Bitcoin Magazine: the OCC rules",
+                    "links": [
+                        {
+                            "url": "https://cryptobriefing.com/french-lawmakers-crypto-wallet-disclosure/",
+                            "label": "France's €100K declaration"
+                        },
+                        {
+                            "url": "https://bitcoinmagazine.com/news/president-trump-to-highlight-crackdown",
+                            "label": "The White House scam event"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "nostr-this-week",
+            "title": "Nostr This Week",
+            "description": "Signer hardening in Keep and Amber, Amethyst's MLS engine goes standalone, and Zapstore survives a key rotation",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "Nostr This Week: Signer Hardening Week",
+                    "body": "From Nostr Compass #45 (Oct 21). The theme is the thing that holds your key.",
+                    "bullets": [
+                        "Keep 1.3.2: revokes every bunker grant you made before, re-scopes them per account, drops a compromised bundled CA root, and storage fails closed. If you use Keep, update and re-approve your apps",
+                        "Amber, in source since Oct 16: opt-in device-lock checks, bunker routing, backup-seed validation, and timed permissions that can't leak into each other",
+                        "Amethyst pulled its MLS engine into a standalone library, mls-kmp, so other Kotlin clients can do White Noise-style group encryption without copying code. Also: NWC responses verified, desktop updates signed",
+                        "Zapstore 1.1.3: comments and zaps survive a catalog signing-key change. White Noise Android (Oct 14): translations, widgets, media upload controls. Iris Chat: per-device approval, still unaudited",
+                        "Nostr WoT browser extension 0.8.14 signs from your phone over Wi-Fi or Web Bluetooth. Keys never touch the laptop"
+                    ],
+                    "link": "https://nostrcompass.org/en/newsletters/2026-10-21-newsletter/",
+                    "linkLabel": "Nostr Compass #45",
+                    "links": [
+                        {
+                            "url": "https://github.com/privkeyio/keep",
+                            "label": "Keep on GitHub"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "builder-spotlight",
+            "title": "Builder Spotlight",
+            "description": "Adam Gibson's LN-GAP: chess for sats inside a Lightning channel, with disputes that cost one on-chain transaction",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Builder Spotlight: LN-GAP, Chess Inside a Channel",
+                    "body": "Adam \"waxwing\" Gibson, the Joinmarket author, published LN-GAP: Lightning Governed by Arbitrary Programs. The demo is a chess game where the winner takes the pot.",
+                    "bullets": [
+                        "The problem: Lightning can enforce a signed state, but it can't make your opponent move. A stalled game is a stuck channel",
+                        "The fix: a \"venue,\" a small committee (five in the demo) that only attests one thing: this signed move was published before the deadline. It never sees the move, never holds funds",
+                        "Disputes settle on chain in a fixed number of transactions: claim, rebuttal with the venue's stamp, disproof if the move broke the rules. Mates, resignations and draws settle inside the channel, nothing on chain",
+                        "Venue members sign with one-bit signatures via OP_CHECKSIGADD, so a cheating member is identifiable. Honest majority assumed. Same machinery runs a blackjack demo and a RISC-V dispute via zero-knowledge proof",
+                        "Try it: Rust, bitcoind on regtest, cargo build --release, open White and Black in two tabs. MIT. His own warning: the code is AI-generated, a proof of concept, not for real money. Read the short paper first"
+                    ],
+                    "link": "https://github.com/AdamISZ/ln-gap",
+                    "linkLabel": "LN-GAP on GitHub",
+                    "links": [
+                        {
+                            "url": "https://bitcoinops.org/en/newsletters/2026/10/16/",
+                            "label": "Optech's writeup"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "quick-tip",
+            "title": "Quick Tip of the Week",
+            "description": "Every Lightning implementation shipped a security fix this month. Find out which one your wallet is built on",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Quick Tip: Know What Your Lightning Wallet Is Built On",
+                    "body": "Eclair, LDK, LND, Core Lightning: all four patched something in the last 30 days. A library fix only reaches you when your wallet ships it.",
+                    "bullets": [
+                        "Phoenix runs on Eclair. Dozens of wallets and LSP apps embed LDK. Zeus, Alby Hub and most node boxes talk to LND or CLN. Find your wallet's settings or about page and look for the name",
+                        "LDK wallets: the reconnect-theft fix from W42 and this week's onion-message leak need a wallet release, not just an LDK release. Check the changelog, not the version of LDK",
+                        "Node runners: Eclair 0.14.1 or newer, LDK 0.2.7 or 0.1.13, CLN 26.06.9, LND with the taproot-overlay check. Older than that, you're the test case",
+                        "Big balance on a phone wallet? That's a hot wallet. Keep spending money there and move the rest to something that doesn't take inbound connections",
+                        "Enable auto-update where it exists. The attackers in the CLN story were already hitting unpatched nodes before the fix was a week old"
+                    ],
+                    "link": "https://bitcoinops.org/en/newsletters/2026/10/16/",
+                    "linkLabel": "Optech #427: this month's fixes"
+                }
+            ]
+        },
+        {
+            "id": "community-news",
+            "title": "Community News & Topics",
+            "description": "Share what you're interested in talking about!",
+            "type": "text",
+            "slides": [
+                {
+                    "heading": "Next Week's Meetup",
+                    "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                    "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                    "linkLabel": "Submit a Topic"
+                }
+            ]
+        }
+    ]
+}
