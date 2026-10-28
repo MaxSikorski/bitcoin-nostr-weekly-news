@@ -4,6 +4,11 @@
 window.INLINE_DATA = {
     "weeks": [
         {
+            "id": "2026-W44",
+            "date": "2026-10-28",
+            "title": "Hot Water"
+        },
+        {
             "id": "2026-W43",
             "date": "2026-10-21",
             "title": "Core 32 Ships"
@@ -107,6 +112,461 @@ window.INLINE_DATA = {
 };
 
 window.INLINE_WEEKS = {
+    "2026-W44": {
+        "week": "2026-W44",
+        "date": "2026-10-28",
+        "title": "Hot Water",
+        "subtitle": "This week in Bitcoin & Nostr news",
+        "timerMinutes": 20,
+        "topics": [
+            {
+                "id": "market",
+                "title": "Live Dashboard & Market",
+                "description": "Fed day, Strategy skips a week to buy its own preferred, ETFs claw back, and two analysts call the bottom",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Live Dashboard",
+                        "body": "Where Bitcoin sits right now. The full dashboards:",
+                        "widget": "live-price",
+                        "links": [
+                            {
+                                "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                                "label": "Clark Moody Dashboard"
+                            },
+                            {
+                                "url": "https://mempool.space",
+                                "label": "mempool.space"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Market: Fed Day, Saylor Sits One Out",
+                        "body": "Five red days into Monday, a dip under $80K, then a bounce into the Fed. Decision at 2pm Eastern. A hold at 3.75–4% was priced near certain; December hike expected.",
+                        "bullets": [
+                            "ETFs: +$301M last week despite Thursday's $636M outflow, biggest since June. Mon +$110M, Tue +$176M, IBIT 86% of it. October still net negative",
+                            "Strategy bought NO bitcoin Oct 19–25. Holdings stay 848,517. $205M into STRC buybacks instead, second week running. STRC holders voted 99.3% for daily dividends",
+                            "Strive +6,182 BTC, now 43,000. Price undisclosed. SATA preferred pays 13%, daily",
+                            "Bottom calls: Galaxy's Thorn says the bear ended in June under $58K. Bitwise's 2036 base case now $1.6M. Opinions, not data",
+                            "Noise: oil over $100 on an Iran-strikes report, Bank of Canada hiked, dollar at a 2026 high. Midterms Tuesday"
+                        ],
+                        "link": "https://www.theblock.co/news/business/2026-10-26-strategy-pauses-bitcoin-buys-repurchases-205-million-of-strc-preferred-shares-431699",
+                        "linkLabel": "The Block: Strategy pauses, buys back STRC",
+                        "links": [
+                            {
+                                "url": "https://financefeeds.com/us-crypto-etfs-record-96-6-million-in-net-inflows-on-october-27-as-bitcoin-leads-institutional-demand/",
+                                "label": "ETF flows Oct 26–27"
+                            },
+                            {
+                                "url": "https://www.coindesk.com/business/2026/10/28/live-updates-bitcoin-climbs-above-usd81-000-as-majors-rally-ahead-of-fed-decision",
+                                "label": "CoinDesk: Fed-day live blog"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "hardware-wallet-week",
+                "title": "Hardware Wallets in Hot Water",
+                "description": "Passport customers phished from Foundation's own domains; Keystone shreds 18,835 devices after its factory key leaks. Your coins are fine. Your address isn't",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Hardware Wallets in Hot Water: Passport",
+                        "body": "Sunday night, Passport owners got an email from Foundation's real domain: your funds are at risk, a supplier tampered with displays, follow this urgent recall. The link asked for your 12 words.",
+                        "bullets": [
+                            "Real names, addresses and order dates in the email. Landed in inboxes, not spam. Over 23,000 attempts counted",
+                            "How: a self-hosted app (Cal.com) on the backend was breached, likely exposing the support inbox. Cloudflare keys revoked, fake site down, attackers cut off within 10 minutes of the first reports",
+                            "The real failure: orders looked redacted after 60 days, but database migrations left copies in old tables. Refunds and abandoned carts too, so people who never bought got the email",
+                            "Devices and keys untouched. Zach Herbert: \"I'm very sorry.\" Formal report promised, not out yet",
+                            "Foundation's banner says it: any email claiming your Passport funds are at risk is a scam"
+                        ],
+                        "link": "https://tech.yahoo.com/cybersecurity/articles/passport-wallet-maker-foundation-traces-084527979.html",
+                        "linkLabel": "Yahoo/Unchained: Foundation traces the breach",
+                        "links": [
+                            {
+                                "url": "https://financefeeds.com/foundation-identifies-over-23000-phishing-email-attempts-in-passport-wallet-security-incident/",
+                                "label": "FinanceFeeds: 23,000 attempts"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Hardware Wallets in Hot Water: Keystone Shreds 18,835",
+                        "body": "Same week, worse week. Keystone's website was breached Oct 20 through a third-party monitoring tool. The attacker left with customer records and the key that proves a Keystone is genuine.",
+                        "bullets": [
+                            "That WebAuth key is burned in at the factory and can't be rotated. With it, a counterfeit passes Keystone's own check. So: 18,835 unsold devices destroyed, shipping paused, web sales become preorders",
+                            "25,964 buyer records still held names and addresses, plus 12,873 abandoned checkouts. Keystone advertised 180-day deletion; the erasure jobs had been failing silently",
+                            "Delivered before Oct 20: fine. After: contact support, because the online check can't tell real from fake anymore",
+                            "2026 tally: Ledger implants ($102M, 324 wallets), Coldcard's entropy bug, Trezor's two leaks, Foundation, Keystone. None of this week's touched a seed. All touched an address",
+                            "Lopp: a custodian relocates risk, doesn't remove it. Multisig across locations and vendors. Nur Khalil in Forbes: self-custody needs accountability, or people stay in ETFs"
+                        ],
+                        "link": "https://decrypt.co/381983/bitcoin-wallet-keystone-devices-destroyed-stolen-key",
+                        "linkLabel": "Decrypt: Keystone destroys devices",
+                        "links": [
+                            {
+                                "url": "https://gizmodo.com/two-more-crypto-hardware-wallet-manufacturers-have-been-hacked-2000830786",
+                                "label": "Gizmodo: two more makers hacked"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "mining-winter",
+                "title": "Mining: Winter Is Coming",
+                "description": "Hashrate back over a zettahash, difficulty up again Thursday, miners restarting old rigs. Then the home angle: a water heater that mines, and a Bitaxe firmware patch you should install",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Mining: Winter Is Coming (That's Good)",
+                        "body": "The 12-month thesis: price is off the June low, the idle fleet is already back, the big public miners are turning sites into AI data centers, and winter makes heat worth money. The live state:",
+                        "bullets": [
+                            "Hashrate 1,083 EH/s, 7% off the record. Back over 1 ZH/s on Oct 11, first time since June. January's low was 826. October is the best month since December",
+                            "Difficulty 140.58T after +5.92% on Oct 16. Thursday: about +6.3% to ~149T, highest since last November. Live estimate, moves every block",
+                            "Hashprice $36 per PH/day, down from $47 a year ago. June's $30 was the record low: over 27 J/TH lost money on power, 227 EH/s went dark. Most of it is back",
+                            "The AI drain: Riot leased 191 MW at Rockdale to Anthropic, $9.1B over 20 years. Core Scientific 377 MW to AMD. CleanSpark, TeraWulf, Bitdeer converting. Sites leave; machines move to cheaper power",
+                            "Break-even, my arithmetic, power only at $36: 15 J/TH clears at 8¢/kWh. 20 J/TH needs under 7.5¢. 30 J/TH needs 5¢ to break even. Thursday cuts everyone ~6%"
+                        ],
+                        "link": "https://tokenist.com/bitcoin-hashrate-near-record-hashprice",
+                        "linkLabel": "Tokenist: hashrate near record, hashprice down 23%",
+                        "links": [
+                            {
+                                "url": "https://mempool.space/mining",
+                                "label": "mempool.space: live difficulty estimate"
+                            },
+                            {
+                                "url": "https://qz.com/anthropic-riot-platforms-data-center-deal-9-billion-081126",
+                                "label": "Quartz: Riot's $9.1B Anthropic lease"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Mining: Heatbit Puts an ASIC in Your Water Heater",
+                        "body": "Bitwater, announced Oct 22: a standard screw-in water-heater element with 20 Bitmain BM1370 chips where the resistance wire used to be. The tank water is the cooling. No fans, no noise.",
+                        "bullets": [
+                            "Up to 34 TH/s at up to 600 W, from 12 J/TH. Fits the 1-inch port on any 30–80 gallon electric tank in the US and Canada. Replaces the lower element; the upper stays as backup",
+                            "Install yourself: breaker off, drain, unscrew the old element, screw in Bitwater, connect the app. Heating works offline, mining needs internet. Your own pool and address",
+                            "$899 Genesis batch, refundable, ships Q1 2027. Later batches up to $1,299. One-year warranty. Gas and heat-pump versions promised",
+                            "The money: Heatbit won't quote a number. Decrypt's math at today's hashprice: about $1.25 a day, $455 a year. Two-year payback, before Thursday's bump",
+                            "The pitch that matters: 600 W of heat is 600 W of heat. You were paying for that electricity anyway. The sats are a rebate on a bill you already had"
+                        ],
+                        "link": "https://heatbit.com/pages/bitwater",
+                        "linkLabel": "Heatbit: Bitwater preorder page",
+                        "links": [
+                            {
+                                "url": "https://decrypt.co/381665/heatbits-899-water-heater-element-mines-bitcoin-while-it-heats-your-tank",
+                                "label": "Decrypt: the $455-a-year math"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Mining: Bitaxe, Proto Boards, and Lightning Payouts",
+                        "body": "Three smaller pieces of the same story: patch your Bitaxe, buy a Proto board if you want hosted hashrate you own, and take your pool payouts over Lightning.",
+                        "bullets": [
+                            "Bitaxe firmware 2.15.4 (Oct 21) has one change: Skot replaced the certificate store after the eMudhra CA compromise. Eight CA keys were recoverable from the certs; every browser blocked them. Same cleanup Keep did last week. Update over OTA",
+                            "No Bitaxe block since July's 3.14 BTC. Two unattributed solo blocks this month. The Intel-chip Bonanza repo got pushes, still no spec",
+                            "Sazmining sells Block's Proto immersion boards to individuals: ~200 TH at 15 J/TH, from $1,397 with 0% financing, hosted in the US, rewards to your wallet. \"We only earn when we produce bitcoin for our clients\"",
+                            "Landfall (Vincenzo Palazzo): OCEAN payouts over Lightning from one recovery phrase. Makes the address, the BOLT12 offer and the BIP322 signature OCEAN wants. A showcase, not a product",
+                            "The ladder: $150 Bitaxe, $899 water heater, $1,397 Proto board, Lightning payouts for all of them"
+                        ],
+                        "link": "https://github.com/bitaxeorg/ESP-Miner/releases/tag/v2.15.4",
+                        "linkLabel": "ESP-Miner 2.15.4: CA store replaced",
+                        "links": [
+                            {
+                                "url": "https://bitcoinmagazine.com/news/sazmining-now-sells-proto-hashboards",
+                                "label": "Bitcoin Magazine: Sazmining sells Proto boards"
+                            },
+                            {
+                                "url": "https://github.com/vincenzopalazzo/landfall",
+                                "label": "Landfall on GitHub"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "core-321",
+                "title": "Core 32.1: The Real 32.0",
+                "description": "Core says 32.0 \"was never fully announced or released.\" 32.1 is today's release, 29.x is dead, and easy-to-find bugs no longer get an embargo",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Core 32.1: The Real 32.0",
+                        "body": "Last week: Core 32.0 shipped 11 days late. Correction from bitcoincore.org: 32.0, \"although tagged, was never fully announced or released.\" 32.1 went up today; 31.2 tagged the same minute.",
+                        "bullets": [
+                            "Everything from last week still applies: 200 connections with half reserved for block-only peers, global relay backlog, Tor proof-of-work, the private-broadcast fix, PSBT v2 default, mempool fee estimator",
+                            "New in the notes: walletnotify command injection. An RPC user allowed to create wallets could run shell commands via a crafted wallet name. Non-Windows, since 24.0",
+                            "Probable reason for the do-over: the 32.0 GUI wrote PSBT v2 files older co-signers couldn't import, milestoned 32.1 on Oct 21. My inference; Core hasn't said",
+                            "29.x and older: end of life. In two weeks, three medium-or-high bugs fixed in 30.0 get disclosed",
+                            "New policy (Poinsot, merged Oct 22): a bug that's easy to find, \"a simple prompt to a language model\" being the yardstick, skips the embargo and ships on every branch at once. \"The embargo period achieves little\""
+                        ],
+                        "link": "https://bitcoincore.org/en/releases/32.1/",
+                        "linkLabel": "bitcoincore.org: 32.1 release notes",
+                        "links": [
+                            {
+                                "url": "https://github.com/bitcoin-core/bitcoincore.org/pull/1281",
+                                "label": "The disclosure-policy change"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "lightning-corner",
+                "title": "Lightning Corner: Wavelength and Eclair",
+                "description": "Lightning Labs opens its Ark to everyone on mainnet, aimed at AI agents. Eclair patches two ways to steal from a forwarding node",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Lightning Corner: Wavelength Goes Mainnet, Eclair Patches Theft",
+                        "body": "Wavelength is Lightning Labs' Ark, open to everyone on mainnet since Oct 23. \"Bitcoin on easy mode\": no node, no channels, no liquidity, a few API calls. The audience is software, not people.",
+                        "bullets": [
+                            "Agents pay per request with L402 and drive the wallet over MCP. Levin: give a service \"only the right to receive payments, with no access to signing or recovery.\" Alpha, 300,000-sat cap, 0.25% plus routing, refresh every two weeks to keep your exit",
+                            "Eclair 0.14.4 and 0.14.5, security releases: a payer could steal from a trampoline node by inflating expiry on retry; a taproot peer could lie about a splice input and claim an HTLC twice. Upgrade",
+                            "Also: LND 0.21.5 and 0.20.6 RCs, LDK's one-hop BOLT12 fix, LND's experimental jamming reputation score, log-only",
+                            "BOLT11: invoices must carry exactly one payment hash and one secret. That's the parser mismatch LNP2PBot got robbed with. BTCPay fixed duplicate payouts and an API-key escalation",
+                            "Lichen, Adam Gibson's LN-GAP sequel: a single-issuer L2 where your exit is a proof the sequencer signed your withdrawal, disputed step by step with BitVMX. No committee this time"
+                        ],
+                        "link": "https://bitcoinmagazine.com/technical/lightning-labs-launches-wavelength-bitcoin-on-easy-mode-for-developers-and-autonomous-agents",
+                        "linkLabel": "Bitcoin Magazine: Wavelength launch",
+                        "links": [
+                            {
+                                "url": "https://bitcoinops.org/en/newsletters/2026/10/23/",
+                                "label": "Optech #428: Eclair, LND, Lichen"
+                            },
+                            {
+                                "url": "https://wavelength.lightning.engineering/",
+                                "label": "Wavelength"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "delving-grab-bag",
+                "title": "Delving Grab-Bag",
+                "description": "The bitcoin-dev list finally readable, a payments post-mortem, another AI-written node, and a redaction option for node runners",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Delving Grab-Bag: 15 Years of bitcoin-dev, Readable",
+                        "body": "Four threads worth your time, starting with the one you'll actually use.",
+                        "bullets": [
+                            "LearnBitcoin.com rebuilt the bitcoin-dev list: 24,699 messages, one page per thread, quotes folded, permalinks by Message-ID, indexes by BIP and author, refreshed daily",
+                            "\"The Long Road to Bitcoin Payments\": a payments app used to take a team a year, now one prompt. A million Square merchants accept bitcoin, almost nobody pays with it. Stripe, Shopify, Coinbase picked stablecoins. The blocker is demand",
+                            "rbitcoin 0.8.0: another Rust node, \"entirely AI-written,\" relational archive instead of a UTXO set, BIP324 only. Last week's bitcoin-rs has company",
+                            "Hash preimages in descriptors (João Dias): let Core's wallet hold a preimage like a key, so a hash-locked output spends without PSBT gymnastics",
+                            "\"Information hazards and safe redaction\": a node option to drop data you consider hazardous and stay otherwise archival. The OP_RETURN war is becoming a config file"
+                        ],
+                        "link": "https://www.learnbitcoin.com/archive",
+                        "linkLabel": "The bitcoin-dev archive, readable",
+                        "links": [
+                            {
+                                "url": "https://delvingbitcoin.org/t/the-long-road-to-bitcoin-payments/2987",
+                                "label": "Delving: The Long Road to Bitcoin Payments"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "nostr-this-week",
+                "title": "Nostr This Week",
+                "description": "Bitchat makes crowded rooms fast and ships a panic wipe, Amethyst lands on Flathub with self-updates over Nostr, and slash commands become a NIP",
+                "type": "discussion",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "Nostr This Week: Bitchat 1.8, Amethyst on Flathub",
+                        "body": "No Nostr Compass this morning, so straight from the release pages.",
+                        "bullets": [
+                            "Bitchat 1.8.0 (Oct 23): a 300-person geochat opens in 180 ms instead of 4 to 12 seconds. Messages matched by sender ID, not nickname, so a name-thief can't hijack your threads. Noise sessions rekey on age",
+                            "Also in 1.8: drafts survive channel switches, one-tap join nearby, a verification seal in DMs, a panic wipe that asks first, 30 languages. BTC Sessions' no-app-store install guide is going around",
+                            "Amethyst 1.20.0 (Oct 24): on Flathub, and the desktop updates itself from NIP-82 release events. Remote-signer relays now go over Tor. Emoji packs, draw-to-GIF, git repos from the app",
+                            "NIPs: slash commands merged Oct 21, a list event Oct 27. What you type after a slash is now a spec, not a client quirk. ngit-cli 3.0.4 shipped",
+                            "Carry-over: Zapstore 1.1.3 and Keep 1.3.2 from last week are the ones to install if you haven't"
+                        ],
+                        "link": "https://github.com/permissionlesstech/bitchat/releases/tag/v1.8.0",
+                        "linkLabel": "Bitchat 1.8.0 release notes",
+                        "links": [
+                            {
+                                "url": "https://github.com/vitorpamplona/amethyst/releases/tag/v1.20.0",
+                                "label": "Amethyst 1.20.0"
+                            },
+                            {
+                                "url": "https://github.com/nostr-protocol/nips/pull/2462",
+                                "label": "NIP: slash commands"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "fips-master-watch",
+                "title": "FIPS Watch: Macs Join the Mesh",
+                "description": "No release this week, but 94 commits: a macOS Bluetooth backend, interfaces that can show up late, and the first outside contributors",
+                "type": "discussion",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "FIPS Watch: Macs Join the Mesh Over Bluetooth",
+                        "body": "Still v0.5.3, still pre-audit. But master had 94 commits in seven days and the unreleased changelog reads like a release. Three things, plus new names in the log.",
+                        "bullets": [
+                            "CoreBluetooth backend: a Mac can peer over BLE with Android, Linux and other Macs. Mac to Android verified on hardware, the rest untested. macOS won't give Bluetooth to a root daemon, so a per-user agent lends the radio over a socket",
+                            "Interfaces can appear late. An Ethernet transport binds when its interface shows up and rebinds when it returns. Closes the OpenWrt boot race where fips started before wifi made its mesh interfaces",
+                            "The IPv6 adapter is its own module now, TCP links survive mismatched MTUs, and UDP can bind to one interface so two NICs are two routes",
+                            "Outside the author for the first time: Origami74's multi-path switchover PR (one session, several transports) and a macOS BLE fix. Issues from rabble (Mac release?), franzaps of Zapstore, mmalmi of Iris",
+                            "Still alpha, wire format not stable, no audit. Watch for 0.5.4"
+                        ],
+                        "link": "https://github.com/jmcorgan/fips",
+                        "linkLabel": "jmcorgan/fips on GitHub",
+                        "links": [
+                            {
+                                "url": "https://github.com/jmcorgan/fips/blob/master/CHANGELOG.md",
+                                "label": "The unreleased changelog"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "policy-corner",
+                "title": "Policy Corner: Russia Fences the Exit",
+                "description": "Russia plans to block withdrawals to self-custody, CLARITY stays stalled into the midterms, and Brazil's biggest bank registers to custody crypto",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Policy Corner: Russia Fences the Exit",
+                        "body": "Quiet week in Washington, loud week in Moscow.",
+                        "bullets": [
+                            "Russia (via HRF): ban peer-to-peer trading, license nine institutions including VTB and Sberbank, and block withdrawals from them to your own wallet. Non-qualified investors, 98% of the market, get a test and a 300,000-ruble yearly cap",
+                            "HRF's summary: bitcoin bought through an approved institution \"must remain within the state-regulated financial system.\" Bitcoin stays legal. Leaving stays illegal",
+                            "US: CLARITY stalled since the Sept 15 vote. Bessent Tuesday: the US \"will win in digital assets,\" pitching a Plan B. TD Cowen: the midterms could freeze it two years. H.R. 8957 still parked at committee",
+                            "Brazil: Itaú registered with the central bank to custody crypto under the new licensing rules",
+                            "Carry-forwards: France's I-CF821 still needs a vehicle. MSCI's list lands Nov 11"
+                        ],
+                        "link": "https://bitcoinmagazine.com/news/treasury-says-win-in-the-digital-asset",
+                        "linkLabel": "Bitcoin Magazine: Bessent on digital assets",
+                        "links": [
+                            {
+                                "url": "https://tangentsdaily.substack.com/p/saturday-oct24",
+                                "label": "Tangents Daily: HRF on Russia"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "pleblab-ai-rodeo",
+                "title": "This Friday: PlebLab's AI Startup Rodeo",
+                "description": "One day, one stage, downtown Austin: machine-to-machine payments, with LDK, OpenAgents and PlebLab on the bill. $25, bring a builder free",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "This Friday: AI Startup Rodeo, Edition 02",
+                        "body": "\"Software is starting to pay software.\" Friday Oct 30, 9 to 5, Q Branch at The Texas Embassy, 200 E 6th St, Suite 300. Austin Tech Week. Talks and live demos, one room, one stage.",
+                        "bullets": [
+                            "On the bill: Ben Carman (Spiral, LDK), Austen Allred (Gauntlet AI), Robert Willis (Tribe of Hackers), Christopher David (OpenAgents), HT of Sovereign Hybrid Compute, Soru Kumar (OrangeMetrics), Christopher Scott on threshold signing. Car Gonzalez and Roberto Fuentes organize",
+                            "Theme fits this deck: Wavelength for agents, LDK Server's MCP bridge, L402 pay-per-request. This is the room where those get demoed",
+                            "$25, and every ticket includes a free guest pass. Bring a builder. Breakfast, coffee and lunch included. Pay in bitcoin via Zaprite",
+                            "Afterparty 5pm, Upstairs at Caroline, 621 Congress. Free drinks on the wristband",
+                            "Call for papers still open, schedule \"still filling.\" Edition 01 had 18 speakers including Core contributors; talks are on YouTube"
+                        ],
+                        "link": "https://aistartuprodeo.com/",
+                        "linkLabel": "aistartuprodeo.com",
+                        "links": [
+                            {
+                                "url": "https://luma.com/mydv5rsq",
+                                "label": "Tickets on Luma"
+                            },
+                            {
+                                "url": "https://pay.zaprite.com/pl_k5Gb441gak",
+                                "label": "Pay in bitcoin (Zaprite)"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "builder-spotlight",
+                "title": "Builder Spotlight: LDK Server",
+                "description": "Ben Carman and Spiral's LDK Server: a full Lightning node as a daemon, now with an MCP bridge so an AI agent can run it as a tool",
+                "type": "tool",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Builder Spotlight: LDK Server, a Node Your Agent Can Drive",
+                        "body": "LDK is the Lightning library inside dozens of wallets. LDK Server is that library turned into a full node you run as a daemon and talk to over RPC. The new piece: ldk-server-mcp, which exposes every unary RPC as an MCP tool.",
+                        "bullets": [
+                            "What that means: point Claude, Goose or any MCP client at it and the agent can open channels, make invoices, pay and read balances with the same calls an app would. The node stays yours; the agent gets a tool list",
+                            "The sober counterpart to Wavelength: Wavelength hides the node, LDK Server hands you one. Self-hosted, Rust, MIT/Apache, pushed Oct 26",
+                            "Why Ben: LDK at Spiral, Mutiny Wallet before that, and on stage Friday at the Rodeo on exactly this",
+                            "Try it: clone lightningdevkit/ldk-server, write a config.toml, cargo run the daemon, then cargo run -p ldk-server-mcp with the same config and add it to your MCP client",
+                            "Caveat: it's a node with a hot wallet. Signet first, small on mainnet, and never give an agent more sats than you'd give an intern"
+                        ],
+                        "link": "https://github.com/lightningdevkit/ldk-server",
+                        "linkLabel": "lightningdevkit/ldk-server",
+                        "links": [
+                            {
+                                "url": "https://aistartuprodeo.com/",
+                                "label": "See him Friday at the Rodeo"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "quick-tip",
+                "title": "Quick Tip of the Week",
+                "description": "Two wallet makers leaked customer addresses in one week. The recall email is the attack. Here's the reflex",
+                "type": "tool",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Quick Tip: The Recall Email Is the Attack",
+                        "body": "No hardware-wallet company will ever email you to type your words into a website, ship your device back, or \"verify\" your wallet. The email that says so is the attack.",
+                        "bullets": [
+                            "Got one? Don't click. Type the vendor's address yourself and look for the banner. Foundation and Keystone both had one up within hours",
+                            "Your 12 or 24 words go into exactly one place: the device that made them. A web page, a support chat, a form, a QR code: no",
+                            "Assume your name and address are already out there. Two vendors proved \"we delete after 60 days\" wasn't true. Next purchase: a PO box, an alias email, pay in bitcoin",
+                            "Bought from a reseller, or got a Keystone after Oct 20? Verify through the vendor's support before you fund it. Passing the website check is no longer proof",
+                            "Big stack? Multisig across two vendors and two locations. One bad supply chain then costs you nothing"
+                        ],
+                        "link": "https://foundation.xyz/",
+                        "linkLabel": "Foundation's phishing banner",
+                        "links": [
+                            {
+                                "url": "https://decrypt.co/381983/bitcoin-wallet-keystone-devices-destroyed-stolen-key",
+                                "label": "Keystone's guidance"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "community-news",
+                "title": "Community News & Topics",
+                "description": "Share what you're interested in talking about!",
+                "type": "text",
+                "slides": [
+                    {
+                        "heading": "Next Week's Meetup",
+                        "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                        "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                        "linkLabel": "Submit a Topic"
+                    }
+                ]
+            }
+        ]
+    },
     "2026-W43": {
         "week": "2026-W43",
         "date": "2026-10-21",
