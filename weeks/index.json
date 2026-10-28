@@ -1,6 +1,11 @@
 {
     "weeks": [
         {
+            "id": "2026-W44",
+            "date": "2026-10-28",
+            "title": "Hot Water"
+        },
+        {
             "id": "2026-W43",
             "date": "2026-10-21",
             "title": "Core 32 Ships"
