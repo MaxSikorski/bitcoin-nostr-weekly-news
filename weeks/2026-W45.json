@@ -1,0 +1,504 @@
+{
+    "week": "2026-W45",
+    "date": "2026-11-04",
+    "title": "Hack Wave",
+    "subtitle": "This week in Bitcoin & Nostr news",
+    "timerMinutes": 20,
+    "topics": [
+        {
+            "id": "market",
+            "title": "Live Dashboard & Market",
+            "description": "A red Uptober, a Fed hold with two hawks, an election-night dip, and Strategy back to buying",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Live Dashboard",
+                    "body": "Where Bitcoin sits right now. The full dashboards:",
+                    "widget": "live-price",
+                    "links": [
+                        {
+                            "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                            "label": "Clark Moody Dashboard"
+                        },
+                        {
+                            "url": "https://mempool.space",
+                            "label": "mempool.space"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Market: Red Uptober, Blue Congress",
+                    "body": "October closed down about 7%, a second red October. Election night dipped under $76K; this afternoon it was back over $80K.",
+                    "bullets": [
+                        "Fed held at 3.75–4%, 10–2. Both dissents, Cook and Hammack, wanted a hike",
+                        "ETFs: October -$516M. Nov 2 -$399M (IBIT -$405M), Nov 3 -$116M",
+                        "Strategy +811 BTC, now 849,327. Another $208M STRC buyback. STRC pays daily since Nov 1. CFO Kang out Nov 5",
+                        "Tether's Ardoino: \"give or take 150,000 bitcoin.\" The Q3 attestation shows ~100,000",
+                        "Next Technology may sell all 5,833 BTC, citing Binance and quantum. Coinbase bought its 18,000th coin on the whitepaper's 18th birthday"
+                    ],
+                    "link": "https://x.com/Strategy/status/2117241301523365970",
+                    "linkLabel": "Strategy: 811 BTC, 849,327 held",
+                    "links": [
+                        {
+                            "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
+                            "label": "FOMC statement, Oct 28"
+                        },
+                        {
+                            "url": "https://www.coindesk.com/business/2026/11/03/tether-holds-150-000-bitcoin-worth-usd11-5-billion-ceo-paolo-ardoino-says",
+                            "label": "CoinDesk: Tether's 150,000 BTC"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "hack-wave",
+            "title": "Hack Wave: Binance and the Copycats",
+            "description": "The biggest crypto hack ever, Binance's own post-mortem, what could and couldn't be frozen, and two copycat hits the same week",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Hack Wave: Binance, $6.4B, Week Two",
+                    "body": "Oct 29, 4:20 PM Eastern: the hot wallet started emptying. 18,270 BTC plus XRP, SOL and OP. The largest crypto theft ever.",
+                    "bullets": [
+                        "Elliptic: $2.85B frozen, 44%. Stablecoins were 54% of the loot. $3.21B still sits in attacker addresses, mostly ETH and BTC",
+                        "Elliptic: \"ETH and BTC cannot be frozen, so there is no rush\"",
+                        "FBI: North Korea's TraderTraitor. Kim Yo Jong: \"absurd rhetoric\"",
+                        "Binance covered it from SAFU and company funds. 98% replenished by Oct 31. Withdrawals back",
+                        "Question: freezable stablecoins limited the damage. Feature, or warning?"
+                    ],
+                    "link": "https://www.elliptic.co/insights/how-north-korea-is-laundering-the-6-4-billion-stolen-from-binance/",
+                    "linkLabel": "Elliptic: the laundering tracker",
+                    "links": [
+                        {
+                            "url": "https://www.binance.com/en/support/announcement/detail/c5a8729a97ac486d963784d96c5642d7",
+                            "label": "Binance: the Oct 30 announcement"
+                        },
+                        {
+                            "url": "https://www.koreatimes.co.kr/foreignaffairs/northkorea/20261101/fbi-says-n-korea-responsible-for-over-6-bil-crypto-theft-from-binance",
+                            "label": "Korea Times: FBI names North Korea"
+                        }
+                    ]
+                },
+                {
+                    "heading": "The Post-Mortem Is a Job Interview",
+                    "body": "Binance's initial findings, Nov 3. A months-long campaign, not one phish. Every step was an ordinary developer habit.",
+                    "bullets": [
+                        "June: a DevOps engineer installs a tampered Homebrew build of \"a popular AI coding tool\" from a search result",
+                        "September: a fake recruiter and \"CEO\" video interview. The take-home repo, run on a work laptop, swaps out pyenv",
+                        "Oct 20: an internal AI tool reaches two more engineers and turns up a container deployment token",
+                        "Oct 29: a malicious container hits the signing service. EIP-7702 delegations drain until 00:10 UTC Oct 30",
+                        "MPC meant no single key could revoke fast. Question: what would multisig with humans in the loop have changed?"
+                    ],
+                    "link": "https://x.com/binance/status/2117626126214504729",
+                    "linkLabel": "Binance: initial findings",
+                    "links": [
+                        {
+                            "url": "https://x.com/_RichardTeng/status/2117674232780070977",
+                            "label": "Richard Teng on CNBC"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Copycats, Regulators, and Where You Keep It",
+                    "body": "Three exchange-scale hacks and a BTCPay sweep in one week.",
+                    "bullets": [
+                        "Mercado Bitcoin, Nov 2: ~US$38M involved, US$11M frozen with Tether, Circle, Paxos, Chainalysis. Customers covered",
+                        "ZachXBT: a separate $106M+ theft from an EU firm, swapped to ETH and partly XMR. French-speaking, not Lazarus",
+                        "South Korea's FSC called exchanges in: raise the cold-wallet share, monitor around the clock, add reserves",
+                        "calle (Cashu): nothing on exchanges, only small amounts on Lightning nodes, BTCPay or mints",
+                        "Question for the room: where does your stack live tonight?"
+                    ],
+                    "link": "https://x.com/MercadoBitcoin/status/2117395630150795543",
+                    "linkLabel": "Mercado Bitcoin's update",
+                    "links": [
+                        {
+                            "url": "https://x.com/zachxbt/status/2117525009447174602",
+                            "label": "ZachXBT on the EU theft"
+                        },
+                        {
+                            "url": "https://x.com/callebtc/status/2117429073433768128",
+                            "label": "calle: where to keep funds"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "security-desk",
+            "title": "Security Desk: Patch Week",
+            "description": "Core's first public advisories under its new policy, a 9.8 kernel bug that hits every Linux node, Lightning patches, and BTCPay servers drained",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Security Desk: Core's First Three Advisories",
+                    "body": "Last week: the new disclosure policy. Oct 28: the first advisories under it. Fixes in 32.1, 31.2, 30.4 and 29.5.",
+                    "bullets": [
+                        "TCP urgent data, CVE-2026-117350, Medium: any peer can run a Windows, macOS or BSD node out of memory. Linux unaffected",
+                        "Paused pre-BIP31 peers, CVE-2026-117349, Medium: send queue grows without limit, 2 MB/h per inbound peer",
+                        "Undo-file overflow, Low: a miner could force a shutdown on a later reorg. Impractical on 64-bit",
+                        "Found by an LLM scan: Elias Rohrer's Project Loupe at Spiral, validated by Gregory Sanders. Oct 23 found, Oct 27 shipped",
+                        "Hamilton: some findings sat in the Red Team before the blast radius was clear. Question: is \"scan-found\" the same as \"easily discoverable\"?"
+                    ],
+                    "link": "https://bitcoincore.org/en/2026/10/28/disclose-tcp-oom/",
+                    "linkLabel": "Core advisory: TCP urgent data",
+                    "links": [
+                        {
+                            "url": "https://bitcoincore.org/en/2026/10/28/disclose-fpausesend-oom/",
+                            "label": "Core advisory: paused peers"
+                        },
+                        {
+                            "url": "https://github.com/bitcoin/bitcoin/releases/tag/v32.1",
+                            "label": "Bitcoin Core 32.1"
+                        }
+                    ]
+                },
+                {
+                    "heading": "A 9.8 in the Kernel",
+                    "body": "CVE-2026-98432: a use-after-free in Linux TCP, remote code execution, CVSS 9.8. The demo exploit rides MPTCP, on by default in Go programs like LND.",
+                    "bullets": [
+                        "Any Linux node or relay with open ports. Fix the kernel, LND 0.21.6 / 0.20.7, or `sysctl net.mptcp.enabled=0` for now",
+                        "umbrelOS 2.0.1 and StartOS 0.4.1 shipped it. Raspberry Pi gets a firewall block until a fixed Pi kernel exists",
+                        "Ubuntu 22.04/24.04/26.04: fixed kernels only in -proposed. Ubuntu: disabling MPTCP is not a fix",
+                        "Eclair 0.14.6: \"can be exploited by malicious nodes.\" Splices no longer spend unconfirmed inputs",
+                        "LND 0.21.5 final. Zeus 13.2.4 thanks Bitcoin Red Team and Anthropic for scans. CLN 26.04.1 fixes a crash loop"
+                    ],
+                    "link": "https://ubuntu.com/blog/fixes-available-in-proposed-pocket-for-cve-2026-98432",
+                    "linkLabel": "Ubuntu: CVE-2026-98432 fixed kernels",
+                    "links": [
+                        {
+                            "url": "https://github.com/lightningnetwork/lnd/releases/tag/v0.21.6-beta",
+                            "label": "LND 0.21.6: the mitigation release"
+                        },
+                        {
+                            "url": "https://github.com/ACINQ/eclair/releases/tag/v0.14.6",
+                            "label": "Eclair 0.14.6"
+                        }
+                    ]
+                },
+                {
+                    "heading": "BTCPay Servers Drained",
+                    "body": "Nov 1, 8:46 AM Eastern: the first hot wallet drained. Servers on 2.4.1 or older, hit through a new route to the bug fixed in 2.4.2 in August.",
+                    "bullets": [
+                        "The advisory: upgrading alone isn't enough. New seed, sweep, fresh VM, old box offline with its logs, rotate every credential",
+                        "Keys on a hardware wallet or off the server: safe. 2.4.2 and later: no impact seen",
+                        "The attacker address: 20.36 BTC in 837 outputs by this afternoon. BTCPay: not a confirmed loss total",
+                        "BTCPay: \"the rise in automated attacks using AI\" means patch as they ship. 2.4.7 alone closed 85 findings from Anthropic's scanner",
+                        "The study: 71% of LND nodes exposed at the August disclosure still ran an affected release two months later"
+                    ],
+                    "link": "https://blog.btcpayserver.org/btcpay-server-security-incident-2-4-1-and-earlier/",
+                    "linkLabel": "BTCPay security advisory",
+                    "links": [
+                        {
+                            "url": "https://mempool.space/address/bc1p0f7wmcnesrapznymf9ljdn04pudgmh96sqtrm9vmgqxdh666fh8qvn63r7",
+                            "label": "The attacker address, live"
+                        },
+                        {
+                            "url": "https://arxiv.org/abs/2610.30350",
+                            "label": "arXiv: Who patches the Lightning Network?"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "wallet-thefts",
+            "title": "Wallet Watch: Fee Bumps and Implants",
+            "description": "A rogue Electrum server steals on fee-bump, exploited in the wild; Cake has the same bug; and the CryptoBilis implant story reaches Trezor",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Wallet Watch: The Fee Bump That Pays the Attacker",
+                    "body": "Electrum 4.8.3, CVE-2026-117601, High. A rogue server swallows your payment, shows a look-alike zero-fee transaction, and waits for you to bump the fee.",
+                    "bullets": [
+                        "The fake address matches the real one's last four characters. Light clients don't check its signatures. Exploited in the wild, one loss",
+                        "Not affected: anyone on their own or a trusted server",
+                        "Cake Wallet: same bug class, disclosed Oct 19. 6.5.2 doesn't mention a fix. Super: \"Any node a user is connected to can perform this theft\"",
+                        "Sparrow 2.5.6 and Nunchuk 2.9.3 ported Electrum's check",
+                        "Trezor, Oct 30: a credible implant in a Safe 5 from CryptoBilis. Bought a Trezor there since March? New seed, now"
+                    ],
+                    "link": "https://github.com/spesmilo/electrum/security/advisories/GHSA-6jp4-8v48-cc5v",
+                    "linkLabel": "Electrum advisory",
+                    "links": [
+                        {
+                            "url": "https://trezor.io/blog/news/implant-reported-in-a-trezor-sold-by-cryptobilis",
+                            "label": "Trezor: implant reported"
+                        },
+                        {
+                            "url": "https://github.com/sparrowwallet/sparrow/releases/tag/2.5.6",
+                            "label": "Sparrow 2.5.6"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "policy-corner",
+            "title": "Policy Corner: The Midterms Reset the Clock",
+            "description": "Democrats take both chambers and TD Cowen sees no CLARITY Act for two years; Bhutan's new city central bank may hold crypto; Moscow lists spot bitcoin",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Policy Corner: CLARITY Gets the Lame Duck or Nothing",
+                    "body": "Democrats won the House and the Senate last night. TD Cowen's Jaret Seiberg, before the votes: \"we do not expect the Clarity Act to pass over the next two years.\"",
+                    "bullets": [
+                        "CLARITY passed the House 294–134 in July 2025, failed Senate cloture 49–50 on Sept 15. Dies Jan 3 unless the lame duck moves it",
+                        "Warren expected at Senate Banking, Waters at House Financial Services. Crypto groups spent over $200M this cycle",
+                        "Florida: Governor-elect Donalds backs a state bitcoin reserve. The 2026 bills died. He takes office in January",
+                        "Bhutan, Nov 2: Gelephu's regulator becomes a central bank that may hold digital assets. Already a top sovereign holder",
+                        "Moscow Exchange: spot BTC, ETH, USDT from Dec 1. Custodial, retail capped at 300,000 rubles a year"
+                    ],
+                    "link": "https://bitcoinmagazine.com/news/td-cowen-democratic-congress-clarity-act",
+                    "linkLabel": "Bitcoin Magazine: TD Cowen on CLARITY",
+                    "links": [
+                        {
+                            "url": "https://www.bbs.bt/248275/",
+                            "label": "BBS: Gelephu central bank decree"
+                        },
+                        {
+                            "url": "https://www.interfax.ru/business/1126292",
+                            "label": "Interfax: Moscow Exchange spot trading"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "lightning-corner",
+            "title": "Lightning Corner: Liquid Is 1:1 Again",
+            "description": "Liquid's reserves fully restored, LN Markets takes BOLT12, Cashu's mint ships a security release, and a Japanese company raises equity in bitcoin for routing liquidity",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Lightning Corner: Liquid Closes the Book",
+                    "body": "Four second-layer updates, one of them the end of a story we've followed since September.",
+                    "bullets": [
+                        "Liquid, Nov 2: every L-BTC backed 1:1 again. A 300 BTC top-up confirmed that afternoon. Check the Proof of Reserves with your own node",
+                        "LN Markets, Nov 3: BOLT12 offers for deposits and withdrawals. One reusable code instead of a fresh invoice",
+                        "Cashu nutshell 0.22.0: security fixes, BIP-39 mint seeds, caching without Redis. Back up before the DB migration",
+                        "Japan Bitcoin Industry raised ¥800M paid entirely in bitcoin. ANAP: 65.85 BTC for 19.96%, and the coins become routing liquidity",
+                        "NutNovember: Cashu's month-long hackathon started Nov 1, over 1M sats in prizes"
+                    ],
+                    "link": "https://x.com/Liquid_BTC/status/2117407283391214047",
+                    "linkLabel": "Liquid: reserves restored",
+                    "links": [
+                        {
+                            "url": "https://github.com/cashubtc/nutshell/releases/tag/0.22.0",
+                            "label": "nutshell 0.22.0"
+                        },
+                        {
+                            "url": "https://jbi.co.jp/company/news/407b78bfb9678027b84fc385a54eabe6",
+                            "label": "JBI: the ¥800M raise"
+                        },
+                        {
+                            "url": "https://x.com/LNMarkets/status/2117589981166199248",
+                            "label": "LN Markets: BOLT12"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "nostr-this-week",
+            "title": "Nostr This Week: Private by Default",
+            "description": "Damus makes private DMs the default, Amethyst turns notes into apps, Amber goes desktop, a relay-on-your-phone CVE, and five open NIP proposals",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "Nostr This Week: Damus 1.18, Amethyst 1.21, Amber on Desktop",
+                    "body": "The two biggest clients and the most-used signer all shipped.",
+                    "bullets": [
+                        "Damus 1.18 (Oct 27): new DMs use NIP-17, so relays can't see who talks to whom. NIP-04 off by default. Advanced search, storage cap",
+                        "Amethyst 1.21.0 (Nov 1): napplets run inside notes, webxdc apps, game cartridges (Quake III), PressStr ebooks",
+                        "Amber 7.0.0-pre2: first desktop signer, Linux/macOS/Windows. Local relay at 127.0.0.1:7777 so same-machine apps skip public relays",
+                        "Jumble v26.11.1 lands on Android, DMs off by default",
+                        "Citrine CVE-2026-107045: any Android app can read your on-phone relay's event store. Metadata and ciphertext. No fix noted yet"
+                    ],
+                    "link": "https://github.com/damus-io/damus/blob/master/CHANGELOG.md",
+                    "linkLabel": "Damus 1.18 changelog",
+                    "links": [
+                        {
+                            "url": "https://github.com/vitorpamplona/amethyst/releases/tag/v1.21.0",
+                            "label": "Amethyst 1.21.0"
+                        },
+                        {
+                            "url": "https://github.com/greenart7c3/Amber/releases/tag/v7.0.0-pre2",
+                            "label": "Amber 7.0.0-pre2"
+                        },
+                        {
+                            "url": "https://www.cve.org/CVERecord?id=CVE-2026-107045",
+                            "label": "Citrine CVE"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Five NIPs on the Table",
+                    "body": "All open pull requests. Nothing here is merged or in a client yet.",
+                    "bullets": [
+                        "NIP-05 over DNS (#2527): a TXT record at _nip05.<domain> points to another provider. Clients try DNS only after a 404",
+                        "NIP-D9 (#2531): a signed no_delete marker so a shared key can't delete what others still need",
+                        "Zapstore spec (#2526): fiatjaf's draft for the app store",
+                        "Zaps over BIP-321 (#2521), from the Bark team: pay a zap over Ark, Lightning or on-chain, wallet picks the rail",
+                        "Batten's NYT-ad crowdfund: more came via Nostr than X. Question: which of these will a client actually build?"
+                    ],
+                    "link": "https://github.com/nostr-protocol/nips/pull/2527",
+                    "linkLabel": "NIP-05 over DNS",
+                    "links": [
+                        {
+                            "url": "https://github.com/nostr-protocol/nips/pull/2521",
+                            "label": "Zaps over BIP-321"
+                        },
+                        {
+                            "url": "https://github.com/nostr-protocol/nips/pull/2531",
+                            "label": "NIP-D9 no_delete"
+                        },
+                        {
+                            "url": "https://x.com/DSBatten/status/2117667515841016184",
+                            "label": "Batten: Nostr beat X"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ai-corner",
+            "title": "AI Corner: Agents That Pay in Sats",
+            "description": "New section. Agents paying over Lightning and Ark, a node OS that talks MCP, and AI on both sides of this week's exploits",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "AI Corner: Agents With Wallets",
+                    "body": "A new standing section, because AI keeps showing up in the Bitcoin news. First: tools that let an agent pay in sats, no custodial API key.",
+                    "bullets": [
+                        "barkget (Second): \"curl for L402 and Ark 402.\" Pays paywalls from a self-custodial Bark wallet, shares a ledger with bark-mcp",
+                        "StartOS 0.4.1: an MCP server at /mcp with named, revocable bearer tokens. Your node box, driven by an agent, on your terms",
+                        "OpenAgents: Pylon nodes sell compute and agent labor for bitcoin, coordinated over a Nostr relay. Apache-2.0",
+                        "Sats for Bots lists the agent-payment MCP servers side by side: Alby, bark-mcp, Spark, 402-mcp",
+                        "Counterpoint from Spiral's payments report: stablecoins are winning agent payments too. Can sats catch up?"
+                    ],
+                    "link": "https://x.com/notgrubles/status/2116596877789688299",
+                    "linkLabel": "barkget announcement",
+                    "links": [
+                        {
+                            "url": "https://github.com/Start9Labs/start-technologies/releases/tag/start-os/v0.4.1",
+                            "label": "StartOS 0.4.1: MCP server"
+                        },
+                        {
+                            "url": "https://github.com/OpenAgentsInc/openagents",
+                            "label": "OpenAgents repo"
+                        },
+                        {
+                            "url": "https://satsforbots.com/tool/lightning-enable-mcp/",
+                            "label": "Sats for Bots directory"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Both Sides of the Exploit",
+                    "body": "Count this week's patch notes: AI found most of the bugs, and the Binance attackers used it to get in.",
+                    "bullets": [
+                        "Found by scans: Core's two Medium bugs (Project Loupe), BTCPay's 85 findings, the kernel 9.8, Zeus's hardening",
+                        "Used by attackers: a tampered AI coding tool got the first Binance foothold; an internal AI tool found the next two engineers",
+                        "Rob Hamilton, Freedom Tech DC: Bitcoin Red Team moved to open-weight models. One found the Coldcard exploit for about $1 once it was public",
+                        "Maple AI: \"Local is the goal. But most people can't run DeepSeek or Kimi at home yet.\" Open models in verifiable enclaves until then",
+                        "Question: when bugs get found by the thousand, what does a home node runner do?"
+                    ],
+                    "link": "https://x.com/AnchorWatch/status/2117701999361728697",
+                    "linkLabel": "Hamilton on open-weight red teaming",
+                    "links": [
+                        {
+                            "url": "https://www.openwall.com/lists/oss-security/2026/10/30/1",
+                            "label": "oss-security: the kernel advisory"
+                        },
+                        {
+                            "url": "https://x.com/TryMapleAI/status/2117101438761337180",
+                            "label": "Maple AI on local vs enclaves"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "builder-spotlight",
+            "title": "Builder Spotlight: Cashu Card",
+            "description": "Offline tap-to-pay bitcoin ecash on an off-the-shelf smart card. Open source, experimental, and you can build one this week",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Builder Spotlight: Cashu Card",
+                    "body": "Ecash you can tap. An applet on a blank NXP J3R180 smart card; your wallet loads ecash onto it. A merchant's phone takes the tap offline and settles with the mint later.",
+                    "bullets": [
+                        "A tap: the phone names the pieces it wants, the card signs once and burns them, the phone checks the mint's signatures offline",
+                        "128 slots per card. The key is born on the chip and never leaves. MIT, draft spec NUT-CCP",
+                        "Try it: blank J3R180 cards from Amazon or CardLogix, flash the applet with the Provisioner app (iOS/Android beta)",
+                        "Limits: lose the card, lose the balance. Three wrong PINs lock it. Merchant carries double-spend risk until settlement",
+                        "Few phones, one card model, no independent review yet. A demo, not a savings account. Super's \"bearer instruments ftw\" in hardware"
+                    ],
+                    "link": "https://cashucard.org/",
+                    "linkLabel": "cashucard.org",
+                    "links": [
+                        {
+                            "url": "https://github.com/cashucard/cashucard",
+                            "label": "Source on GitHub"
+                        },
+                        {
+                            "url": "https://x.com/SuperTestnet/status/2117682348112113918",
+                            "label": "Super: \"Bearer instruments ftw\""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "quick-tip",
+            "title": "Quick Tip of the Week",
+            "description": "Binance's $6.4B hack started with two everyday dev habits: a take-home interview repo and a tool installed from a search result. Here's the reflex",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Quick Tip: The Homework Is the Hack",
+                    "body": "Two ordinary habits opened Binance: an AI coding tool installed from a search result, and a recruiter's \"assignment\" repo run on a work laptop.",
+                    "bullets": [
+                        "Take-home code, \"test this repo,\" \"run our SDK\": a throwaway VM. Never a machine with wallets, SSH keys or API tokens",
+                        "Install tools by typing the official URL or from your package manager. Never from a search ad",
+                        "A recruiter who wants you to run something before the offer is the attack",
+                        "Ubuntu node? Run `uname -r` and compare with the fixed kernels. On 22.04, 24.04 and 26.04 they're only in -proposed",
+                        "Self-hosted BTCPay ever on 2.4.1 or older? Rebuild on a new seed tonight. Upgrading doesn't evict a guest"
+                    ],
+                    "link": "https://x.com/binance/status/2117626126214504729",
+                    "linkLabel": "Binance: initial findings",
+                    "links": [
+                        {
+                            "url": "https://ubuntu.com/blog/fixes-available-in-proposed-pocket-for-cve-2026-98432",
+                            "label": "Ubuntu: fixed kernels"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "community-news",
+            "title": "Community News & Topics",
+            "description": "Share what you're interested in talking about!",
+            "type": "text",
+            "slides": [
+                {
+                    "heading": "Next Week's Meetup",
+                    "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                    "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                    "linkLabel": "Submit a Topic"
+                }
+            ]
+        }
+    ]
+}
