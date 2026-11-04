@@ -36,10 +36,18 @@ window.SITE_CONFIG = {
             { label: "YouTube", href: "https://www.youtube.com/@maxwellsikorski4926" },
             { label: "GitHub", href: "https://github.com/MaxSikorski" },
             { label: "Buzz", href: "https://buzz.xyz/" },
-            { label: "Schedule a Chat", href: "https://cal.com/maxsikorski" }
+            { label: "Schedule a Chat", href: "https://cal.com/maxsikorski" },
+            { label: "The Daily Relay", href: "https://thedailyrelay.substack.com/subscribe" }
         ],
         workWithLabel: "Work With Me",
         qrHref: "https://cal.com/maxsikorski"
+    },
+    // Newsletter (2026-11-04): The Daily Relay on Substack. Read by the planned #newsletter section on
+    // index.html (engine edit, SYNC session pending); until then only the Connect pill above uses the URL.
+    newsletter: {
+        title: "The Daily Relay",
+        pitch: "Bitcoin, Nostr and freedom tech, one page every weekday morning. From the Bitcoin & Nostr Meetup.",
+        signupUrl: "https://thedailyrelay.substack.com/subscribe"
     },
     footer: null,
     // Likes: LIVE on Nostr (2026-09-23, W39). A like = a kind-7 reaction to this site's
