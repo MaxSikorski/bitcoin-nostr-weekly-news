@@ -850,7 +850,7 @@
             topic.slides.forEach((slideData, slideIndex) => {
                 const slide = createSlide('topic');
                 let slideHTML = `<div class="slide-content">`;
-                slideHTML += `<p class="slide-topic-badge">Topic ${topicIndex + 1}${topic.slides.length > 1 ? ` — ${slideIndex + 1} of ${topic.slides.length}` : ''}</p>`;
+                slideHTML += `<p class="slide-topic-badge">Topic ${topicIndex + 1}${topic.slides.length > 1 ? ` — ${slideIndex + 1} of ${topic.slides.length}` : ''}<span class="slide-topic-badge-title">${topic.title}</span></p>`;
                 slideHTML += `<h2 class="slide-heading">${slideData.heading}</h2>`;
 
                 if (slideData.body) {

@@ -629,7 +629,7 @@ button.card:hover .card-arrow {
     opacity: 0.45;
 }
 
-/* Topic badge on slides */
+/* Topic badge on slides — "Topic 7 — 2 of 2 · <topic title>" so sub-slides still name their topic */
 .slide-topic-badge {
     font-size: 0.75rem;
     font-weight: 500;
@@ -637,6 +637,15 @@ button.card:hover .card-arrow {
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 16px;
+}
+
+.slide-topic-badge-title {
+    text-transform: none;
+    letter-spacing: 0.02em;
+}
+
+.slide-topic-badge-title::before {
+    content: ' · ';
 }
 
 /* === Video Embed === */
