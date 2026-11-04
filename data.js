@@ -608,7 +608,7 @@ window.INLINE_WEEKS = {
             {
                 "id": "community-news",
                 "title": "Community News & Topics",
-                "description": "Share what you're interested in talking about!",
+                "description": "Share what you're interested in talking about, and get the daily brief",
                 "type": "text",
                 "slides": [
                     {
@@ -616,6 +616,12 @@ window.INLINE_WEEKS = {
                         "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
                         "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
                         "linkLabel": "Submit a Topic"
+                    },
+                    {
+                        "heading": "Get The Daily Relay",
+                        "body": "New: Bitcoin, Nostr and freedom tech, one page in your inbox every weekday morning. Everything we find between meetups, from the same research. Free. Scan to subscribe.",
+                        "link": "https://thedailyrelay.substack.com/subscribe",
+                        "linkLabel": "thedailyrelay.substack.com"
                     }
                 ]
             }
