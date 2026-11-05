@@ -453,6 +453,13 @@
         return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1${startTime}`;
     }
 
+    // === Utility: Extract X (Twitter) video player URL — a post's video, embedded like YouTube ===
+    function getXVideoEmbedUrl(url) {
+        if (!url) return null;
+        const m = url.match(/^https?:\/\/(?:www\.|mobile\.)?(?:x|twitter)\.com\/[A-Za-z0-9_]+\/status(?:es)?\/(\d+)/);
+        return m ? `https://twitter.com/i/videos/tweet/${m[1]}` : null;
+    }
+
     // === Utility: Simple QR Code Generator ===
     // Minimal QR code generator (alphanumeric, for URLs)
     // Using a canvas-based approach with the QR algorithm
@@ -912,7 +919,7 @@
                 }
 
                 if (slideData.videoUrl) {
-                    const embedUrl = getYouTubeEmbedUrl(slideData.videoUrl);
+                    const embedUrl = getYouTubeEmbedUrl(slideData.videoUrl) || getXVideoEmbedUrl(slideData.videoUrl);
                     if (embedUrl) {
                         slideHTML += `
                             <div class="video-container">
