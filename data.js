@@ -4,6 +4,11 @@
 window.INLINE_DATA = {
     "weeks": [
         {
+            "id": "2026-W46",
+            "date": "2026-11-11",
+            "title": "Turn It Off, Rotate Everything"
+        },
+        {
             "id": "2026-W45",
             "date": "2026-11-04",
             "title": "Hack Wave"
@@ -117,6 +122,629 @@ window.INLINE_DATA = {
 };
 
 window.INLINE_WEEKS = {
+    "2026-W46": {
+        "week": "2026-W46",
+        "date": "2026-11-11",
+        "title": "Turn It Off, Rotate Everything",
+        "subtitle": "This week in Bitcoin & Nostr news",
+        "timerMinutes": 20,
+        "topics": [
+            {
+                "id": "market",
+                "title": "Live Dashboard & Market",
+                "description": "Hot October inflation, a December hike priced in, the ETFs' worst week since June, Strategy buying again, and MSCI's verdict tonight",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Live Dashboard",
+                        "body": "Where Bitcoin sits right now. The full dashboards:",
+                        "widget": "live-price",
+                        "links": [
+                            {
+                                "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                                "label": "Clark Moody Dashboard"
+                            },
+                            {
+                                "url": "https://mempool.space",
+                                "label": "mempool.space"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Market: Hot CPI, Cold Flows",
+                        "body": "Inflation ran hot and the ETFs bled. The live price is on the dashboard.",
+                        "bullets": [
+                            "October CPI +0.4%, core +0.3%, both above forecast. Markets now fully price a Fed hike on Dec 8–9",
+                            "Spot ETFs Nov 2–6: −$1.28B, the worst week since late June. IBIT was ~$1.21B of it",
+                            "Strategy +1,036 BTC, now 850,364, plus a $188M STRC buyback",
+                            "Square takes Lightning at checkout: 0% until Dec 31, then 1%. $600 per payment cap",
+                            "MSCI decides tonight, 5 PM ET, whether Strategy and Metaplanet stay in its indexes"
+                        ],
+                        "link": "https://www.cnbc.com/2026/11/10/cpi-inflation-report-october-2026.html",
+                        "linkLabel": "CNBC: October CPI",
+                        "links": [
+                            {
+                                "label": "Cointelegraph: ETF outflows",
+                                "url": "https://cointelegraph.com/markets/bitcoin-etfs-13b-biggest-weekly-outflow-late-june"
+                            },
+                            {
+                                "label": "Strategy: 1,036 BTC",
+                                "url": "https://www.strategy.com/press/strategy-acquires-1036-btc-and-repurchases-188-million-of-strc_11-09-2026"
+                            },
+                            {
+                                "label": "Square: Lightning payments",
+                                "url": "https://squareup.com/help/us/en/article/8622-accept-and-manage-bitcoin-payments"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "lnbits-shutdown",
+                "title": "LNbits: Turn It Off, Rotate Everything",
+                "description": "After a wave of attacks, LNbits told every operator to shut down. 1.7.0 and 1.7.1 are out, but upgrading alone doesn't evict an attacker",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "LNbits: Turn It Off, Rotate Everything",
+                        "body": "Sunday: \"stop their LNbits servers IMMEDIATELY.\" Tuesday: 1.7.0. Today: 1.7.1. Every earlier version can lose funds.",
+                        "bullets": [
+                            "Sun Nov 8: disable the Paywall extension, then stop all servers \"following a wave of attacks.\" Hosted SaaS paused",
+                            "Mon–Tue: SSRF and Nostr relay URL fixes land in dev, extensions auto-update. No release yet, keep it off",
+                            "Tue Nov 10: 1.7.0, \"funds running on prior versions of LNbits are at risk of being stolen\"",
+                            "Wed Nov 11: 1.7.1 rotates auth keys. The exploited bug isn't named yet; a report is promised"
+                        ],
+                        "link": "https://news.lnbits.com/news/lnbits-1-7-0-security-update",
+                        "linkLabel": "LNbits: 1.7.0 security update",
+                        "links": [
+                            {
+                                "label": "LNbits v1.7.1",
+                                "url": "https://github.com/lnbits/lnbits/releases/tag/v1.7.1"
+                            },
+                            {
+                                "label": "LNbits: stop your servers",
+                                "url": "https://x.com/lnbits/status/2119428804951048237"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Upgrading Doesn't Evict a Guest",
+                        "body": "An attacker who already took keys keeps them after the update. LNbits' checklist:",
+                        "bullets": [
+                            "Suspect a compromise? Start from a fresh server",
+                            "Super Admin → Settings → Users → Reset Wallet Keys",
+                            "Revoke and replace funding-source API keys and macaroons. Rotate every other stored secret",
+                            "Recreate NWC, LNDHub, Bolt Card, TPOS, Bleskomat and FOSSA connections",
+                            "Who here runs LNbits for a meetup, a shop or the family?"
+                        ],
+                        "link": "https://news.lnbits.com/news/lnbits-1-7-0-security-update",
+                        "linkLabel": "The recovery checklist",
+                        "links": [
+                            {
+                                "label": "Nostr Compass #48",
+                                "url": "https://nostrcompass.org/en/newsletters/2026-11-11-newsletter/"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "who-is-selling",
+                "title": "Who's Selling at the Bottom, and Why",
+                "description": "Miners, treasury companies and whales are moving coins 40% below the peak. Their own filings say why, and not all of it is bearish",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Who's Selling at the Bottom, and Why",
+                        "body": "Bitcoin sits ~41% under its $126K peak. Their own filings explain the selling.",
+                        "bullets": [
+                            "Mining barely pays: Riot's Q3 all-in cost was $78,805 a coin, vs $70,855 earned. Hashprice ~$32/PH/day",
+                            "AI pays more: Riot's 15-year, 910 MW AI lease is ~$1.8B a year. It sold 20,264 BTC this year to build",
+                            "Debt: MARA sold 13,597 BTC (~40%) and repaid $750M of BTC-backed loans. Convertible puts come next year",
+                            "Core Scientific and IREN leave mining by Dec 31. Bitdeer mined 3,855 BTC and kept 47"
+                        ],
+                        "link": "https://www.sec.gov/Archives/edgar/data/1507605/000150760526000026/q326shareholderletter.htm",
+                        "linkLabel": "MARA Q3 letter",
+                        "links": [
+                            {
+                                "label": "Riot Q3 results",
+                                "url": "https://www.riotplatforms.com/riot-platforms-reports-third-quarter-2026-financial-results-and-strategic-highlights/"
+                            },
+                            {
+                                "label": "Hashrate Index: Nov 9 roundup",
+                                "url": "https://hashrateindex.com/blog/hashrate-index-roundup-november-9-2026/"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Not All Selling Is Bearish",
+                        "bullets": [
+                            "Below NAV, buybacks win: Strategy sold 1,690 BTC at $64,262 in August to buy back STRC",
+                            "Whales swap self-custody into IBIT, ~$3.6B in kind: safety, estate planning, usually no tax hit. Not cash sales",
+                            "BlackRock's Mitchnick: \"The current moment is the highest we've seen at any point\"",
+                            "\"Bottom\"? August's $64K was lower. And Strategy is buying again",
+                            "For the room: forced sellers, or miners making a smart trade for AI power?"
+                        ],
+                        "link": "https://bitcoinmagazine.com/news/blackrock-bitcoin-whales-self-custody-ibit",
+                        "linkLabel": "Bitcoin Magazine: whales into IBIT",
+                        "links": [
+                            {
+                                "label": "Strategy 8-K: August BTC sale",
+                                "url": "https://www.sec.gov/Archives/edgar/data/1050446/000119312526341297/mstr-20260810.htm"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "security-desk",
+                "title": "Security Desk: Core Opens the Vault",
+                "description": "Bitcoin Core discloses three bugs it fixed a year ago, plus this week's patch pile: Electrum, Core Lightning, Bisq and Alby Hub",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Security Desk: Core Opens the Vault",
+                        "body": "Three advisories, all fixed in Core 30.0 (Oct 2025), published once 29.x hit end of life on Oct 27.",
+                        "bullets": [
+                            "CVE-2025-62861 (high): a reorg wrongly evicts TRUC txs; a miner \"can no longer create block templates\" until restart",
+                            "Hit 28.0–28.2 and 29.0–29.1. A miner problem, not consensus, not theft",
+                            "CVE-2025-62860: Tor inbound peers got -whitelist on \"thousands of reachable mainnet nodes\"",
+                            "CVE-2025-62859: a peer could stall block processing up to 10 minutes per try via compact blocks",
+                            "This closes the W44 thread: the new disclosure policy, working as written"
+                        ],
+                        "link": "https://bitcoincore.org/en/security-advisories/",
+                        "linkLabel": "Bitcoin Core advisories"
+                    },
+                    {
+                        "heading": "Patch Pile",
+                        "body": "Update the wallet or node you actually use.",
+                        "bullets": [
+                            "Electrum 4.8.4: malformed Lightning onion messages could drop your channel peer. Third security release in ~3 weeks",
+                            "Liana 16.0: a rogue Electrum server could fake a broadcast so your fee bump paid the attacker. Fixed",
+                            "Also patch: Core Lightning 26.06.10, Bisq 1.10.11 (required to trade), Alby Hub 1.24.6",
+                            "Chainalysis got breached: user names, password hashes, live tokens. KYT back Nov 10 with forced resets",
+                            "Still open: Citrine 3.2.2's notes don't mention the READ_EVENTS leak (CVE-2026-107045)"
+                        ],
+                        "link": "https://github.com/spesmilo/electrum/blob/master/RELEASE-NOTES",
+                        "linkLabel": "Electrum release notes",
+                        "links": [
+                            {
+                                "label": "Core Lightning 26.06.10",
+                                "url": "https://github.com/ElementsProject/lightning/releases/tag/v26.06.10"
+                            },
+                            {
+                                "label": "Bisq 1.10.11",
+                                "url": "https://github.com/bisq-network/bisq/releases/tag/v1.10.11"
+                            },
+                            {
+                                "label": "Liana 16.0",
+                                "url": "https://wizardsardine.com/blog/liana-16.0-release/"
+                            },
+                            {
+                                "label": "Chainalysis: security incident",
+                                "url": "https://www.chainalysis.com/blog/security-incident-october-30/"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "mining-energy",
+                "title": "Mining: Binance Pool Goes Dark",
+                "description": "Binance switched off its pool, difficulty heads for a big cut Friday, and PJM writes the rules for miners paid to switch off",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Mining: Binance Pool Goes Dark",
+                        "body": "Binance's pool, cloud mining and accelerator ended Nov 10, 2:00 AM EST. 22,213 blocks all-time, one in its last week.",
+                        "bullets": [
+                            "~26 EH/s in Dec 2025, 9.2 EH/s by October, under 1% of the network",
+                            "Difficulty: about −7% at block 975,744, ~Friday. Blocks run ~10.8 minutes. Last one was +5.5%",
+                            "PJM pays miners to curtail only if mining was profitable that hour. Nothing above 27 J/TH in 2026",
+                            "Small miners: Stratum V2, OCEAN or solo? Two solo CKPool blocks landed seven hours apart Nov 7–8"
+                        ],
+                        "link": "https://mempool.space/mining/pool/binancepool",
+                        "linkLabel": "mempool.space: Binance Pool",
+                        "links": [
+                            {
+                                "label": "mempool.space: difficulty",
+                                "url": "https://mempool.space/graphs/mining/difficulty-adjustment"
+                            },
+                            {
+                                "label": "The Block: shutdown notice",
+                                "url": "https://www.theblock.co/news/business/2026-10-13-binance-to-shut-down-mining-pool-cloud-mining-and-related-services-418410"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "bitcoin-dev",
+                "title": "Bitcoin Dev: Testnet 5 Launches Friday",
+                "description": "Testnet 5's genesis block lands with mainnet's retarget, plus BIP54 odds, Knots' soft fork, quantum landmines and anti-exfil",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Bitcoin Dev: Testnet 5 Launches Friday",
+                        "body": "AJ Towns will mine testnet 5's genesis at mainnet block 975,744, the same block as Friday's retarget.",
+                        "bullets": [
+                            "BIP95 genesis: pool-mineable, unspendable OP_RETURN output, default P2P port 18353",
+                            "0%-fee solo pool for bootstrapping. A Bitaxe can help",
+                            "Mining-software gotcha: heights 1–16 need OP_1–OP_16 for BIP34, not a one-byte push"
+                        ],
+                        "link": "https://mirror.b10c.me/lists/bitcoindev/avINnoG-1r242rAw@erisian.com.au/",
+                        "linkLabel": "bitcoindev: Testnet 5 launch",
+                        "links": [
+                            {
+                                "label": "Bootstrap docs",
+                                "url": "https://gist.github.com/ajtowns/ebb148819c6028387271e6f0dce5e1da"
+                            },
+                            {
+                                "label": "Solo pool",
+                                "url": "https://lapis.erisian.com.au/chain.html"
+                            },
+                            {
+                                "label": "BIP34 clarification",
+                                "url": "https://github.com/bitcoin/bips/pull/2342"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Soft Fork Watch",
+                        "bullets": [
+                            "Matt Corallo puts BIP54 (Great Consensus Cleanup) at ~80% odds of being next: timewarp, slow blocks, 64-byte txs",
+                            "Knots 29.5 ships a coinbase-maturity soft fork from block 979,919. Non-DATUM pool miners: \"expect no rewards\"",
+                            "Cory Fields' quantum landmines: hidden outputs that let owners claw coins back from a quantum thief. A thought experiment",
+                            "Anti-exfil draft BIPs: the host adds to every nonce so a bad signer can't leak your seed",
+                            "Blockstream runs a public signet with Simplicity on, plus the SimplicityHL toolchain"
+                        ],
+                        "link": "https://github.com/bitcoinknots/bitcoin/releases/tag/v29.5.knots20260508",
+                        "linkLabel": "Knots 29.5 release",
+                        "links": [
+                            {
+                                "label": "crypto.news: Corallo on BIP54",
+                                "url": "https://crypto.news/bitcoins-next-upgrade-bip-54-could-fix-four-longstanding-flaws-developer-says/"
+                            },
+                            {
+                                "label": "Cory Fields: quantum landmines",
+                                "url": "https://mirror.b10c.me/lists/bitcoindev/40a9f73d-481f-47e6-a64b-acfb2c7f4fa8n@googlegroups.com/"
+                            },
+                            {
+                                "label": "Blockstream Q3: Simplicity signet",
+                                "url": "https://blog.blockstream.com/blockstream-quarterly-update-q3-2026/"
+                            },
+                            {
+                                "label": "Anti-exfil draft BIPs",
+                                "url": "https://mirror.b10c.me/lists/bitcoindev/CAOuFX60em-d=JW+FmQe6G6mP58Gs6kpwuRwVLC5nwT8oO9HsXg@mail.gmail.com/"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "policy-corner",
+                "title": "Policy Corner: Rails Cut, Rails Granted",
+                "description": "FinCEN cuts MEXC off, the $250 Travel Rule plan dies, Coinbase gets a trust charter, Binance France closes, and Paraguay freezes a bank",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Policy Corner: Rails Cut, Rails Granted",
+                        "bullets": [
+                            "FinCEN cuts MEXC Global off from U.S. rails over $16B in alleged illicit flows, incl. Iran and North Korea",
+                            "FinCEN and the Fed withdraw the 2020 plan to drop the Travel Rule threshold from $3,000 to $250",
+                            "OCC grants Coinbase National Trust Company its final charter (Nov 6): custody, no deposits or lending",
+                            "Russia: retail can buy BTC from Nov 17, capped at ₽300k a year. Moscow Exchange trading follows Dec 1"
+                        ],
+                        "link": "https://home.treasury.gov/news/press-releases/sb0685",
+                        "linkLabel": "Treasury: FinCEN and MEXC",
+                        "links": [
+                            {
+                                "label": "Federal Register: Travel Rule withdrawal",
+                                "url": "https://www.federalregister.gov/public-inspection/2026-22809/threshold-for-the-requirement-to-collect-retain-and-transmit-information-on-funds-transfers-and"
+                            },
+                            {
+                                "label": "Coinbase National Trust Company",
+                                "url": "https://www.coinbase.com/blog/coinbase-launches-national-trust-company-with-federally-regulated-institutional-grade-custody-offering"
+                            },
+                            {
+                                "label": "Interfax: Bank of Russia list",
+                                "url": "https://www.interfax.ru/business/1127443"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Self-Custody Lessons of the Week",
+                        "bullets": [
+                            "Binance France closes every account Dec 31. From Nov 29, leftover balances pay 0.025% a month or 10 USDC",
+                            "Leftovers after Dec 31 may be \"converted, transferred or otherwise processed\"",
+                            "Paraguay seizes Ueno Bank: ~3 million customers, ~60% of adults, locked out",
+                            "Deposit insurance covers ~US$38K, but the first payout is capped at ~US$1,700",
+                            "Varoufakis's DiEM25 lost its Belgian bank account, donations stuck inside"
+                        ],
+                        "link": "https://www.coindesk.com/business/2026/11/07/binance-users-in-some-european-countries-told-to-pull-crypto-before-fees-kick-in-with-accounts-closing-by-year-end",
+                        "linkLabel": "CoinDesk: Binance closures",
+                        "links": [
+                            {
+                                "label": "Novara: DiEM25 loses its bank account",
+                                "url": "https://novaramedia.com/2026/11/03/leftwing-alliance-led-by-yanis-varoufakis-loses-access-to-bank-account/"
+                            },
+                            {
+                                "label": "ABC Color: BCP on Ueno Bank",
+                                "url": "https://www.abc.com.py/economia/2026/11/04/todos-los-comunicados-del-bcp-sobre-ueno-bank/"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "wallet-watch",
+                "title": "Wallet Watch: Privacy by Default",
+                "description": "Bull Bitcoin makes every on-chain trade a Payjoin, SeedLock does silent payments with Sparrow, and two wallets get safer defaults",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Wallet Watch: Privacy by Default",
+                        "bullets": [
+                            "Bull Bitcoin: every on-chain buy or sell from BULL Wallet is a Payjoin by default. Chain analysis gets noisier",
+                            "SeedLock 0.4.0: silent payments end to end with Sparrow 2.5+. One reusable sp1q… address, reproducible builds",
+                            "JoinMarket-NG 0.43.0: Tor flood caps, fee-rate ceiling 100 sat/vB, confirm PSBT before broadcast",
+                            "Bitcoin-Safe 2.3.0: scheduled payouts and wallet alerts over Nostr, Telegram or webhook"
+                        ],
+                        "link": "https://www.bullbitcoin.com/blog/payjoin-trading",
+                        "linkLabel": "Bull Bitcoin: Payjoin trading",
+                        "links": [
+                            {
+                                "label": "SeedLock 0.4.0",
+                                "url": "https://github.com/Solo-in-Code/SeedLock/releases/tag/v0.4.0"
+                            },
+                            {
+                                "label": "JoinMarket-NG 0.43.0",
+                                "url": "https://github.com/joinmarket-ng/joinmarket-ng/releases/tag/0.43.0"
+                            },
+                            {
+                                "label": "Bitcoin-Safe 2.3.0",
+                                "url": "https://github.com/andreasgriffin/bitcoin-safe/releases/tag/2.3.0"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "nostr-this-week",
+                "title": "Nostr This Week: Communities Grow Up",
+                "description": "Vector and Flotilla ship Discord-style communities, Nostur signs you into web apps without your key, and Marmot wins a hackathon",
+                "type": "discussion",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "Nostr This Week: Communities Grow Up",
+                        "bullets": [
+                            "Vector 0.5.0 \"Vigil\": Communities with roles, voice and video, Vector Web, Tor/I2P. Migrate Concord v1 first",
+                            "Flotilla 1.15.0: thread boards, search, scheduled posts, on-device event store",
+                            "Nostur 1.35.0 (iOS): sign in to Nostr web apps without sharing your key, plus NIP-88 polls",
+                            "Zapstore 2.0.4 refuses an APK the listed key didn't sign"
+                        ],
+                        "link": "https://github.com/VectorPrivacy/Vector/releases/tag/v0.5.0",
+                        "linkLabel": "Vector 0.5.0",
+                        "links": [
+                            {
+                                "label": "Flotilla 1.15.0",
+                                "url": "https://github.com/coracle-social/flotilla/releases/tag/1.15.0"
+                            },
+                            {
+                                "label": "Nostur 1.35.0",
+                                "url": "https://github.com/nostur-com/nostur-ios-public/releases/tag/1.35.0"
+                            },
+                            {
+                                "label": "Zapstore 2.0.4",
+                                "url": "https://github.com/zapstore/zapstore/releases/tag/2.0.4"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Specs and a Hackathon",
+                        "bullets": [
+                            "btc++ Seoul: BlackIce won. Frostsnap signers co-sign silent payments over a Marmot group (hackathon code)",
+                            "NIP-D9 (open PR): a no_delete tag so an event can't be retracted, for shared keys and coerced users",
+                            "NIP-01 merged: relays can send a retry-after when you're rate-limited",
+                            "NWC logout (PR #2537): an app can revoke its own wallet connection"
+                        ],
+                        "link": "https://nostrcompass.org/en/newsletters/2026-11-11-newsletter/",
+                        "linkLabel": "Nostr Compass #48",
+                        "links": [
+                            {
+                                "label": "NIP-D9 pull request",
+                                "url": "https://github.com/nostr-protocol/nips/pull/2531"
+                            },
+                            {
+                                "label": "NWC logout PR #2537",
+                                "url": "https://github.com/nostr-protocol/nips/pull/2537"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "ai-corner",
+                "title": "AI Corner: Agents With Wallets",
+                "description": "Block's Buzz hits 1.0, an agent wallet with spending limits, L402 by the token, and HRF money for AI you run yourself",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "AI Corner: Agents With Wallets",
+                        "bullets": [
+                            "Block's Buzz 1.0: \"a workspace where humans and agents build together, on a relay you own.\" Apache-2.0",
+                            "bursar: a local daemon holds the key, the agent gets a token. Cashu, spending limits, Touch ID (unaudited)",
+                            "Aperture 0.6.0: one Lightning payment buys tokens each request draws down. Sell LLM inference by the token",
+                            "Wavelength's MCP server: one command and an agent can send and receive over Lightning"
+                        ],
+                        "link": "https://github.com/block/buzz-app/releases/tag/v1.0.0",
+                        "linkLabel": "Buzz v1.0.0",
+                        "links": [
+                            {
+                                "label": "bursar",
+                                "url": "https://github.com/dbarabashh/bursar"
+                            },
+                            {
+                                "label": "Aperture 0.6.0",
+                                "url": "https://github.com/lightninglabs/aperture/releases/tag/v0.6.0"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "AI You Run Yourself",
+                        "bullets": [
+                            "HRF funds six local, private AI projects, incl. an offline model for North Korea and antirez's DS4",
+                            "Pawavox (Nigeria): election evidence signed on Nostr over 2G, plus a walled-off \"ElectionGPT.\" Pilot: 142 reports",
+                            "NIP draft #2536: kinds 4200/4201 for agents to bid, award and review work over Nostr",
+                            "For the room: should an agent get its own npub, or act under yours?"
+                        ],
+                        "link": "https://hrf.org/latest/hrfs-ai-for-individual-rights-fund-supports-six-innovative-projects/",
+                        "linkLabel": "HRF: six AI grants",
+                        "links": [
+                            {
+                                "label": "Technext: Pawavox",
+                                "url": "https://technext24.com/interview/pawavox-nigerian-elections-2027/"
+                            },
+                            {
+                                "label": "NIP draft #2536",
+                                "url": "https://github.com/nostr-protocol/nips/pull/2536"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "builder-spotlight",
+                "title": "Builder Spotlight: Two Ecash Cards",
+                "description": "Fedimint Card and Cashu Card: tap-to-pay ecash on the same blank smart card, both built by Island Bitcoin and Dread, and now both fit on one card",
+                "type": "tool",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Builder Spotlight: Two Ecash Cards",
+                        "body": "Same blank NXP J3R180 smart card, two ecash systems, one builder team. Tap to pay, even offline.",
+                        "bullets": [
+                            "Fedimint Card: the card holds each note's spend key and signs. No change to Fedimint, works with existing federations",
+                            "Cashu Card: last week's Spotlight, one week on. Offline sales now settle end to end",
+                            "Nov 9 bench test: both applets side by side on one J3R180, in either install order",
+                            "Built by Island Bitcoin (freedom tech for the Caribbean) and Dread. MIT, both experimental"
+                        ],
+                        "link": "https://fedimintcard.org",
+                        "linkLabel": "fedimintcard.org",
+                        "links": [
+                            {
+                                "label": "cashucard.org",
+                                "url": "https://cashucard.org/"
+                            },
+                            {
+                                "label": "Dread on GitHub",
+                                "url": "https://github.com/bobodread876"
+                            },
+                            {
+                                "label": "Island Bitcoin on GitHub",
+                                "url": "https://github.com/islandbitcoin"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Fedimint Card: Live in a Federation",
+                        "bullets": [
+                            "In production for the Island Bitcoin Community federation since Nov 6, on 32-slot cards",
+                            "The kit: a till on StartOS, a Setup app for operators, POS apps for Android and iOS (beta builds Nov 8)",
+                            "Applet 3.0 takes offline charges. Since Nov 10 the POS phone takes the tap when the till is unreachable",
+                            "Top up over Lightning at the POS. Optional daily limit per card, for a village batch",
+                            "Their warning: \"Put on a card only what you can afford to lose\""
+                        ],
+                        "link": "https://github.com/fedimintcard/fedimintcard",
+                        "linkLabel": "Fedimint Card on GitHub",
+                        "links": [
+                            {
+                                "label": "fedimintcard.org",
+                                "url": "https://fedimintcard.org"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Cashu Card: Week Two",
+                        "bullets": [
+                            "Applet 2.2: an offline till charged 7 sats, the card carried the record, a later tap settled it with the mint",
+                            "The till got its 7 sats back exactly once. Tested Nov 6 with a Pixel, an iPhone and a live mint",
+                            "Provisioner build 15 (Nov 10): finds mints over Nostr (NIP-87) with their reviews",
+                            "A second card model, the J3R452, now provisions like the J3R180",
+                            "Back it at cashucard.org/fund: Lightning, on-chain, Cashu or Fedimint ecash"
+                        ],
+                        "link": "https://cashucard.org/",
+                        "linkLabel": "cashucard.org",
+                        "links": [
+                            {
+                                "label": "Hardware test: assisted settlement",
+                                "url": "https://github.com/cashucard/cashucard/pull/232"
+                            },
+                            {
+                                "label": "Provisioner build 15",
+                                "url": "https://github.com/cashucard/cashucard/releases/tag/provisioner-v1.0.0-build.15"
+                            },
+                            {
+                                "label": "Merchant side: \"Tap that Cash\" (btc++)",
+                                "url": "https://x.com/btcplusplus/status/2118011669419024849"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "quick-tip",
+                "title": "Quick Tip: Updating Isn't Revoking",
+                "description": "LNbits' lesson for every wallet and node: a patch closes the door, but it doesn't take back the keys someone already copied",
+                "type": "tool",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Quick Tip: Updating Isn't Revoking",
+                        "body": "A patch closes the hole. It doesn't cancel keys someone already copied.",
+                        "bullets": [
+                            "An NWC string, a macaroon, an API key: each one is a spending key. Treat them like seeds",
+                            "List every connection your wallet or node has handed out. Delete the ones you don't use",
+                            "After any incident: update, then rotate. New keys, new connections",
+                            "Keep a hot wallet small. Everything else lives on keys you hold offline"
+                        ],
+                        "link": "https://news.lnbits.com/news/lnbits-1-7-0-security-update",
+                        "linkLabel": "LNbits: the rotation checklist"
+                    }
+                ]
+            },
+            {
+                "id": "community-news",
+                "title": "Community News & Topics",
+                "description": "Share what you're interested in talking about, and get the daily brief",
+                "type": "text",
+                "slides": [
+                    {
+                        "heading": "Next Week's Meetup",
+                        "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                        "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                        "linkLabel": "Submit a Topic"
+                    },
+                    {
+                        "heading": "Get The Daily Relay",
+                        "body": "New: Bitcoin, Nostr and freedom tech, one page in your inbox every weekday morning. Everything we find between meetups, from the same research. Free. Scan to subscribe.",
+                        "link": "https://thedailyrelay.substack.com/subscribe",
+                        "linkLabel": "thedailyrelay.substack.com"
+                    }
+                ]
+            }
+        ]
+    },
     "2026-W45": {
         "week": "2026-W45",
         "date": "2026-11-04",
