@@ -1,6 +1,11 @@
 {
     "weeks": [
         {
+            "id": "2026-W46",
+            "date": "2026-11-11",
+            "title": "Turn It Off, Rotate Everything"
+        },
+        {
             "id": "2026-W45",
             "date": "2026-11-04",
             "title": "Hack Wave"
