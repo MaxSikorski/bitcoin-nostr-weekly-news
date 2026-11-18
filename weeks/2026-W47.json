@@ -1,0 +1,544 @@
+{
+    "week": "2026-W47",
+    "date": "2026-11-18",
+    "title": "Half Off the Peak, Guard Up",
+    "subtitle": "This week in Bitcoin & Nostr news",
+    "timerMinutes": 20,
+    "topics": [
+        {
+            "id": "market",
+            "title": "Live Dashboard & Market",
+            "description": "Extreme fear, ETFs still bleeding, and miners already back after the biggest difficulty cut since June",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Live Dashboard",
+                    "body": "Where Bitcoin sits right now. The full dashboards:",
+                    "widget": "live-price",
+                    "links": [
+                        {
+                            "url": "https://bitcoin.clarkmoody.com/dashboard/",
+                            "label": "Clark Moody Dashboard"
+                        },
+                        {
+                            "url": "https://mempool.space",
+                            "label": "mempool.space"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Market: Extreme Fear",
+                    "body": "The live price is on the dashboard. Here's the week behind it:",
+                    "bullets": [
+                        "Fear & Greed hit 10 on Nov 15–16, \"extreme fear\" all week",
+                        "Spot ETFs: −$769M Nov 11–13, +$8M Nov 16, −$240M Nov 17",
+                        "Next difficulty adjustment ~+9.6%: the hashrate came right back"
+                    ],
+                    "link": "https://www.tftc.io/bitcoin-etf-flows",
+                    "linkLabel": "TFTC: ETF flows",
+                    "links": [
+                        {
+                            "label": "Fear & Greed Index",
+                            "url": "https://alternative.me/crypto/fear-and-greed-index/"
+                        },
+                        {
+                            "label": "mempool.space: difficulty",
+                            "url": "https://mempool.space/difficulty"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "the-dip",
+            "title": "The Dip: Half Off the Peak",
+            "description": "From ~$74K to a $61,946 low in four days: liquidations, loss-taking, ETF outflows, and who is still buying",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "The Dip: Half Off the Peak",
+                    "body": "Saturday night it touched $61,946, about half off the ~$126K peak. Drag the slider to pick any day since the summer high.",
+                    "widget": "price-range",
+                    "link": "https://www.tftc.io/bitcoin-selloff-fundamentals-check-transfer-volume",
+                    "linkLabel": "The Commoner: Did you think it was going to be easy?"
+                },
+                {
+                    "heading": "Who's Hurting, Who's Buying",
+                    "bullets": [
+                        "$1.78B of leveraged longs wiped out Nov 9–15",
+                        "Recent buyers are underwater: short-term holders' average cost is ~$74K",
+                        "Biggest loss-taking since July 13: ~25,800 BTC net (CryptoQuant)",
+                        "MSCI drops Strategy and Metaplanet Nov 30: forced index selling ahead",
+                        "Still buying: Strategy +485 BTC (and $228M on STRC buybacks), Twenty One +154, Strive +251"
+                    ],
+                    "link": "https://www.tftc.io/bitcoin-was-never-going-to-be-easy",
+                    "linkLabel": "The Commoner: realized losses",
+                    "links": [
+                        {
+                            "label": "Liqwall: weekly liquidations",
+                            "url": "https://liqwall.com/learn/research/weekly/2026-11-09"
+                        },
+                        {
+                            "label": "Strategy 8-K",
+                            "url": "https://www.sec.gov/Archives/edgar/data/1050446/000119312526462151/mstr-20261116.htm"
+                        },
+                        {
+                            "label": "TFTC: ETF flows",
+                            "url": "https://www.tftc.io/bitcoin-etf-flows"
+                        },
+                        {
+                            "label": "MSCI announcement",
+                            "url": "https://app2.msci.com/webapp/index_ann/DocGet?format=html&lang=en&pub_key=t6TJpGLKQvg%3D"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Did You Think It Would Be Easy?",
+                    "body": "Marty Bent asked it this week, and I think it's the right question.",
+                    "bullets": [
+                        "The network didn't blink: blocks kept coming, hashrate ~990 EH/s",
+                        "Realized price ~$53.6K: the average coin is still in profit",
+                        "Andrew Howard's reasons to stay: scarcity, a splitting world, generational change, censorship resistance, collapsing trust",
+                        "Ask the room: are you buying, holding or sitting out? What would change your mind?"
+                    ],
+                    "link": "https://www.tftc.io/bitcoin-was-never-going-to-be-easy",
+                    "linkLabel": "The Commoner: Never going to be easy"
+                }
+            ]
+        },
+        {
+            "id": "security-desk",
+            "title": "Security Desk: Swapped Addresses",
+            "description": "Ledger.com served an address swapper, Trezor's shipper leaked 27,000 home addresses, and a fleet tool redirected miners",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Security Desk: Swapped Addresses",
+                    "body": "None of these needed anybody's private key.",
+                    "bullets": [
+                        "Ledger.com via Optimizely: a script swapped BTC addresses. ~$7,040 stolen",
+                        "Trezor's shipper Skladon leaked ~27,000 home addresses"
+                    ],
+                    "link": "https://blog.report-uri.com/worlds-largest-brands-infected-with-malware-via-optimizely/",
+                    "linkLabel": "Report URI: the Optimizely attack",
+                    "links": [
+                        {
+                            "label": "Trezor: Skladon breach",
+                            "url": "https://trezor.io/blog/news/data-breach-at-trezor-shipping-partner-skladon"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Hijacked Hash, Implants, Patches",
+                    "bullets": [
+                        "Luxor's Commander tool sent a dozen clients' miners to an attacker on OCEAN. Luxor pays them in full",
+                        "Trezor confirms implants in Safe 5s from reseller CryptoBilis. Firmware 2.13.1 blocks them. Buyers: new seed",
+                        "Patch now: Core Lightning v26.06.8, LDK 0.2.8 / 0.1.14, Tor 0.4.9.17"
+                    ],
+                    "link": "https://trezor.io/blog/news/our-cryptobilis-investigation-what-we-found-and-what-weve-changed",
+                    "linkLabel": "Trezor: CryptoBilis",
+                    "links": [
+                        {
+                            "label": "Luxor statement",
+                            "url": "https://x.com/luxor/status/2122018094914601464"
+                        },
+                        {
+                            "label": "CLN advisory",
+                            "url": "https://lnfuzz.org/advisories/cln-duplicate-funding-outpoint-dos/"
+                        },
+                        {
+                            "label": "Optech #431",
+                            "url": "https://bitcoinops.org/en/newsletters/2026/11/13/"
+                        }
+                    ]
+                },
+                {
+                    "heading": "What To Do",
+                    "bullets": [
+                        "Read the full address on the device screen before you sign",
+                        "Ship to a pickup point. No vendor will ever ask for your seed",
+                        "Know every tool that can change your payout address",
+                        "Buy hardware wallets direct from the maker"
+                    ],
+                    "body": "What I'm doing after this week:"
+                }
+            ]
+        },
+        {
+            "id": "mining-energy",
+            "title": "Mining: Difficulty Down, SV2 Up",
+            "description": "The biggest difficulty cut since June, an instant rebound, Core Scientific's exit, and Stratum V2 at the big pools",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Mining: Difficulty Down, SV2 Up",
+                    "bullets": [
+                        "Difficulty −9.13% to 134.82T on Nov 14, the biggest cut since June",
+                        "Then the hashrate came back: next retarget ~+9.6% (block 977,760, ~Nov 26)",
+                        "Hashprice ~$28–30 per PH/day. Core Scientific leaves mining by year-end for AI hosting",
+                        "Stratum V2: MARA mined its first SV2 block; Foundry USA started SV2 testing",
+                        "Paraguay ends all miner power contracts Dec 31, 2027 (~944 MW)"
+                    ],
+                    "link": "https://mempool.space/difficulty",
+                    "linkLabel": "mempool.space: difficulty",
+                    "links": [
+                        {
+                            "label": "MARA: first SV2 block",
+                            "url": "https://x.com/MARAFoundation_/status/2120536665076687039"
+                        },
+                        {
+                            "label": "Foundry: SV2 testing",
+                            "url": "https://x.com/FoundryServices/status/2121279504475709625"
+                        },
+                        {
+                            "label": "DCD: Core Scientific",
+                            "url": "https://www.datacenterdynamics.com/en/news/core-scientific-to-exit-bitcoin-mining-by-end-of-2026-as-it-grows-ai-colo-business/"
+                        },
+                        {
+                            "label": "CoinDesk: Paraguay",
+                            "url": "https://www.coindesk.com/tech/2026/11/13/bitcoin-miners-pay-paraguay-usd350-million-a-year-but-ai-is-pushing-them-out"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "bitcoin-dev",
+            "title": "Bitcoin Dev: Testnet 5 Is Live",
+            "description": "Testnet 5's genesis block, anti-exfil signing BIPs, and a common message format for air-gapped signers",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Bitcoin Dev: Testnet 5 Is Live",
+                    "bullets": [
+                        "Genesis mined Nov 14, committing to mainnet block 975,744's hash. 166 blocks in the first hour",
+                        "Draft BIPs (Connor Avila): anti-exfil signing, so your wallet can catch a signer leaking your key",
+                        "Draft BIP: one message format for air-gapped and external signers"
+                    ],
+                    "link": "https://github.com/bitcoin/bips/pull/2356",
+                    "linkLabel": "Testnet 5: BIP PR #2356",
+                    "links": [
+                        {
+                            "label": "Anti-exfil drafts",
+                            "url": "https://www.learnbitcoin.com/archive/t/2026/draft-bips-anti-exfil-signing-for-bip340-and-ecdsa-with-psbt-fields"
+                        },
+                        {
+                            "label": "Signing message BIP #2353",
+                            "url": "https://github.com/bitcoin/bips/pull/2353"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "policy-corner",
+            "title": "Policy Corner: Finney, Keys, Courts",
+            "description": "BPI becomes the Finney Foundation, the Treasury plans custody for its coins, and a German court weighs 40,000 BTC",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Policy Corner: Finney, Keys, Courts",
+                    "body": "The Bitcoin Policy Institute is now the Finney Foundation for Open Technology.",
+                    "imageUrl": "photos/2026-W47/policy-corner-finney-foundation.jpg",
+                    "bullets": [
+                        "Now also open-source AI, digital cash, encrypted messaging",
+                        "Named for Hal Finney: PGP, and Satoshi's first bitcoin transaction"
+                    ],
+                    "link": "https://bitcoinmagazine.com/news/bpi-becomes-finney-foundation-open-tech",
+                    "linkLabel": "Bitcoin Magazine",
+                    "links": [
+                        {
+                            "label": "Image: Finney Foundation via Bitcoin Magazine",
+                            "url": "https://bitcoinmagazine.com/news/bpi-becomes-finney-foundation-open-tech"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Keys, Courts and Nominees",
+                    "bullets": [
+                        "US Treasury drafts custody for its bitcoin: self-custody plus custodians. Not your keys, at national scale",
+                        "Leipzig judge: end the Movie2K trial for 40,000 BTC + €38M? Next hearing Dec 3",
+                        "Nominated: Levine for Hester Peirce's SEC seat, plus two CFTC picks",
+                        "Germany: customs could freeze crypto over €100K of \"unclear origin\", no criminal case needed"
+                    ],
+                    "link": "https://torrentfreak.com/alleged-operator-of-pirate-site-movie2k-could-walk-free-as-bitcoin-billionaire/",
+                    "linkLabel": "TorrentFreak: Movie2K",
+                    "links": [
+                        {
+                            "label": "Crypto Briefing: Treasury custody",
+                            "url": "https://cryptobriefing.com/us-treasury-bitcoin-custody-framework/"
+                        },
+                        {
+                            "label": "White House: nominations",
+                            "url": "https://www.whitehouse.gov/presidential-actions/2026/11/nominations-sent-to-the-senate-16a6/"
+                        },
+                        {
+                            "label": "Germany: the vote",
+                            "url": "https://werstimmtwie.de/aktivitaeten/21-8282"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "nostr-this-week",
+            "title": "Nostr This Week: Keys on Hardware",
+            "description": "A Trezor Model One signs Nostr events, email between npubs, new NIP drafts, and an app that left Nostr",
+            "type": "discussion",
+            "accent": "nostr",
+            "slides": [
+                {
+                    "heading": "Nostr This Week: Keys on Hardware",
+                    "body": "A patched Trezor Model One signs Nostr events on a button press.",
+                    "imageUrl": "photos/2026-W47/nostr-this-week-trezor-signs-nostr.jpg",
+                    "bullets": [
+                        "NIP-46 bridge for Coracle and noStrudel. Lab only",
+                        "nVelope: email between npubs, encrypted to a separate key"
+                    ],
+                    "link": "https://hardware-one-lab.vercel.app",
+                    "linkLabel": "Hardware One Lab",
+                    "links": [
+                        {
+                            "label": "nVelope",
+                            "url": "https://nvelope.messagepush.io"
+                        }
+                    ]
+                },
+                {
+                    "heading": "New NIPs and a Breakup",
+                    "bullets": [
+                        "NIP-402: pay a relay over Lightning (L402) inside the connection",
+                        "Sjors: NIP-0D puts relay .onion addresses in DNS; NIP-1B shares signed abuse reports",
+                        "Gupt 6.0.0 leaves Nostr relays with six complaints. Fair, or already being fixed?"
+                    ],
+                    "link": "https://github.com/besoeasy/gupt/releases/tag/6.0.0",
+                    "linkLabel": "Gupt 6.0.0",
+                    "links": [
+                        {
+                            "label": "NIP-402 #2543",
+                            "url": "https://github.com/nostr-protocol/nips/pull/2543"
+                        },
+                        {
+                            "label": "NIP-0D #2550",
+                            "url": "https://github.com/nostr-protocol/nips/pull/2550"
+                        },
+                        {
+                            "label": "NIP-1B #2548",
+                            "url": "https://github.com/nostr-protocol/nips/pull/2548"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "ai-corner",
+            "title": "AI Corner: Agents Pay Their Own Way",
+            "description": "pi402 lets an agent buy its own inference over Lightning, x402 adds Lightning, and llama.cpp hits 1.0",
+            "type": "discussion",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "AI Corner: Agents Pay Their Own Way",
+                    "body": "Lightning Labs' pi402: a coding agent buys its own AI inference over Lightning, per token.",
+                    "bullets": [
+                        "No account, no API key, no card. Per-request caps and a daily budget. MIT",
+                        "x402 adds Lightning to its pay-per-API-call standard",
+                        "Wallet of Satoshi agent skills: read and invoice, but every spend needs your tap"
+                    ],
+                    "link": "https://lightning.engineering/posts/2026-11-12-pi-402/",
+                    "linkLabel": "Lightning Labs: pi402",
+                    "links": [
+                        {
+                            "label": "x402: Lightning added",
+                            "url": "https://x.com/x402/status/2120169697538666571"
+                        },
+                        {
+                            "label": "wos-skills",
+                            "url": "https://github.com/Wallet-of-Satoshi/wos-skills"
+                        }
+                    ]
+                },
+                {
+                    "heading": "llama.cpp Hits v1.0.0",
+                    "body": "The engine under most local AI goes stable.",
+                    "imageUrl": "photos/2026-W47/ai-corner-llama-cpp-v1.jpg",
+                    "bullets": [
+                        "Local AI is how I want Guard Dog's optional AI to run: on your own hardware"
+                    ],
+                    "link": "https://github.com/ggml-org/llama.cpp/releases/tag/v1.0.0",
+                    "linkLabel": "llama.cpp v1.0.0"
+                }
+            ]
+        },
+        {
+            "id": "builder-spotlight",
+            "title": "Builder Spotlight: Guard Dog & Trust Issues",
+            "description": "My two new open-source tools: a security watchdog for your Bitcoin and Nostr stack, and Lightning on block explorers it doesn't believe",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Builder Spotlight: Guard Dog & Trust Issues",
+                    "body": "Two open-source tools I started this week. One idea: trust nothing you can check.",
+                    "bullets": [
+                        "Why now: AI makes finding bugs cheap, for attackers too. 2026: Coldcard, BTCPay, Alby Hub, LNbits",
+                        "Guard Dog: a watchdog for your node, relay and mint (started Nov 16, pre-alpha)",
+                        "Trust Issues: Lightning without a full node, and without blind trust in one explorer (Nov 17, signet)",
+                        "Built the way Super Testnet taught me: readable, runnable, no server needed"
+                    ],
+                    "link": "https://maxsikorski.github.io/guard-dog/",
+                    "linkLabel": "Guard Dog",
+                    "links": [
+                        {
+                            "label": "Trust Issues",
+                            "url": "https://maxsikorski.github.io/trust-issues/"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Guard Dog: Security That Never Sleeps",
+                    "body": "It runs on your node or a small box at home, learns what you run and keeps checking it.",
+                    "imageUrl": "photos/2026-W47/builder-spotlight-guard-dog.png",
+                    "bullets": [
+                        "It finds Core/Knots, LND, CLN, BTCPay, mints and relays on Umbrel, StartOS, Docker…",
+                        "An advisory hits something you run: you get a plain-English alert by Nostr DM, ntfy or email"
+                    ],
+                    "link": "https://maxsikorski.github.io/guard-dog/",
+                    "linkLabel": "maxsikorski.github.io/guard-dog"
+                },
+                {
+                    "heading": "See What an Attacker Sees",
+                    "body": "My clickable mock-up: made-up regtest data, nothing to install.",
+                    "imageUrl": "photos/2026-W47/builder-spotlight-guard-dog-mockup.png",
+                    "bullets": [
+                        "Open ports, router mappings, Tor, plus Scout: finds Bitcoin and Nostr gear on your network",
+                        "Recommends the safest version: signed, hashes match, past a cooling-off, no advisories"
+                    ],
+                    "link": "https://maxsikorski.github.io/guard-dog/preview/",
+                    "linkLabel": "Try the mock-up"
+                },
+                {
+                    "heading": "Never Holds Keys, Never Says \"Secure\"",
+                    "bullets": [
+                        "It never holds your keys or moves funds. No telemetry. Nothing changes without your tap",
+                        "It says \"no known issues found\", with when it checked and what it couldn't see",
+                        "I grade it with \"judges\" written before the features: hostile text 48/48, leaks caught on 88 test captures",
+                        "23 real advisories in, matcher next, so it honestly scores 0 of 9 today. I'd rather it tell on itself",
+                        "~190 commits in two days. Next up: the first real finding, end to end"
+                    ],
+                    "link": "https://github.com/MaxSikorski/guard-dog",
+                    "linkLabel": "Guard Dog on GitHub",
+                    "links": [
+                        {
+                            "label": "Watch it catch a leak",
+                            "url": "https://maxsikorski.github.io/guard-dog/demo/"
+                        },
+                        {
+                            "label": "Roadmap",
+                            "url": "https://github.com/MaxSikorski/guard-dog/blob/main/ROADMAP.md"
+                        }
+                    ]
+                },
+                {
+                    "heading": "Trust Issues: Explorers on Trial",
+                    "body": "It stands in for bitcoind under LND or Core Lightning, so you skip the 700+ GB download.",
+                    "imageUrl": "photos/2026-W47/builder-spotlight-trust-issues.png",
+                    "bullets": [
+                        "Asks mempool.space, Emzy's mempool and Blockstream, all over Tor",
+                        "Proves what it can (proof of work, merkle roots), cross-checks the rest"
+                    ],
+                    "link": "https://maxsikorski.github.io/trust-issues/",
+                    "linkLabel": "maxsikorski.github.io/trust-issues"
+                },
+                {
+                    "heading": "Why One Explorer Isn't Enough",
+                    "bullets": [
+                        "Lightning is safe only if you see a cheating close in time to punish it",
+                        "One explorer could hide that block, or quietly drop your penalty transaction",
+                        "So: \"unspent\" needs two explorers agreeing; every broadcast goes to all of them",
+                        "Chain quiet for 90 min: warning. 3 hours: critical, and it stops saying \"synced\"",
+                        "Try the browser demo: a lying explorer tries five tricks, and all five get caught"
+                    ],
+                    "link": "https://maxsikorski.github.io/trust-issues/",
+                    "linkLabel": "Watch it catch a liar"
+                },
+                {
+                    "heading": "Tested on Signet, Not for Real Money",
+                    "bullets": [
+                        "Core Lightning v26.06.10 and LND v0.21.8 both synced through it",
+                        "A 200,000-sat channel opened and a 21,000-sat payment crossed it",
+                        "I refuse mainnet in code until someone outside reviews it. Even then: small amounts only",
+                        "Docker: Tor, Trust Issues and one Lightning node, nothing published to the host",
+                        "I'd love help on both: testers, node runners, advisory curators, white-hat breakers"
+                    ],
+                    "link": "https://github.com/MaxSikorski/trust-issues",
+                    "linkLabel": "Trust Issues on GitHub",
+                    "links": [
+                        {
+                            "label": "Help build Guard Dog",
+                            "url": "https://github.com/MaxSikorski/guard-dog/blob/main/CONTRIBUTING.md"
+                        },
+                        {
+                            "label": "Guard Dog Discussions",
+                            "url": "https://github.com/MaxSikorski/guard-dog/discussions"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "quick-tip",
+            "title": "Quick Tip: Audit Your Home Server",
+            "description": "One forgotten container with a default password cost a Nostr regular his Bitaxe firmware and his password manager",
+            "type": "tool",
+            "accent": "bitcoin",
+            "slides": [
+                {
+                    "heading": "Quick Tip: Audit Your Home Server",
+                    "body": "One forgotten container on a default password: Derek Ross lost his Bitaxe firmware and his Vaultwarden.",
+                    "bullets": [
+                        "List everything running (docker ps -a). Delete what you don't use",
+                        "Change every default password, admin panels first",
+                        "Keep admin pages off the open internet: Tor, a VPN or Tailscale",
+                        "Patch Linux: NoisyTCP crashes any box with an open TCP port (fixed in 6.12.117, 6.18.63, 7.3.4)",
+                        "This is exactly what I'm building Guard Dog to catch"
+                    ],
+                    "link": "https://njump.me/nevent1qqsqqqqp7qlxrxtx3syhlumtz79k9e7fj8xjgh5395lhxmcupwr3lgczyqlhwrt96wnkf2w9edgr4cfruchvwkv26q6asdhz4qg08pm6w3djghgcv86",
+                    "linkLabel": "Derek Ross on Nostr",
+                    "links": [
+                        {
+                            "label": "NoisyTCP advisory",
+                            "url": "https://github.com/v4bel/noisytcp"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "community-news",
+            "title": "Community News & Topics",
+            "description": "Share what you're interested in talking about, and get the daily brief",
+            "type": "text",
+            "slides": [
+                {
+                    "heading": "Next Week's Meetup",
+                    "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                    "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                    "linkLabel": "Submit a Topic"
+                },
+                {
+                    "heading": "Get The Daily Relay",
+                    "body": "New: Bitcoin, Nostr and freedom tech, one page in your inbox every weekday morning. Everything we find between meetups, from the same research. Free. Scan to subscribe.",
+                    "link": "https://thedailyrelay.substack.com/subscribe",
+                    "linkLabel": "thedailyrelay.substack.com"
+                }
+            ]
+        }
+    ]
+}
