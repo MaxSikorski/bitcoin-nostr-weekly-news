@@ -886,6 +886,30 @@
                     `;
                 }
 
+                if (slideData.widget === 'price-range') {
+                    slideHTML += `
+                        <div class="live-dashboard price-range" data-price-range>
+                            <div class="live-metric live-metric-primary">
+                                <span class="live-label">BTC / USD since <span data-pr-from-label>…</span></span>
+                                <span class="live-value" data-pr-change>—</span>
+                            </div>
+                            <div class="live-metric-row">
+                                <div class="live-metric">
+                                    <span class="live-label" data-pr-from-date>Then</span>
+                                    <span class="live-value-sm" data-pr-from>—</span>
+                                </div>
+                                <div class="live-metric">
+                                    <span class="live-label">Now</span>
+                                    <span class="live-value-sm" data-pr-to>—</span>
+                                </div>
+                            </div>
+                            <svg class="price-range-chart" viewBox="0 0 600 140" preserveAspectRatio="none" aria-hidden="true"></svg>
+                            <input class="price-range-slider" type="range" min="0" max="1" value="0" step="1" aria-label="Start date" disabled>
+                            <span class="live-status" data-pr-status>Loading price history…</span>
+                        </div>
+                    `;
+                }
+
                 if (slideData.widget === 'bip110-live') {
                     slideHTML += `
                         <div class="live-dashboard">
@@ -1914,6 +1938,99 @@
         setInterval(refresh, 20000);
     }
 
+    // === Price-range widget (W47 — drag a start date, see what the price did since) ===
+    // Last 120 daily closes from Coinbase (CORS *), mempool.space as fallback. The slider starts at the
+    // highest close in the window ("since the high"). Needs internet; degrades like live-price offline.
+    function initPriceRange() {
+        const boxes = document.querySelectorAll('[data-price-range]');
+        if (!boxes.length) return; // no price-range slide in this week's deck
+        const DAYS = 120;
+        const fmtUSD = (n) => '$' + Math.round(n).toLocaleString('en-US');
+        const fmtDate = (t) => new Date(t * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+
+        async function loadCloses() {
+            const end = Math.floor(Date.now() / 1000);
+            const start = end - DAYS * 86400;
+            try {
+                const url = 'https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400'
+                    + '&start=' + new Date(start * 1000).toISOString() + '&end=' + new Date(end * 1000).toISOString();
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('coinbase ' + res.status);
+                const rows = await res.json();
+                const pts = rows.map((r) => ({ t: r[0], p: r[4] })).sort((a, b) => a.t - b.t);
+                if (pts.length < 2) throw new Error('coinbase empty');
+                return { pts, src: 'Coinbase daily closes' };
+            } catch (e) {
+                const res = await fetch('https://mempool.space/api/v1/historical-price?currency=USD');
+                const json = await res.json();
+                const byDay = new Map(); // last price seen each UTC day
+                (json.prices || []).forEach((x) => {
+                    if (x.time < start || !x.USD) return;
+                    const day = Math.floor(x.time / 86400);
+                    const cur = byDay.get(day);
+                    if (!cur || x.time > cur.t) byDay.set(day, { t: x.time, p: x.USD });
+                });
+                const pts = [...byDay.values()].sort((a, b) => a.t - b.t);
+                if (pts.length < 2) throw new Error('no price history');
+                return { pts, src: 'mempool.space' };
+            }
+        }
+
+        function render(box, pts, src) {
+            const svg = box.querySelector('.price-range-chart');
+            const slider = box.querySelector('.price-range-slider');
+            const changeEl = box.querySelector('[data-pr-change]');
+            const fromLabel = box.querySelector('[data-pr-from-label]');
+            const fromDate = box.querySelector('[data-pr-from-date]');
+            const fromEl = box.querySelector('[data-pr-from]');
+            const toEl = box.querySelector('[data-pr-to]');
+            const statusEl = box.querySelector('[data-pr-status]');
+            const n = pts.length;
+            const W = 600, H = 140, PAD = 8;
+            const prices = pts.map((d) => d.p);
+            const lo = Math.min(...prices), hi = Math.max(...prices);
+            const x = (i) => (i / (n - 1)) * W;
+            const y = (p) => PAD + (H - 2 * PAD) * (1 - (p - lo) / ((hi - lo) || 1));
+            const pathFrom = (i0) => pts.slice(i0).map((d, k) => (k ? 'L' : 'M') + x(i0 + k).toFixed(1) + ' ' + y(d.p).toFixed(1)).join(' ');
+            const highIdx = prices.indexOf(hi);
+            svg.innerHTML = '<path class="pr-line-all" vector-effect="non-scaling-stroke" d="' + pathFrom(0) + '"></path>'
+                + '<path class="pr-line-sel" vector-effect="non-scaling-stroke"></path>'
+                + '<line class="pr-marker" vector-effect="non-scaling-stroke" y1="0" y2="' + H + '"></line>';
+            const sel = svg.querySelector('.pr-line-sel');
+            const marker = svg.querySelector('.pr-marker');
+            const now = pts[n - 1];
+
+            function update(i) {
+                const from = pts[i];
+                const pct = (now.p / from.p - 1) * 100;
+                changeEl.textContent = (pct < 0 ? '−' : '+') + Math.abs(pct).toFixed(1) + '%';
+                fromLabel.textContent = fmtDate(from.t) + (i === highIdx ? ' (the high)' : '');
+                fromDate.textContent = fmtDate(from.t);
+                fromEl.textContent = fmtUSD(from.p);
+                toEl.textContent = fmtUSD(now.p);
+                sel.setAttribute('d', pathFrom(i));
+                marker.setAttribute('x1', x(i).toFixed(1));
+                marker.setAttribute('x2', x(i).toFixed(1));
+            }
+
+            slider.max = String(n - 2);
+            slider.value = String(Math.min(highIdx, n - 2));
+            slider.disabled = false;
+            slider.addEventListener('input', () => update(parseInt(slider.value, 10)));
+            // After a mouse or touch drag, hand the arrow keys back to the slide navigation
+            slider.addEventListener('pointerup', () => slider.blur());
+            update(parseInt(slider.value, 10));
+            statusEl.textContent = 'Live · ' + src + ' · last ' + DAYS + ' days · drag to pick a start date';
+        }
+
+        loadCloses()
+            .then(({ pts, src }) => boxes.forEach((box) => render(box, pts, src)))
+            .catch(() => boxes.forEach((box) => {
+                const statusEl = box.querySelector('[data-pr-status]');
+                if (statusEl) statusEl.textContent = 'Offline — open the dashboards below for live data';
+            }));
+    }
+
     // === BIP-110 live widget (W32 — flag-day countdown + signaling from bip110monitor.com) ===
     // Read-only public API (CORS *); needs internet, degrades gracefully offline like live-price.
     function initBip110Dashboard() {
@@ -1986,6 +2103,7 @@
             beacon('view-deck', data.week);
             initLiveDashboard();
             initBip110Dashboard();
+            initPriceRange();
 
             // Show first slide
             loadingState.style.display = 'none';
