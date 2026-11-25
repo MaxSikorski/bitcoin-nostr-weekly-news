@@ -1,6 +1,11 @@
 {
     "weeks": [
         {
+            "id": "2026-W48",
+            "date": "2026-11-25",
+            "title": "Fake Servers, Real Fixes"
+        },
+        {
             "id": "2026-W47",
             "date": "2026-11-18",
             "title": "Half Off the Peak, Guard Up"
