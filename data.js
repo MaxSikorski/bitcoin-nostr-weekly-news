@@ -4,6 +4,11 @@
 window.INLINE_DATA = {
     "weeks": [
         {
+            "id": "2026-W48",
+            "date": "2026-11-25",
+            "title": "Fake Servers, Real Fixes"
+        },
+        {
             "id": "2026-W47",
             "date": "2026-11-18",
             "title": "Half Off the Peak, Guard Up"
@@ -127,6 +132,712 @@ window.INLINE_DATA = {
 };
 
 window.INLINE_WEEKS = {
+    "2026-W48": {
+        "week": "2026-W48",
+        "date": "2026-11-25",
+        "title": "Fake Servers, Real Fixes",
+        "subtitle": "This week in Bitcoin & Nostr news",
+        "timerMinutes": 20,
+        "topics": [
+            {
+                "id": "market",
+                "title": "Live Dashboard & Market",
+                "description": "A two-year low, a seventh red week, a record month of ETF outflows, and Fear & Greed at 13",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Live Dashboard",
+                        "body": "Where Bitcoin sits right now. The full dashboards:",
+                        "widget": "live-price",
+                        "links": [
+                            {
+                                "label": "Clark Moody Dashboard",
+                                "url": "https://bitcoin.clarkmoody.com/dashboard/"
+                            },
+                            {
+                                "label": "mempool.space",
+                                "url": "https://mempool.space"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Market: Seven Red Weeks",
+                        "body": "Saturday it touched $55,106, the lowest since September 2024. Drag the slider back to the high and see the whole slide.",
+                        "widget": "price-range",
+                        "link": "https://api.exchange.coinbase.com/products/BTC-USD/candles",
+                        "linkLabel": "Coinbase daily candles"
+                    },
+                    {
+                        "heading": "Market: The Week Behind the Price",
+                        "bullets": [
+                            "Seventh red week in a row: weekly close $61,163. Fear & Greed 13",
+                            "Spot ETFs: six straight outflow days; November −$4.71B, the worst month on record",
+                            "Glassnode: dealers are \"short gamma\" from $58K to $64K, so moves get bigger both ways",
+                            "Strategy +457 BTC (now 851,305), but $211.8M went to STRC buybacks. Twenty One +172 BTC",
+                            "Trump Media: $883.5M of notes can be put back Nov 30; it says it wants to avoid selling BTC",
+                            "Lyn Alden reposted her 2022 line: \"Bitcoin is dead right now. It fell 56%.\""
+                        ],
+                        "link": "https://farside.co.uk/btc/",
+                        "linkLabel": "Farside: ETF flows",
+                        "links": [
+                            {
+                                "label": "CoinDesk: record November",
+                                "url": "https://www.coindesk.com/daybook-us/2026/11/24/bitcoin-drops-as-november-spot-etf-outflows-increase-to-record-usd4-71-billion"
+                            },
+                            {
+                                "label": "Glassnode: short gamma",
+                                "url": "https://x.com/glassnode/status/2125520978575048823"
+                            },
+                            {
+                                "label": "Strategy 8-K",
+                                "url": "https://www.sec.gov/Archives/edgar/data/1050446/000119312526470961/mstr-20261123.htm"
+                            },
+                            {
+                                "label": "Trump Media 10-Q",
+                                "url": "https://www.sec.gov/Archives/edgar/data/1849635/000143774926035884/djt20260930_10q.htm"
+                            },
+                            {
+                                "label": "Fear & Greed Index",
+                                "url": "https://alternative.me/crypto/fear-and-greed-index/"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "security-desk",
+                "title": "Security Desk: Fake Electrum Servers",
+                "description": "Fake Electrum servers attack old wallets, COLDCARD's postmortem, Ledger's Berlin implants, and a stack of patches to install tonight",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Security Desk: Fake Electrum Servers",
+                        "body": "Dozens of new look-alike servers proxy the real ones so they look healthy. If your Electrum is older than 4.8.3, they can show you a fake payment and wait for you to fee-bump it to the attacker.",
+                        "bullets": [
+                            "Confirmed in the wild by 0xB10C and Andrew Toth: the W45 flaw, now at scale",
+                            "Super Testnet's take: wallets should use compact block filters, not Electrum servers"
+                        ],
+                        "link": "https://bnoc.xyz/t/electrum-proxy-servers-spun-up-in-mid-november-2026/215",
+                        "linkLabel": "bnoc thread",
+                        "links": [
+                            {
+                                "label": "0xB10C",
+                                "url": "https://x.com/0xB10C/status/2125363689750757396"
+                            },
+                            {
+                                "label": "Electrum advisory",
+                                "url": "https://github.com/spesmilo/electrum/security/advisories/GHSA-6jp4-8v48-cc5v"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "COLDCARD's Postmortem",
+                        "body": "A 2021 firmware change left some seeds on a weak random number generator.",
+                        "imageUrl": "photos/2026-W48/security-desk-coldcard-postmortem.jpg",
+                        "bullets": [
+                            "300 loss tickets from 236 accounts; 15+ reviews and an AI audit missed it",
+                            "Seeds made with 50+ dice rolls were never affected. Keylabs says the fix is sound"
+                        ],
+                        "link": "https://blog.coinkite.com/coldcard-postmortem-published/",
+                        "linkLabel": "Image: Coinkite",
+                        "links": [
+                            {
+                                "label": "Keylabs review",
+                                "url": "https://blog.coinkite.com/keylabs-coldcard-seed-generation-review/"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "The Rest of a Rough Week",
+                        "bullets": [
+                            "Ledger: tampered devices confirmed in Berlin, Dubai under investigation. Buy from the maker",
+                            "Bitcoin Core CVE-2026-117348: a node-stall bug an AI scan found. Fixed in 30.5, 31.3, 32.1; Knots 29.5.1",
+                            "59% of reachable nodes still lack the Oct 27 fixes (Mike Schmidt)",
+                            "BTCPay on Docker: emergency nginx update. Bisq 2.1.16: Java4Shell fix, needed to trade",
+                            "#FREESAMOURAI's LND node on a Contabo VPS was drained, days after Contabo's own breach",
+                            "Chainflip's BTC vault lost 122.86 BTC. A vibe-coded wallet sent 1 BTC to anyone-can-spend; mononaut saved it"
+                        ],
+                        "link": "https://support.ledger.com/article/Update-on-the-Hardware-Implant-Incident-Investigation",
+                        "linkLabel": "Ledger update",
+                        "links": [
+                            {
+                                "label": "Core advisory",
+                                "url": "https://bitcoincore.org/en/2026/11/20/disclose-orphan-inv-stall/"
+                            },
+                            {
+                                "label": "Knots 29.5.1",
+                                "url": "https://github.com/bitcoinknots/bitcoin/releases/tag/v29.5.1.knots20260508"
+                            },
+                            {
+                                "label": "Node census",
+                                "url": "https://x.com/bitschmidty/status/2123828842993213912"
+                            },
+                            {
+                                "label": "BTCPay",
+                                "url": "https://x.com/BtcpayServer/status/2123106381729591461"
+                            },
+                            {
+                                "label": "Bisq 2.1.16",
+                                "url": "https://github.com/bisq-network/bisq2/releases/tag/v2.1.16"
+                            },
+                            {
+                                "label": "#FREESAMOURAI node",
+                                "url": "https://x.com/RMessitt/status/2123150588800070102"
+                            },
+                            {
+                                "label": "mononaut",
+                                "url": "https://x.com/mononautical/status/2123610848807801027"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "witness-encryption",
+                "title": "Witness Encryption: A Lock That Opens for a Proof",
+                "description": "A Stanford/Babylon preprint claims practical witness encryption; Super Testnet says \"there goes the game\"; experts say wait for peer review",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Witness Encryption: A Lock That Opens for a Proof",
+                        "body": "Lock a secret to a statement instead of a key: whoever can prove the statement can open it. Put a bitcoin key inside, and coins unlock for anyone with a valid proof. No operators.",
+                        "bullets": [
+                            "Praxis (David Tse, Stanford/Babylon, Nov 23): 7.88 GiB ciphertext, Lean 4 proofs",
+                            "Not peer reviewed yet, and it needs an honest trusted setup"
+                        ],
+                        "link": "https://eprint.iacr.org/2026/2971",
+                        "linkLabel": "Praxis (IACR ePrint 2026/2971)"
+                    },
+                    {
+                        "heading": "\"Well, There Goes the Game\"",
+                        "body": "Super Testnet: \"If witness encryption is solved then bitcoin is ethereum.\" He expects recycled DeFi with a \"now on bitcoin!\" sticker, and people losing money.",
+                        "bullets": [
+                            "Robin Linus: it would \"fundamentally improve Bitcoin bridges\" if it survives review",
+                            "waxwing: \"truly groundbreaking\" if nothing's wrong, with real limits"
+                        ],
+                        "link": "https://x.com/SuperTestnet/status/2124915769867735494",
+                        "linkLabel": "Super Testnet",
+                        "links": [
+                            {
+                                "label": "Robin Linus",
+                                "url": "https://x.com/robin_linus/status/2124888404605501520"
+                            },
+                            {
+                                "label": "waxwing on Nostr",
+                                "url": "https://njump.me/nevent1qqsx2c9w4mgw7eqgrrd3vtnk5grnknz4k9298m4vfk3yeg32xglvqzcf4rv6p"
+                            },
+                            {
+                                "label": "Babylon: sunsetting staking",
+                                "url": "https://forum.babylon.foundation/t/on-sunsetting-bitcoin-staking/790"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Discussion",
+                        "body": "If a proof can unlock coins without a soft fork, do we still need covenants? Is \"anything Ethereum can do, on Bitcoin\" a win, or a new way to lose money?"
+                    }
+                ]
+            },
+            {
+                "id": "bitcoin-dev",
+                "title": "Bitcoin Dev: Core and Lightning",
+                "description": "Core 31.3 and 30.5, a wallet fingerprint removed, Core Lightning's biggest release, LND fixes, and a Taproot Assets deadline",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Bitcoin Dev: Core and Lightning",
+                        "bullets": [
+                            "Core 31.3 / 30.5 out; Optech #432: a Tor/I2P address leak fixed",
+                            "Core master: fee bumps stop backdating locktime (a wallet fingerprint); encryptwallet deprecated for old wallets",
+                            "Core Lightning v26.12rc1: 832 commits after a year of bug reports; pay gives way to xpay",
+                            "LND: fixes for a reconnect force-close and missed close confirmations",
+                            "Taproot Assets: upgrade and close asset channels before block 978,493 (about Dec 2)",
+                            "Bark 0.9.0: Ark wallets now speak Nostr Wallet Connect"
+                        ],
+                        "link": "https://bitcoinops.org/en/newsletters/",
+                        "linkLabel": "Bitcoin Optech",
+                        "links": [
+                            {
+                                "label": "CLN v26.12rc1",
+                                "url": "https://github.com/ElementsProject/lightning/releases/tag/v26.12rc1"
+                            },
+                            {
+                                "label": "Taproot Assets v0.8.9",
+                                "url": "https://github.com/lightninglabs/taproot-assets/releases/tag/v0.8.9"
+                            },
+                            {
+                                "label": "Bark 0.9.0",
+                                "url": "https://x.com/secondhq/status/2123437833235177734"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Quantum Homework and Core Maintenance",
+                        "bullets": [
+                            "Blockstream: switch commitments, a possible soft fork to guard Liquid's hidden amounts from quantum attacks",
+                            "SHRINCS, the hash-based post-quantum signature idea, gets its first security analysis draft",
+                            "Core #36908: the Stratum V2 mining interface no longer crashes a fresh node",
+                            "fanquake's four years at Brink: ~2,600 merges, 20+ Core releases. Thank you"
+                        ],
+                        "link": "https://blog.blockstream.com/switch-commitments-a-quantum-remedy-for-ct",
+                        "linkLabel": "Blockstream: switch commitments",
+                        "links": [
+                            {
+                                "label": "SHRINCS analysis",
+                                "url": "https://github.com/SHRINCS/Security-Analysis"
+                            },
+                            {
+                                "label": "Core #36908",
+                                "url": "https://github.com/bitcoin/bitcoin/pull/36908"
+                            },
+                            {
+                                "label": "Brink: fanquake",
+                                "url": "https://brink.dev/blog/2026/11/23/michaels-brink-epoch/"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "mining-energy",
+                "title": "Mining & Energy: Power, Not Price",
+                "description": "Texas power drove the last cut, about +8.7% due Thanksgiving, miners become data-center landlords, and two home miners hit blocks",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Mining & Energy: Power, Not Price",
+                        "body": "Hashrate Index: Texas power prices, not bitcoin's price, drove the −9.13% cut.",
+                        "imageUrl": "photos/2026-W48/mining-energy-texas-power.jpg",
+                        "bullets": [
+                            "Next retarget: about +8.7%, Thanksgiving evening",
+                            "JPMorgan: ~$86K to mine a coin. Listed miners sold ~half their BTC this year"
+                        ],
+                        "link": "https://hashrateindex.com/blog/texas-power-prices-not-bitcoin-drove-difficulty-drop/",
+                        "linkLabel": "Image: Hashrate Index",
+                        "links": [
+                            {
+                                "label": "mempool.space: difficulty",
+                                "url": "https://mempool.space/difficulty"
+                            },
+                            {
+                                "label": "CleanSpark FY2026",
+                                "url": "https://investors.cleanspark.com/news/news-details/2026/CleanSpark-Reports-Fiscal-Fourth-Quarter-and-Full-Year-2026-Financial-and-Operating-Results/default.aspx"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Home Miners Win",
+                        "bullets": [
+                            "CleanSpark lost $987.1M turning its Georgia site into an AI data center",
+                            "An ~11 TH/s home miner solo-mined block 977,057 on CKPool: 3.1287 BTC",
+                            "Public Pool's first block in 138 days (977,488) paid one small miner 3.178 BTC",
+                            "Canaan open-sourced the Avalon Nano 3s firmware (MIT, alpha)",
+                            "One-click DATUM in Foreman: build your own block templates. Foundry reportedly testing Stratum V2",
+                            "Kalshi now lists CFTC-certified bets on the difficulty adjustment"
+                        ],
+                        "link": "https://mempool.space/block/0000000000000000000155b086738584dc797ef4993633b525b1040c367a92de",
+                        "linkLabel": "Block 977,057",
+                        "links": [
+                            {
+                                "label": "Block 977,488",
+                                "url": "https://mempool.space/block/000000000000000000020b25387bb25c05cc393f1689980d51188bf26c822cc5"
+                            },
+                            {
+                                "label": "Canaan SDK",
+                                "url": "https://github.com/Canaan-Creative/canaan_sdk_for_linux"
+                            },
+                            {
+                                "label": "Kalshi filing (CFTC)",
+                                "url": "https://www.cftc.gov/IndustryOversight/IndustryFilings/TradingOrganizationProducts/68010"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "policy-corner",
+                "title": "Policy Corner: Self-Custody, Squeezed and Defended",
+                "description": "The Philippines and South Korea restrict transfers to your own wallet; France and Ukraine push the other way; FinCEN gets breached",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Policy Corner: Self-Custody, Squeezed and Defended",
+                        "bullets": [
+                            "Coins.ph stopped transfers to self-custody wallets Nov 19 (Philippine Travel Rule)",
+                            "South Korea: from Feb 19, 2027, personal-wallet transfers generally only to yourself",
+                            "France's Senate rejected a register of €100K+ self-custody wallets: a target list for kidnappers",
+                            "Ukraine passed its crypto law (271 votes): legal and taxed from July 2027, holdings not declared"
+                        ],
+                        "link": "https://www.senat.fr/enseance/2026-2027/155/Amdt_I-2447.html",
+                        "linkLabel": "Sénat amendment I-2447",
+                        "links": [
+                            {
+                                "label": "Coins.ph",
+                                "url": "https://support.coins.ph/hc/en-us/articles/4403931971225-How-does-the-Travel-Rule-affect-crypto-transfers"
+                            },
+                            {
+                                "label": "Yonhap: FSC",
+                                "url": "https://www.yna.co.kr/view/AKR20261123028000002"
+                            },
+                            {
+                                "label": "Ukraine NSSMC",
+                                "url": "https://www.nssmc.gov.ua/ua-verkhovna-rada-ukhvalyla-zakonoproiekt-pro-rehuliuvannia-rynku-virtualnykh-aktyviv-v-ukraini/"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Also on the Desk",
+                        "bullets": [
+                            "FinCEN, home of every suspicious-activity report, disclosed a \"cybersecurity incident\"",
+                            "CFTC staff: bitcoin can count toward an exchange's operating-cost reserves",
+                            "Hong Kong custody licensing bill; UK bans exchange self-market-making from Oct 2027",
+                            "Michigan bills would ban crypto kiosks outright"
+                        ],
+                        "body": "If your exchange stopped withdrawals to your own wallet tomorrow, where would your coins be?",
+                        "link": "https://www.cftc.gov/PressRoom/PressReleases/9331-26",
+                        "linkLabel": "CFTC advisory",
+                        "links": [
+                            {
+                                "label": "Hong Kong bill",
+                                "url": "https://www.info.gov.hk/gia/general/202611/20/P2026112000582.htm"
+                            },
+                            {
+                                "label": "The Verge: FinCEN",
+                                "url": "https://www.theverge.com/policy/1041957/fincen-treasury-cybersecurity-incident"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "payments-ecash",
+                "title": "Spend It: What People Actually Buy",
+                "description": "Block's data on real bitcoin spending, Steak n Shake, ecash wallets that reach on-chain, and NutNovember",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Spend It: What People Actually Buy",
+                        "body": "Block looked at almost a year of bitcoin payments on Square.",
+                        "imageUrl": "photos/2026-W48/payments-block-cups.jpg",
+                        "bullets": [
+                            "Median payment about $13; 72% food and drink; 57% from wallets outside Cash App",
+                            "Steak n Shake: franchise sales up 19%+ this quarter, and it credits bitcoin"
+                        ],
+                        "link": "https://block.xyz/inside/new-block-data-reveals-how-americans-are-using-bitcoin-for-everyday-purchases",
+                        "linkLabel": "Image: Block"
+                    },
+                    {
+                        "heading": "Ecash and Everyday Bitcoin",
+                        "bullets": [
+                            "macadamia v0.12: Cashu deposits and withdrawals on-chain (NUT-30)",
+                            "cashu.me security fix; NUTCADE ships nutzaps, NIP-60 sync and dollar/euro ecash",
+                            "NutNovember: 80+ project submissions in its final week",
+                            "Krak card waitlist: 1–4% back in bitcoin (4% needs a $150K balance)",
+                            "⚠ Unconfirmed: Cash App testing auto-rebuy of any bitcoin you spend"
+                        ],
+                        "link": "https://github.com/zeugmaster/macadamia",
+                        "linkLabel": "macadamia",
+                        "links": [
+                            {
+                                "label": "NUTCADE releases",
+                                "url": "https://github.com/Random21m/nutcade/releases"
+                            },
+                            {
+                                "label": "Krak card",
+                                "url": "https://blog.kraken.com/product/krak/credit-card-up-to-4-cashback-on-all-purchases"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "nostr-this-week",
+                "title": "Nostr This Week: Apps You Control",
+                "description": "A phone relay on Tor in Rust, Zapstore's off switch for social, Nostr Compass #49, and a price oracle on Nostr",
+                "type": "discussion",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "Nostr This Week: Apps You Control",
+                        "bullets": [
+                            "Citrine 3.3: the relay on your phone moves its Tor to Arti (Tor in Rust)",
+                            "Zapstore 2.0.5: switch off the social layer, keep a plain app store",
+                            "Nostr Compass #49: Sidecar signer grants, Formstr docs, White Noise on Android",
+                            "nostracle: a DLC price oracle that publishes on Nostr (early)",
+                            "Bitfest hackathon winner Tibana: photo proof with OpenTimestamps + Nostr"
+                        ],
+                        "link": "https://github.com/greenart7c3/Citrine/releases/tag/v3.3.0",
+                        "linkLabel": "Citrine 3.3.0",
+                        "links": [
+                            {
+                                "label": "Zapstore 2.0.5",
+                                "url": "https://github.com/zapstore/zapstore/releases/tag/2.0.5"
+                            },
+                            {
+                                "label": "nostracle",
+                                "url": "https://github.com/p2pfiat/nostracle"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "ai-corner",
+                "title": "AI Corner: Can't Look vs. Promise Not To",
+                "description": "Canary prompts catch AI providers leaking, agents pay in sats with guardrails, and open models small enough to run at home",
+                "type": "discussion",
+                "accent": "nostr",
+                "slides": [
+                    {
+                        "heading": "AI Corner: Can't Look vs. Promise Not To",
+                        "body": "2 million planted canary prompts: stolen keys were tried within hours, even \"Zero Data Retention\" prompts were read. A promise not to look isn't privacy.",
+                        "bullets": [
+                            "OpenRouter dropped three providers. Maple ($5.3M seed) runs models in enclaves you can verify",
+                            "Run it at home: Inkling 2 Mini (32 GB Mac), Ternary Bonsai 27B (5.93 GB)",
+                            "Haller-1 reads handwritten seed words offline on a SeedSigner (proof of concept)"
+                        ],
+                        "link": "https://openrouter.ai/blog/announcements/data-processing-incidents-on-inference-providers/",
+                        "linkLabel": "OpenRouter: the canary study",
+                        "links": [
+                            {
+                                "label": "Maple seed",
+                                "url": "https://x.com/TryMapleAI/status/2125377545709248916"
+                            },
+                            {
+                                "label": "Haller-1",
+                                "url": "https://github.com/haller-project/haller"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Agents Pay in Sats, Safely",
+                        "bullets": [
+                            "l402-bridge: coding agents buy inference in sats from an NWC wallet, with caps",
+                            "nwc-guard: a firewall that asks your phone before an agent pays",
+                            "l402-receipts: \"Don't trust the meter, verify it\": receipts anchored on Nostr and Bitcoin",
+                            "ngx-l402 v1.4.0 charges per MCP tool call; an AI agent bought satsboard's billboard for 29 sats"
+                        ],
+                        "link": "https://github.com/lamporun/nwc-guard",
+                        "linkLabel": "nwc-guard",
+                        "links": [
+                            {
+                                "label": "l402-bridge",
+                                "url": "https://github.com/lamporun/l402-bridge"
+                            },
+                            {
+                                "label": "l402-receipts",
+                                "url": "https://github.com/lamporun/l402-receipts"
+                            },
+                            {
+                                "label": "ngx-l402 v1.4.0",
+                                "url": "https://github.com/ngx-l402/ngx-l402/releases/tag/v1.4.0"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "builder-spotlight",
+                "title": "Builder Spotlight: OpenBazaar Is Back",
+                "description": "The freedom-tech marketplace returns in Rust over Tor, and how it stacks up against Shopstr, Plebeian Market and LNbits Nostr Market",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Builder Spotlight: OpenBazaar Is Back",
+                        "body": "Rewritten in Rust, over Tor, with no company in the middle of your sale.",
+                        "imageUrl": "photos/2026-W48/builder-spotlight-openbazaar.png",
+                        "bullets": [
+                            "Escrow where the moderator holds no key, only picks a pre-signed payout",
+                            "Testnet4 alpha (MIT): test coins only, no real money yet"
+                        ],
+                        "link": "https://github.com/OpenBazaar/openbazaar-rs",
+                        "linkLabel": "openbazaar-rs",
+                        "links": [
+                            {
+                                "label": "Announcement",
+                                "url": "https://x.com/openbazaar/status/2125388019788021962"
+                            },
+                            {
+                                "label": "Image: openbazaar.org",
+                                "url": "https://www.openbazaar.org/"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "How It Works",
+                        "bullets": [
+                            "Your shop belongs to recovery words only you hold; buyers pay the seller's wallet",
+                            "Signed listings: a fake node can hide them, not forge them",
+                            "Sybil defense is a BTC fee checked on chain: \"we won't do KYC\"",
+                            "Honest about gaps: self-reviews still possible, no seller bond yet"
+                        ],
+                        "link": "https://github.com/OpenBazaar/openbazaar-rs/releases/tag/v0.1.0-alpha.16",
+                        "linkLabel": "v0.1.0-alpha.16"
+                    },
+                    {
+                        "heading": "Bitcoin Marketplaces, Side by Side",
+                        "body": "I've used Shopstr and know the team. How they compare:",
+                        "bullets": [
+                            "OpenBazaar: its own app over Tor; escrow on chain; a BTC fee keeps out fakes. Testnet4 alpha",
+                            "Shopstr: listings on Nostr (NIP-99); pay by Lightning or Cashu; reviews and DMs on Nostr. Live since 2023",
+                            "Plebeian Market: a Nostr marketplace, being rebuilt; auctions in research",
+                            "LNbits Nostr Market: run your stall from your own LNbits (NIP-15). v1.2.1 on Nov 10",
+                            "Buying bitcoin, not goods: RoboSats (Lightning over Tor) and Mostro (on Nostr)"
+                        ],
+                        "link": "https://shopstr.market",
+                        "linkLabel": "Shopstr",
+                        "links": [
+                            {
+                                "label": "Shopstr (GitHub)",
+                                "url": "https://github.com/shopstr-eng/shopstr"
+                            },
+                            {
+                                "label": "Plebeian Market",
+                                "url": "https://github.com/PlebeianApp/market"
+                            },
+                            {
+                                "label": "LNbits Nostr Market",
+                                "url": "https://github.com/lnbits/nostrmarket"
+                            },
+                            {
+                                "label": "RoboSats",
+                                "url": "https://learn.robosats.org"
+                            },
+                            {
+                                "label": "Mostro",
+                                "url": "https://mostro.network"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Discussion",
+                        "body": "Open listings on Nostr, or OpenBazaar's own network: which one wins buyers? Who here has bought or sold on Shopstr? What would you sell for sats?"
+                    }
+                ]
+            },
+            {
+                "id": "max-builds",
+                "title": "Max's Corner: Guard Dog & Trust Issues",
+                "description": "Week two of my two open-source security tools: what landed, what's in review, and where I'd love your help",
+                "type": "discussion",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Max's Corner: Guard Dog & Trust Issues",
+                        "body": "Week two. This week's news is exactly why I'm building these.",
+                        "imageUrl": "photos/2026-W47/builder-spotlight-guard-dog-mockup.png",
+                        "bullets": [
+                            "Fake Electrum servers: Trust Issues never trusts one server",
+                            "COLDCARD: 15+ reviews missed it. Guard Dog is graded by tests written first"
+                        ],
+                        "link": "https://maxsikorski.github.io/guard-dog/preview/",
+                        "linkLabel": "Guard Dog mock-up",
+                        "links": [
+                            {
+                                "label": "Trust Issues",
+                                "url": "https://maxsikorski.github.io/trust-issues/"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Guard Dog: What Landed, What's Next",
+                        "bullets": [
+                            "12 pull requests merged: reads advisories, checks version ranges, read-only node logins",
+                            "13 services it knows, incl. BTCPay, Alby Hub, Fedimint, Taproot Assets, umbrelOS",
+                            "In review: version readers, the catalog loader, alerts as private Nostr DMs (NIP-17)",
+                            "Two AI reviewers read every change; it merges only at zero high or medium findings",
+                            "Next: the matcher, so the first real finding lands end to end. Today: 0 of 9, honestly"
+                        ],
+                        "link": "https://github.com/MaxSikorski/guard-dog/blob/main/ROADMAP.md",
+                        "linkLabel": "Guard Dog roadmap",
+                        "links": [
+                            {
+                                "label": "GitHub: guard-dog",
+                                "url": "https://github.com/MaxSikorski/guard-dog"
+                            }
+                        ]
+                    },
+                    {
+                        "heading": "Trust Issues, and Where I'd Love Help",
+                        "body": "\"An explorer can lie, it just can't fool your node.\"",
+                        "bullets": [
+                            "Trust Issues now logs every RPC call and shows unsupported ones on /status",
+                            "Still signet only: mainnet stays refused in code until someone outside reviews it",
+                            "Umbrel or StartOS user? How do you list installed apps without admin?",
+                            "How long should a new release wait before Guard Dog calls it safest? I'm starting at 7 days"
+                        ],
+                        "link": "https://github.com/MaxSikorski/guard-dog/discussions",
+                        "linkLabel": "Guard Dog Discussions",
+                        "links": [
+                            {
+                                "label": "GitHub: trust-issues",
+                                "url": "https://github.com/MaxSikorski/trust-issues"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "quick-tip",
+                "title": "Quick Tip: Check Your Versions Tonight",
+                "description": "Five-minute version checks after a week of security fixes",
+                "type": "tool",
+                "accent": "bitcoin",
+                "slides": [
+                    {
+                        "heading": "Quick Tip: Check Your Versions Tonight",
+                        "body": "Five minutes, after a week like this one.",
+                        "bullets": [
+                            "Electrum 4.8.3+, or point it at your own server",
+                            "Core 30.5, 31.3 or 32.1 (on 29.x, upgrade or Knots 29.5.1)",
+                            "BTCPay on Docker: docker exec nginx nginx -v → 1.31.9",
+                            "Sparrow 2.5.7 · Bisq 2.1.16 · Trezor Suite 26.11.2 (warns on never-used addresses)"
+                        ],
+                        "link": "https://bitcoincore.org/en/2026/11/20/disclose-orphan-inv-stall/",
+                        "linkLabel": "Core advisory",
+                        "links": [
+                            {
+                                "label": "Sparrow 2.5.7",
+                                "url": "https://github.com/sparrowwallet/sparrow/releases/tag/2.5.7"
+                            },
+                            {
+                                "label": "Trezor Suite 26.11.2",
+                                "url": "https://github.com/trezor/trezor-suite/releases/tag/v26.11.2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "community-news",
+                "title": "Community News & Topics",
+                "description": "Share what you're interested in talking about, and get the daily brief",
+                "type": "text",
+                "slides": [
+                    {
+                        "heading": "Next Week's Meetup",
+                        "body": "Find something you're interested in talking about? Share it here and we'll cover it in next week's meetup!",
+                        "link": "https://github.com/MaxSikorski/bitcoin-nostr-weekly-news/issues",
+                        "linkLabel": "Submit a Topic"
+                    },
+                    {
+                        "heading": "Get The Daily Relay",
+                        "body": "New: Bitcoin, Nostr and freedom tech, one page in your inbox every weekday morning. Everything we find between meetups, from the same research. Free. Scan to subscribe.",
+                        "link": "https://thedailyrelay.substack.com/subscribe",
+                        "linkLabel": "thedailyrelay.substack.com"
+                    }
+                ]
+            }
+        ]
+    },
     "2026-W47": {
         "week": "2026-W47",
         "date": "2026-11-18",
